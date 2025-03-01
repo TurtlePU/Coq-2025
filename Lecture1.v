@@ -160,7 +160,10 @@
    названия Исчисления Конструкций (Calculus of Constructions, CoC), на котором
    он основан."  Петух также является национальным символом Франции, а C-o-q --
    это первые три буквы фамилии Тьерри Коканда, одного из первых разработчиков
-   Coq. *)
+   Coq.
+
+   Правда, после массового возмущения и мольбы англофонов, язык был переименован
+   в Rocq. Но в рамках этого курса мы будем пользоваться старым названием. *)
 
 (* ================================================================= *)
 (** ** Функциональное программирование *)
@@ -235,7 +238,7 @@
 (** * Практические аспекты *)
 
 (* ================================================================= *)
-(** ** Системные Требования *)
+(** ** Системные требования *)
 
 (** Coq работает на Windows, Linux, и macOS.  Материалы этого курса были
     протестированы на версии Coq 8.19.2.
@@ -391,9 +394,12 @@
     Foundations_ (входит в программу регулярной летней школы DeepSpec) можно
     найти по следующим ссылкам: {https://deepspec.org/event/dsss17} и
     {https://deepspec.org/event/dsss18/}.  Качество видео в лекциях за 2017
-    поначалу не очень хорошее, но в дальнейшем становится гораздо лучше. *)
+    поначалу не очень хорошее, но в дальнейшем становится гораздо лучше.
 
-(** * Основы: Функциональное Программмирование на Coq *)
+    Также во внутренней системе ЦУ, как обычно, будут доступны записи всех
+    занятий. *)
+
+(** * Основы: Функциональное программмирование на Coq *)
 
 (* ################################################################# *)
 (** * Введение *)
@@ -418,7 +424,7 @@
     мощных идиом программирования.
 
     Другие общие черты функциональных языков включают в себя _алгебраические
-    типы данных_ и _сопоставление c шаблоном_, которые упрощают создание сложных
+    типы данных_ и _сопоставление c образцом_, которые упрощают создание сложных
     структур данных и манипулирование ими, а также _полиморфные системы типов_,
     поддерживающие абстракцию и повторное использование кода.  В Coq доступны
     все эти функции.
@@ -743,7 +749,7 @@ Example test_nandb4:               (nandb true true) = false.
     [true] когда все её входы [true], и [false] в противном случае. *)
 
 Definition andb3 (b1:bool) (b2:bool) (b3:bool) : bool
-  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ НА ":= _ваше_определение_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОКУ НА ":= _ваше_определение_ ." *). Admitted.
 
 Example test_andb31:                 (andb3 true true true) = true.
 (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
@@ -787,7 +793,7 @@ Check negb
     эта функция возвращает значение типа [bool]". *)
 
 (* ================================================================= *)
-(** ** Новые Типы из Старых *)
+(** ** Новые типы из старых *)
 
 (** Типы, которые мы определили до сих пор, являются примерами
     "типов-перечислений": их определения явно перечисляют конечный набор
@@ -849,7 +855,7 @@ Definition monochrome (c : color) : bool :=
   | primary p => false
   end.
 
-(** Поскольку конструктор [primary] принимает аргумент, шаблон, соответствующий
+(** Раз конструктор [primary] принимает аргумент, то образец, соответствующий
     [primary], должен содержать либо переменную, как мы только что сделали
     (обратите внимание, что мы можем свободно выбирать ее имя), либо константу
     соответствующего типа (как показано ниже). *)
@@ -866,19 +872,19 @@ Definition isred (c : color) : bool :=
     "конструктора [primary], применяемого к любому конструктору [rgb], кроме
     [red]". *)
 
-(** (Универсальный шаблон [_] имеет тот же эффект, что и фиктивная
-    переменная шаблона [p] в определении [monochrome].) *)
+(** (Пустой образец [_] имеет тот же эффект, что и фиктивная переменная-образец
+    [p] в определении [monochrome].) *)
 
 (* ================================================================= *)
-(** ** Modules *)
+(** ** Модули *)
 
-(** Coq provides a _module system_ to aid in organizing large
-    developments.  We won't need most of its features, but one is
-    useful here: If we enclose a collection of declarations between
-    [Module X] and [End X] markers, then, in the remainder of the file
-    after the [End], these definitions are referred to by names like
-    [X.foo] instead of just [foo].  We will use this feature to limit
-    the scope of definitions, so that we are free to reuse names. *)
+(** Coq предоставляет _модульную систему_, помогающую в организации больших
+    проектов.  Большая часть её функций нам не понадобятся, но одна из них здесь
+    будет полезна: если мы поместим набор объявлений между маркерами [Module X]
+    и [End X], то в оставшейся части файла после [Конца] на эти определения
+    ссылаются как [X.foo] вместо просто [foo].  Мы будем использовать эту
+    функцию для ограничения области видимости определений, чтобы свободно
+    переиспользовать имена. *)
 
 Module Playground.
   Definition foo : rgb := blue.
@@ -890,17 +896,16 @@ Check Playground.foo : rgb.
 Check foo : bool.
 
 (* ================================================================= *)
-(** ** Tuples *)
+(** ** Кортежи *)
 
 Module TuplePlayground.
 
-(** A single constructor with multiple parameters can be used
-    to create a tuple type. As an example, consider representing
-    the four bits in a nybble (half a byte). We first define
-    a datatype [bit] that resembles [bool] (using the
-    constructors [B0] and [B1] for the two possible bit values)
-    and then define the datatype [nybble], which is essentially
-    a tuple of four bits. *)
+(** Для создания типа кортежа можно использовать один конструктор с несколькими
+    параметрами. В качестве примера рассмотрим представление четырех битов в
+    ниббле (половина байта). Сначала мы определяем тип данных [bit], который
+    напоминает [bool] (используя конструкторы [B0] и [B1] для двух возможных
+    значений битов) и затем определяем тип данных [nybble], который по сути
+    является кортежем из четырех битов. *)
 
 Inductive bit : Type :=
   | B1
@@ -912,13 +917,12 @@ Inductive nybble : Type :=
 Check (bits B1 B0 B1 B0)
   : nybble.
 
-(** The [bits] constructor acts as a wrapper for its contents.
-    Unwrapping can be done by pattern-matching, as in the [all_zero]
-    function below, which tests a nybble to see if all its bits are
-    [B0].
+(** Конструктор [bits] действует как обёртка для его содержимого. Развёртывание
+    может быть выполнено путем сопоставления с образцом, как в приведенной ниже
+    функции [all_zero], которая проверяет, все ли биты в ниббле равны [B0].
 
-    We use underscore (_) as a _wildcard pattern_ to avoid inventing
-    variable names that will not be used. *)
+    Мы используем символ подчеркивания (_), чтобы избежать придумывания имен
+    переменных, которые не будут использоваться. *)
 
 Definition all_zero (nb : nybble) : bool :=
   match nb with
@@ -934,98 +938,97 @@ Compute (all_zero (bits B0 B0 B0 B0)).
 End TuplePlayground.
 
 (* ================================================================= *)
-(** ** Numbers *)
+(** ** Числа *)
 
-(** We put this section in a module so that our own definition of
-    natural numbers does not interfere with the one from the
-    standard library.  In the rest of the book, we'll want to use
-    the standard library's. *)
+(** Мы поместили этот раздел в модуль, чтобы наше собственное определение
+    натуральных чисел не мешалось определению из стандартной библиотеки.  В
+    оставшейся части книги мы будем использовать определение из стандартной
+    библиотеки. *)
 
 Module NatPlayground.
 
-(** All the types we have defined so far -- both "enumerated
-    types" such as [day], [bool], and [bit] and tuple types such as
-    [nybble] built from them -- are finite.  The natural numbers, on
-    the other hand, are an infinite set, so we'll need to use a
-    slightly richer form of type declaration to represent them.
+(** Все типы, которые мы определили до сих пор -- как "перечисляемые типы",
+    такие как [day], [bool] и [bit], так и типы кортежей, такие как [nybble],
+    построенные на их основе -- конечны.  Натуральные числа, с другой стороны,
+    представляют собой бесконечное множество, поэтому нам нужно будет
+    использовать более мощный способ объявления типа для их представления.
 
-    There are many representations of numbers to choose from. You are
-    almost certainly most familiar with decimal notation (base 10),
-    using the digits 0 through 9, for example, to form the number 123.
-    You may very likely also have encountered hexadecimal
-    notation (base 16), in which the same number is represented as 7B,
-    or octal (base 8), where it is 173, or binary (base 2), where it
-    is 1111011. Using an enumerated type to represent digits, we could
-    use any of these as our representation natural numbers. Indeed,
-    there are circumstances where each of these choices would be
-    useful.
+    Существует множество вариантов представления чисел. Вы почти наверняка
+    знакомы с десятичной системой счисления (основание 10), в которой цифры от 0
+    до 9 используются, например, для образования числа 123. Скорее всего, вы
+    также сталкивались с шестнадцатеричной системой счисления (основание 16), в
+    которой то же самое число представлено как 7B, или восьмеричное (основание
+    8), где оно равно 173, или двоичное (основание 2), где оно равно 1111011.
+    Используя перечислимый тип для представления цифр, мы могли бы использовать
+    любое из них в качестве нашего представления натуральных чисел.
+    Действительно, есть обстоятельства, когда каждый из этих вариантов был бы
+    полезен.
 
-    The binary representation is valuable in computer hardware because
-    the digits can be represented with just two distinct voltage
-    levels, resulting in simple circuitry. Analogously, we wish here
-    to choose a representation that makes _proofs_ simpler.
+    Двоичное представление ценно при изготовлении микросхем, потому что цифры
+    могут быть представлены только двумя различными уровнями напряжения тока,
+    что приводит к упрощению схемы. Аналогично, в данном случае мы хотели бы
+    выбрать представление, которое делает _доказательства_ проще.
 
-    In fact, there is a representation of numbers that is even simpler
-    than binary, namely unary (base 1), in which only a single digit
-    is used (as our forebears might have done to count days by making
-    scratches on the walls of their caves). To represent unary numbers
-    with a Coq datatype, we use two constructors. The capital-letter
-    [O] constructor represents zero. The [S] constructor can be
-    applied to the representation of the natural number n, yieldimng
-    the representation of n+1, where [S] stands for "successor" (or
-    "scratch").  Here is the complete datatype definition: *)
+    На самом деле, существует еще более простое представление чисел, чем в
+    двоичной системе, а именно унарный код (основание 1), в котором используется
+    только одна цифра (как, возможно, делали наши предки для подсчета дней,
+    делая царапины на стенах их пещер). Для представления унарных чисел с
+    помощью типа данных Coq мы используем два конструктора. Конструктор [O]
+    (заглавная О) представляет ноль. Конструктор [S], применённый к
+    представлению натурального числа n, представляет число n+1, где [S] означает
+    "последующий", "successor" (или "царапина", "scratch").  Вот полное
+    определение типа данных: *)
 
 Inductive nat : Type :=
   | O
   | S (n : nat).
 
-(** With this definition, 0 is represented by [O], 1 by [S O],
-    2 by [S (S O)], and so on. *)
+(** В таком определении, 0 представляется как [O], 1 -- как [S O], 2 -- как
+    [S (S O)] и т.д. *)
 
-(** Informally, the clauses of the definition can be read:
-      - [O] is a natural number (remember this is the letter "[O],"
-        not the numeral "[0]").
-      - [S] can be put in front of a natural number to yield another
-        one -- i.e., if [n] is a natural number, then [S n] is too. *)
+(** Неофициально пункты определения могут быть прочитаны следующим образом:
+      - [O] -- это натуральное число (помните, что это буква "[O]",
+        а не цифра "[0]").
+      - [S] можно поставить перед натуральным числом, чтобы получить другое
+        натуральное число; то есть, если [n] -- натуральное число, то и [S n]
+        тоже. *)
 
-(** Again, let's look at this a bit more closely.  The definition
-    of [nat] says how expressions in the set [nat] can be built:
+(** Опять же, давайте изучим это определение более подробно.  В определении
+    [nat] говорится о том, какие выражения в множестве [nat] мы можем построить:
 
-    - the constructor expression [O] belongs to the set [nat];
-    - if [n] is a constructor expression belonging to the set [nat],
-      then [S n] is also a constructor expression belonging to the set
-      [nat]; and
-    - constructor expressions formed in these two ways are the only
-      ones belonging to the set [nat]. *)
+    - конструкторное выражение [O] принадлежит множеству [nat];
+    - если [n] является конструкторным выражением, принадлежащим множеству
+      [nat], то [S n] также является конструкторным выражением, принадлежащим
+      набору [nat]; и
+    - конструкторные выражения, сформированные этими двумя способами, являются
+      единственными конструкторными выражениями, принадлежащими множеству
+      [nat]. *)
 
-(** These conditions are the precise force of the [Inductive]
-    declaration that we gave to Coq.  They imply that the constructor
-    expression [O], the constructor expression [S O], the constructor
-    expression [S (S O)], the constructor expression [S (S (S O))],
-    and so on all belong to the set [nat], while other constructor
-    expressions like [true], [andb true false], [S (S false)], and
-    [O (O (O S))] do not.
+(** Эти условия пользуются той самой мощью [Индуктивных] определений, о которых
+    мы говорили ранее.  Из них следует, что множество конструкторных выражений
+    [nat] состоит в точности из [O], [SO], [S (S O)], [S (S (S O))] и т.д., в то
+    время как [true], [andb true false], [S (S false)] и [O (O (O S))] ему не
+    принадлежат.
 
-    A critical point here is that what we've done so far is just to
-    define a _representation_ of numbers: a way of writing them down.
-    The names [O] and [S] are arbitrary, and at this point they have
-    no special meaning -- they are just two different marks that we
-    can use to write down numbers, together with a rule that says any
-    [nat] will be written as some string of [S] marks followed by an
-    [O].  If we like, we can write essentially the same definition
-    this way: *)
+    Важным моментом здесь является то, что все, что мы делали до сих пор -- это
+    просто определение представления чисел: способа их записи. Имена [O] и [S]
+    являются произвольными, и на данный момент они не имеют никакого особого
+    значения -- это просто два разных знака, которые мы можем использовать для
+    записи чисел, вместе с правилом, которое гласит: [nat] будет записан в виде
+    некоторой последовательности знаков [S], за которыми следует [O].  Если мы
+    хотим, мы можем записать по сути то же самое определение другим образом: *)
 
 Inductive otherNat : Type :=
   | stop
   | tick (foo : otherNat).
 
-(** The _interpretation_ of these marks arises from how we use them to
-    compute. *)
+(** _Интерпретация_ этих меток зависит от того, как мы пользуемся ими при
+    вычислениях. *)
 
-(** We can do this by writing functions that pattern match on
-    representations of natural numbers just as we did above with
-    booleans and days -- for example, here is the predecessor
-    function: *)
+(** Мы можем сделать это, написав функции, которые используют сопоставление с
+    образцом для натуральных чисел, точно так же, как мы делали это выше для
+    логических значений и дней -- например, вот функция, вычисляющая число,
+    предшествующее данному: *)
 
 Definition pred (n : nat) : nat :=
   match n with
@@ -1033,19 +1036,19 @@ Definition pred (n : nat) : nat :=
   | S n' => n'
   end.
 
-(** The second branch can be read: "if [n] has the form [S n']
-    for some [n'], then return [n']."  *)
+(** Вторую ветку можно прочитать так: "если [n] имеет форму [S n']
+    для некоторого [n'], то верни [n']". *)
 
-(** The following [End] command closes the current module, so
-    [nat] will refer back to the type from the standard library. *)
+(** Следующая команда [End] закрывает текущий модуль, поэтому
+    [nat] будет ссылаться на тип из стандартной библиотеки. *)
 
 End NatPlayground.
 
-(** Because natural numbers are such a pervasive kind of data,
-    Coq does provide a tiny bit of built-in magic for parsing and
-    printing them: ordinary decimal numerals can be used as an
-    alternative to the "unary" notation defined by the constructors
-    [S] and [O].  Coq prints numbers in decimal form by default: *)
+(** Поскольку натуральные числа чрезвычайно распространенный тип данных, Coq
+    предоставляет чуть-чуть встроенной магии для их ввода и печати: обычные
+    десятичные числа могут использоваться в качестве альтернативы "унарной"
+    записи через конструкторы [S] и [O].  По умолчанию Coq выводит числа в
+    десятичной системе счисления: *)
 
 Check (S (S (S (S O)))).
 (* ===> 4 : nat *)
@@ -1060,35 +1063,34 @@ Definition minustwo (n : nat) : nat :=
 Compute (minustwo 4).
 (* ===> 2 : nat *)
 
-(** The constructor [S] has the type [nat -> nat], just like functions
-    such as [pred] and [minustwo]: *)
+(** Конструктор [S] имеет тип [nat -> nat], как и функции, такие как [pred] и
+    [minustwo]: *)
 
 Check S        : nat -> nat.
 Check pred     : nat -> nat.
 Check minustwo : nat -> nat.
 
-(** These are all things that can be applied to a number to yield a
-    number.  However, there is a fundamental difference between [S]
-    and the other two: functions like [pred] and [minustwo] are
-    defined by giving _computation rules_ -- e.g., the definition of
-    [pred] says that [pred 2] can be simplified to [1] -- while the
-    definition of [S] has no such behavior attached.  Although it is
-    _like_ a function in the sense that it can be applied to an
-    argument, it does not _do_ anything at all!  It is just a way of
-    writing down numbers.
+(** Все эти функции можно применить к числу, чтобы получить другое число.
+    Однако существует фундаментальное различие между [S] и двумя другими
+    функциями: такие функции, как [pred] и [minustwo], определяются путем
+    задания _правил вычисления_ -- например, определение [pred] говорит, что
+    [pred 2] можно упростить до [1], в то время как в определении [S] никакого
+    поведения нет.  Хотя этот конструктор и _подобен_ функции в том смысле, что
+    он может быть применён к аргументу, он _вообще_ ничего не делает!  Это
+    просто способ записи чисел.
 
-    Think about standard decimal numerals: the numeral [1] is not a
-    computation; it's a piece of data.  When we write [111] to mean
-    the number one hundred and eleven, we are using [1], three times,
-    to write down a concrete representation of a number.
+    Посмотрим на самые обыкновенные десятичные числа: число [1] -- это не
+    вычисление; это кусок данных.  Когда мы пишем [111] для обозначения числа
+    сто одиннадцать, мы используем [1], трижды, чтобы записать конкретное
+    представление числа.
 
-    Let's go on and define some more functions over numbers.
+    Давайте продолжим и определим еще несколько функций над числами.
 
-    For most interesting computations involving numbers, simple
-    pattern matching is not enough: we also need recursion.  For
-    example, to check that a number [n] is even, we may need to
-    recursively check whether [n-2] is even.  Such functions are
-    introduced with the keyword [Fixpoint] instead of [Definition]. *)
+    Для наиболее интересных вычислений, связанных с числами, просто
+    сопоставления с образцом недостаточно: нам также нужна рекурсия.  Например,
+    чтобы проверить, является ли число [n] четным, нам может потребоваться
+    рекурсивно проверить, является ли [n-2] четным.  Такие функции вводятся с
+    помощью ключевого слова [Fixpoint] вместо [Definition]. *)
 
 Fixpoint even (n:nat) : bool :=
   match n with
@@ -1097,8 +1099,8 @@ Fixpoint even (n:nat) : bool :=
   | S (S n') => even n'
   end.
 
-(** We could define [odd] by a similar [Fixpoint] declaration, but
-    here is a simpler way: *)
+(** Мы могли бы определить [odd] с помощью аналогичного объявления [Fixpoint],
+    но вот более простой способ: *)
 
 Definition odd (n:nat) : bool :=
   negb (even n).
@@ -1108,12 +1110,12 @@ Proof. simpl. reflexivity.  Qed.
 Example test_odd2:    odd 4 = false.
 Proof. simpl. reflexivity.  Qed.
 
-(** (You may notice if you step through these proofs that
-    [simpl] actually has no effect on the goal -- all of the work is
-    done by [reflexivity].  We'll discuss why shortly.)
+(** (Если вы ознакомитесь с этими доказательствами в интерактивном режиме, вы
+    можете заметить, что [simpl] на самом деле не влияет на цель -- вся работа
+    выполняется с помощью [рефлексивности].  Вскоре мы обсудим, почему.)
 
-    Naturally, we can also define multi-argument functions by
-    recursion.  *)
+    Естественно, мы также можем определять функции с несколькими аргументами с
+    помощью рекурсии.  *)
 
 Module NatPlayground2.
 
@@ -1123,30 +1125,29 @@ Fixpoint plus (n : nat) (m : nat) : nat :=
   | S n' => S (plus n' m)
   end.
 
-(** Adding three to two gives us five (whew!): *)
+(** Прибавив три к двум, мы получим пять (ого!): *)
 
 Compute (plus 3 2).
 (* ===> 5 : nat *)
 
-(** The steps of simplification that Coq performs here can be
-    visualized as follows: *)
+(** Упрощения выражения, которые Coq выполняет в этот момент, можно представить
+    следующим образом: *)
 
 (*      [plus 3 2]
-   i.e. [plus (S (S (S O))) (S (S O))]
+   т.е. [plus (S (S (S O))) (S (S O))]
     ==> [S (plus (S (S O)) (S (S O)))]
-          by the second clause of the [match]
+          по второй клозе в [match]
     ==> [S (S (plus (S O) (S (S O))))]
-          by the second clause of the [match]
+          по второй клозе в [match]
     ==> [S (S (S (plus O (S (S O)))))]
-          by the second clause of the [match]
+          по второй клозе в [match]
     ==> [S (S (S (S (S O))))]
-          by the first clause of the [match]
-   i.e. [5]  *)
+          по первой клозе в [match]
+   т.е. [5]  *)
 
-(** As a notational convenience, if two or more arguments have
-    the same type, they can be written together.  In the following
-    definition, [(n m : nat)] means just the same as if we had written
-    [(n : nat) (m : nat)]. *)
+(** Для удобства записи, если два или более аргумента имеют одинаковый тип, они
+    могут быть записаны вместе.  В определении ниже [(n m : nat)] означает то же
+    самое, как если бы мы написали [(n : nat) (m : nat)]. *)
 
 Fixpoint mult (n m : nat) : nat :=
   match n with
@@ -1157,8 +1158,8 @@ Fixpoint mult (n m : nat) : nat :=
 Example test_mult1: (mult 3 3) = 9.
 Proof. simpl. reflexivity.  Qed.
 
-(** We can match two expressions at once by putting a comma
-    between them: *)
+(** Мы можем сопоставить с образцом два выражения за раз, поставив запятую
+    между ними: *)
 
 Fixpoint minus (n m:nat) : nat :=
   match n, m with
@@ -1175,32 +1176,31 @@ Fixpoint exp (base power : nat) : nat :=
   | S p => mult base (exp base p)
   end.
 
-(** **** Exercise: 1 star, standard (factorial)
+(** **** Упражнение: 1 звезда, стандартное (factorial)
 
-    Recall the standard mathematical factorial function:
+    Вспомним стандартное определение факториала:
 
-       factorial(0)  =  1
-       factorial(n)  =  n * factorial(n-1)     (if n>0)
+       0!  =  1
+       n!  =  n * (n-1)!     (если n>0)
 
-    Translate this into Coq.
+    Переведите его на Coq.
 
-    Make sure you put a [:=] between the header we've provided and
-    your definition.  If you see an error like "The reference
-    factorial was not found in the current environment," it means
-    you've forgotten the [:=]. *)
+    Убедитесь, что вы поставили [:=] между заголовком, который мы предоставили,
+    и Вашим определением.  Если Вы видите ошибку типа "The reference factorial
+    was not found in the current environment", это означает, что Вы забыли
+    [:=]. *)
 
 Fixpoint factorial (n:nat) : nat
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОКУ НА ":= _ваше_определение_ ." *). Admitted.
 
 Example test_factorial1:          (factorial 3) = 6.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 Example test_factorial2:          (factorial 5) = (mult 10 12).
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** Again, we can make numerical expressions easier to read and write
-    by introducing notations for addition, subtraction, and
-    multiplication. *)
+(** Опять же, мы можем упростить чтение и запись числовых выражений,
+    введя обозначения для сложения, вычитания и умножения. *)
 
 Notation "x + y" := (plus x y)
                        (at level 50, left associativity)
@@ -1214,23 +1214,22 @@ Notation "x * y" := (mult x y)
 
 Check ((0 + 1) + 1) : nat.
 
-(** (The [level], [associativity], and [nat_scope] annotations
-    control how these notations are treated by Coq's parser.  The
-    details are not important for present purposes, but interested
-    readers can refer to the "More on Notation" section at the end of
-    this chapter.)
+(** (Аннотации [level], [associativity] и [nat_scope] определяют, как эти
+    обозначения обрабатываются синтаксическим анализатором Coq.  Подробности не
+    важны для наших целей, но заинтересованные читатели могут обратиться к
+    разделу "Подробнее о нотации" в конце этой главы.)
 
-    Note that these declarations do not change the definitions we've
-    already made: they are simply instructions to Coq's parser to
-    accept [x + y] in place of [plus x y] and, conversely, to its
-    pretty-printer to display [plus x y] as [x + y]. *)
+    Обратите внимание, что эти объявления не меняют определения, которые мы
+    уже ввели: это просто инструкции для синтаксического анализатора Coq
+    читать [x + y] как [plus xy] и, наоборот, отображать [plus xy] как
+    [x + y]. *)
 
-(** When we say that Coq comes with almost nothing built-in, we really
-    mean it: even testing equality is a user-defined operation!
-    Here is a function [eqb], which tests natural numbers for
-    [eq]uality, yielding a [b]oolean.  Note the use of nested
-    [match]es (we could also have used a simultaneous match, as
-    in [minus].) *)
+(** Когда мы говорим, что в Coq практически ничего не встроено, мы действительно
+    имеем это в виду: даже проверка равенства -- это операция, определяемая
+    пользователем! Вот функция [eqb], которая проверяет натуральные числа на
+    равенство ([eq]), возвращающая логическое значение ([b]).  Обратите внимание
+    на использование вложенных сопоставлений с образцом (мы также могли бы
+    сопоставить с образцом оба аргумента вместе, как в определении [minus]). *)
 
 Fixpoint eqb (n m : nat) : bool :=
   match n with
@@ -1244,8 +1243,8 @@ Fixpoint eqb (n m : nat) : bool :=
             end
   end.
 
-(** Similarly, the [leb] function tests whether its first argument is
-    less than or equal to its second argument, yielding a boolean. *)
+(** Аналогично, функция [leb] проверяет, является ли ее первый аргумент меньшим
+    или равным второму, и возвращает логическое значение. *)
 
 Fixpoint leb (n m : nat) : bool :=
   match n with
@@ -1264,8 +1263,8 @@ Proof. simpl. reflexivity.  Qed.
 Example test_leb3:                leb 4 2 = false.
 Proof. simpl. reflexivity.  Qed.
 
-(** We'll be using these (especially [eqb]) a lot, so let's give
-    them infix notations. *)
+(** Мы будем часто использовать эти функции (особенно [eqb]), поэтому давайте
+    определим для них инфиксную нотацию. *)
 
 Notation "x =? y" := (eqb x y) (at level 70) : nat_scope.
 Notation "x <=? y" := (leb x y) (at level 70) : nat_scope.
@@ -1273,119 +1272,116 @@ Notation "x <=? y" := (leb x y) (at level 70) : nat_scope.
 Example test_leb3': (4 <=? 2) = false.
 Proof. simpl. reflexivity.  Qed.
 
-(** We now have two symbols that both look like equality: [=]
-    and [=?].  We'll have much more to say about their differences and
-    similarities later. For now, the main thing to notice is that
-    [x = y] is a logical _claim_ -- a "proposition" -- that we can try to
-    prove, while [x =? y] is a boolean _expression_ whose value (either
-    [true] or [false]) we can compute. *)
+(** Теперь у нас есть два символа, которые выглядят как равенство: [=] и [=?].
+    Позже мы расскажем гораздо больше об их различиях и сходствах. А пока
+    главное, на что следует обратить внимание, это то, что [x = y] -- это
+    логическое _утверждение_, "пропозиция", которую мы можем попытаться
+    доказать, в то время как [x =? y] - это логическое _выражение_, значение
+    которого (либо [истина], либо [ложь]) мы можем вычислить. *)
 
-(** **** Exercise: 1 star, standard (ltb)
+(** **** Упражнение: 1 звезда, стандартное (ltb)
 
-    The [ltb] function tests natural numbers for [l]ess-[t]han,
-    yielding a [b]oolean.  Instead of making up a new [Fixpoint] for
-    this one, define it in terms of a previously defined
-    function.  (It can be done with just one previously defined
-    function, but you can use two if you want.) *)
+    Функция [ltb] проверяет, меньше ли ([l]ess-[t]han) первый аргумент второго,
+    и возвращает логическое значение ([b]).  Вместо того, чтобы объявлять новый
+    [Fixpoint] для её вычисления, определите её в терминах ранее определенной
+    функции.  (Можно обойтись только одной ранее определенной функцией, но Вы
+    можете использовать две, если хотите.) *)
 
 Definition ltb (n m : nat) : bool
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОКУ НА ":= _ваше_определение_ ." *). Admitted.
 
 Notation "x <? y" := (ltb x y) (at level 70) : nat_scope.
 
 Example test_ltb1:             (ltb 2 2) = false.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 Example test_ltb2:             (ltb 2 4) = true.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 Example test_ltb3:             (ltb 4 2) = false.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
 (* ################################################################# *)
-(** * Proof by Simplification *)
+(** * Доказательство через упрощения *)
 
-(** Now that we've looked at a few datatypes and functions,
-    let's turn to stating and proving properties of their behavior.
+(** Теперь, когда мы рассмотрели несколько типов данных и функций, давайте
+    перейдем к описанию и доказательству их свойств и поведения.
 
-    Actually, we've already started doing this: each [Example] in the
-    previous sections made a precise claim about the behavior of some
-    function on some particular inputs.  The proofs of these claims
-    were always the same: use [simpl] to simplify both sides of the
-    equation, then use [reflexivity] to check that both sides contain
-    identical values.
+    На самом деле, мы уже начали это делать: в каждом [Примере] в предыдущих
+    разделах было сделано точное утверждение о поведении некоторых функций на
+    некоторых конкретных входных данных.  Доказательства этих утверждений
+    всегда были одинаковыми: используем [simpl] для упрощения обеих частей
+    уравнения, затем используем [reflexivity] для проверки того, что обе части
+    содержат одинаковые значения.
 
-    The same sort of "proof by simplification" can be used to
-    establish more interesting properties as well.  For example, the
-    fact that [0] is a "neutral element" for [+] on the left can be
-    proved just by observing that [0 + n] reduces to [n] no matter
-    what [n] is -- a fact that can be read off directly from the
-    definition of [plus]. *)
+    Такое "доказательство путем упрощения" может быть использовано для
+    установления более интересных свойств.  Например, тот факт, что [0] является
+    "нейтральным элементом" для [+] слева, может быть доказан простым
+    наблюдением, что [0 + n] сводится к [n] независимо от того, что такое [n] --
+    факт, который можно вычитать непосредственно из определения [plus]. *)
 
 Theorem plus_O_n : forall n : nat, 0 + n = n.
 Proof.
   intros n. simpl. reflexivity.  Qed.
 
-(** (You may notice that the above statement looks different if
-    you look at the [.v] file in your IDE than it does if you view the
-    HTML rendition in your browser. In [.v] files, we write the
-    universal quantifier [forall] using the reserved identifier
-    "forall."  When the [.v] files are converted to HTML, this gets
-    transformed into the standard upside-down-A symbol.)
+(** (Вы можете заметить, что приведенное выше утверждение отличается, если
+    просматривать файл [.v] в IDE, от HTML-представления в вашем браузере. В
+    файлах [.v] мы записываем квантор всеобщности [forall], используя
+    зарезервированный идентификатор "forall".  Когда файлы [.v] преобразуются в
+    HTML, он преобразуется в стандартный символ "перевёрнутое А".)
 
-    This is a good place to mention that [reflexivity] is a bit more
-    powerful than we have acknowledged. In the examples we have seen,
-    the calls to [simpl] were actually not required because
-    [reflexivity] will do some simplification automatically when
-    checking that two sides are equal; [simpl] was just added so that
-    we could see the intermediate state, after simplification but
-    before finishing the proof.  Here is a shorter proof: *)
+    Здесь уместно упомянуть, что [рефлексивность] в Coq -- это нечто более
+    сильное, чем мы заявляли раньше. В примерах, которые мы видели, вызовы
+    [simpl] на самом деле не требовались, потому что [reflexivity] автоматически
+    выполнит некоторое упрощение при проверке равенства двух сторон; [simpl] был
+    добавлен только для того, чтобы мы могли видеть промежуточное состояние
+    после упрощения, но перед завершением доказательства.  Вот более короткое
+    доказательство: *)
 
 Theorem plus_O_n' : forall n : nat, 0 + n = n.
 Proof.
   intros n. reflexivity. Qed.
 
-(** Moreover, it will be useful to know that [reflexivity] does
-    somewhat _more_ simplification than [simpl] does -- for example,
-    it tries "unfolding" defined terms, replacing them with their
-    right-hand sides.  The reason for this difference is that, if
-    reflexivity succeeds, the whole goal is finished and we don't need
-    to look at whatever expanded expressions [reflexivity] has created
-    by all this simplification and unfolding; by contrast, [simpl] is
-    used in situations where we may have to read and understand the
-    new goal that it creates, so we would not want it blindly
-    expanding definitions and leaving the goal in a messy state.
+(** Более того, будет полезно знать, что [reflexivity] делает несколько
+    _большее_ упрощение, чем [simpl] - например, она пытается "развернуть"
+    некоторые термины, заменив их на их определения.  Причина этого различия в
+    том, что, если [reflexivity] срабатывает, конечная цель достигнута, и нам не
+    нужно смотреть на то, какие раскрытые выражения создала [reflexivity]
+    благодаря всем этим упрощениям и подстановкам; напротив, [simpl]
+    используется в ситуациях, когда нам, возможно, придется прочитать и понять
+    новую цель, которую эта команда создаёт, поэтому мы не хотели бы вслепую
+    разворачивать определения и оставлять мешанину вместо цели.
 
-    The form of the theorem we just stated and its proof are almost
-    exactly the same as the simpler examples we saw earlier; there are
-    just a few differences.
+    Внешний вид теоремы, которую мы только что сформулировали, и её
+    доказательство почти в точности совпадают с более простыми примерами,
+    которые мы видели ранее; есть всего лишь несколько отличий.
 
-    First, we've used the keyword [Theorem] instead of [Example].
-    This difference is mostly a matter of style; the keywords
-    [Example] and [Theorem] (and a few others, including [Lemma],
-    [Fact], and [Remark]) mean pretty much the same thing to Coq.
+    Во-первых, мы использовали ключевое слово [Theorem] вместо [Example].
+    Это различие в основном зависит от стиля; ключевые слова [Example] и
+    [Theorem] (и несколько других, включая [Lemma], [Fact] и [Remark]) означают
+    для Coq практически одно и то же.
 
-    Second, we've added the quantifier [forall n:nat], so that our
-    theorem talks about _all_ natural numbers [n].  Informally, to
-    prove theorems of this form, we generally start by saying "Suppose
-    [n] is some number..."  Formally, this is achieved in the proof by
-    [intros n], which moves [n] from the quantifier in the goal to a
-    _context_ of current assumptions.
+    Во-вторых, мы добавили квантор [forall n:nat], так что наша теорема сообщает
+    некоторый факт про _все_ натуральные числа [n].  Неформально, чтобы доказать
+    теорему такого вида, мы обычно начинаем со слов "Предположим, что [n] -- это
+    некоторое число..."  Формально это достигается в доказательстве с помощью
+    команды [intros n], которая перемещает [n] из квантора в цели в _контекст_
+    текущих предположений.
 
-    Incidentally, we could have used another identifier instead of [n]
-    in the [intros] clause, (though of course this might be confusing
-    to human readers of the proof): *)
+    Кстати, мы могли бы использовать другой идентификатор вместо [n] в клозе
+    [intros] (хотя, конечно, это может сбить с толку людей, читающих
+    доказательство): *)
 
 Theorem plus_O_n'' : forall n : nat, 0 + n = n.
 Proof.
   intros m. reflexivity. Qed.
 
-(** The keywords [intros], [simpl], and [reflexivity] are
-    examples of _tactics_.  A tactic is a command that is used between
-    [Proof] and [Qed] to guide the process of checking some claim we
-    are making.  We will see several more tactics in the rest of this
-    chapter and many more in future chapters. *)
+(** Ключевые слова [intros], [simpl] и [reflexivity] являются примерами
+    _тактик_.  Тактика - это команда, которая используется между [Proof] и [Qed]
+    для направления процесса проверки выдвигаемых нами утверждений.  Мы
+    рассмотрим еще несколько тактик в оставшейся части этого занятия и многие
+    другие в следующих занятиях. *)
 
-(** Other similar theorems can be proved with the same pattern. *)
+(** Другие подобные теоремы могут быть доказаны по той же схеме. *)
 
 Theorem plus_1_l : forall n:nat, 1 + n = S n.
 Proof.
@@ -1395,91 +1391,89 @@ Theorem mult_0_l : forall n:nat, 0 * n = 0.
 Proof.
   intros n. reflexivity.  Qed.
 
-(** The [_l] suffix in the names of these theorems is
-    pronounced "on the left." *)
+(** Суффикс [_l] в названиях этих теорем произносится как "слева". *)
 
-(** It is worth stepping through these proofs to observe how the
-    context and the goal change.  You may want to add calls to [simpl]
-    before [reflexivity] to see the simplifications that Coq performs
-    on the terms before checking that they are equal. *)
+(** Стоит ознакомиться с этими доказательствами в интерактивном режиме, чтобы
+    увидеть, как меняются контекст и цель.  Возможно, вы захотите добавить
+    вызовы [simpl] перед [reflexivity], чтобы увидеть упрощения, которые
+    выполняет Coq в термах, прежде чем проверить их равенство. *)
 
 (* ################################################################# *)
-(** * Proof by Rewriting *)
+(** * Доказательства с помощью переписывания *)
 
-(** The following theorem is a bit more interesting than the
-    ones we've seen: *)
+(** Следующая теорема немного интереснее тех, что мы видели ранее: *)
 
 Theorem plus_id_example : forall n m:nat,
   n = m ->
   n + n = m + m.
 
-(** Instead of making a universal claim about all numbers [n] and [m],
-    it talks about a more specialized property that only holds when
-    [n = m].  The arrow symbol is pronounced "implies."
+(** Вместо общего утверждения обо всех числах [n] и [m] в нем говорится о более
+    конкретном свойстве, которое выполняется только тогда, когда [n = m].
+    Символ стрелки произносится как "следует".
 
-    As before, we need to be able to reason by assuming we are given such
-    numbers [n] and [m].  We also need to assume the hypothesis
-    [n = m]. The [intros] tactic will serve to move all three of these
-    from the goal into assumptions in the current context.
+    Как и прежде, нам нужно уметь рассуждать, предполагая, что нам даны такие
+    числа [n] и [m].  Нам также нужно принять гипотезу [n = m]. Тактика
+    [intros] поможет перенести все три из них из цели в предположения в текущем
+    контексте.
 
-    Since [n] and [m] are arbitrary numbers, we can't just use
-    simplification to prove this theorem.  Instead, we prove it by
-    observing that, if we are assuming [n = m], then we can replace
-    [n] with [m] in the goal statement and obtain an equality with the
-    same expression on both sides.  The tactic that tells Coq to
-    perform this replacement is called [rewrite]. *)
+    Поскольку [n] и [m] являются произвольными числами, мы не можем просто
+    использовать упрощение для доказательства этой теоремы.  Вместо этого мы
+    сначала заметим, что если мы предполагаем, что [n = m], то мы можем заменить
+    [n] на [m] в формулировке цели и получить равенство с одинаковым выражением
+    с обеих сторон.  Тактика, по которой Coq выполнит такую замену, называется
+    [rewrite]. *)
 
 Proof.
-  (* move both quantifiers into the context: *)
+  (* переместим оба квантора в контекст: *)
   intros n m.
-  (* move the hypothesis into the context: *)
+  (* перенесём гипотезу в контекст: *)
   intros H.
-  (* rewrite the goal using the hypothesis: *)
+  (* перепишем цель, используя гипотезу: *)
   rewrite -> H.
   reflexivity.  Qed.
 
-(** The first line of the proof moves the universally quantified
-    variables [n] and [m] into the context.  The second moves the
-    hypothesis [n = m] into the context and gives it the name [H].
-    The third tells Coq to rewrite the current goal ([n + n = m + m])
-    by replacing the left side of the equality hypothesis [H] with the
-    right side.
+(** В первой строке доказательства переменные [n] и [m] перемещаются из-под
+    квантора всеобщности в контекст.  Во второй строке гипотеза [n = m]
+    помещается в контекст и получает название [H]. Третья указывает Coq
+    переписать текущую цель ([n + n = m + m]), заменив левую часть гипотезы о
+    равенстве [H] на правую часть.
 
-    (The arrow symbol in the [rewrite] has nothing to do with
-    implication: it tells Coq to apply the rewrite from left to right.
-    In fact, we can omit the arrow, and Coq will default to rewriting
-    left to right.  To rewrite from right to left, use [rewrite <-].
-    Try making this change in the above proof and see what changes.) *)
-(** **** Exercise: 1 star, standard (plus_id_exercise)
+    (Символ стрелки в [rewrite] не имеет ничего общего с импликацией: он
+    указывает Coq применить переписывание слева направо. На самом деле, мы можем
+    опустить стрелку, и Coq по умолчанию будет переписывать слева направо.
+    Чтобы переписать справа налево, используйте [rewrite <-]. Попробуйте внести
+    это изменение в приведенное выше доказательство и посмотрите, что
+    изменится.) *)
 
-    Remove "[Admitted.]" and fill in the proof.  (Note that the
-    theorem has _two_ hypotheses -- [n = m] and [m = o] -- each to the
-    left of an implication arrow.) *)
+(** **** Упражнение: 1 звезда, стандартное (plus_id_exercise)
+
+    Уберите "[Admitted.]" и завершите доказательство.  (Обратите внимание, что в
+    теореме есть две гипотезы -- [n = m] и [m = o] -- каждая слева от стрелки
+    импликации.) *)
 
 Theorem plus_id_exercise : forall n m o : nat,
   n = m -> m = o -> n + m = m + o.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** The [Admitted] command tells Coq that we want to skip trying
-    to prove this theorem and just accept it as a given.  This is
-    often useful for developing longer proofs: we can state subsidiary
-    lemmas that we believe will be useful for making some larger
-    argument, use [Admitted] to accept them on faith for the moment,
-    and continue working on the main argument until we are sure it
-    makes sense; then we can go back and fill in the proofs we
-    skipped.
+(** Команда [Admitted] сообщает Coq, что мы хотим опустить доказательство этой
+    теоремы и просто принять ее как данность.  Это часто полезно для разработки
+    более длинных доказательств: мы можем сформулировать дополнительные леммы,
+    которые, по нашему мнению, будут полезны для создания более сильных
+    аргументов; используем [Admitted], чтобы принять их на веру на данный
+    момент; продолжаем работать над основным доказательством, пока мы не будем
+    уверены в его осмысленности; затем мы сможем вернуться и дозаполнить
+    пропущенные доказательства.
 
-    Be careful, though: every time you say [Admitted] you are leaving
-    a door open for total nonsense to enter Coq's nice, rigorous,
-    formally checked world! *)
+    Однако будьте осторожны: каждый раз, когда ты говоришь, что доказательство
+    [Принято], ты оставляешь для полной чепухи открытую настежь дверь в
+    прекрасный, строгий, формально проверенный Coq-ом мир! *)
 
-(** The [Check] command can also be used to examine the statements of
-    previously declared lemmas and theorems.  The two examples below
-    are lemmas about multiplication that are proved in the standard
-    library.  (We will see how to prove them ourselves in the next
-    chapter.) *)
+(** Команду [Check] также можно использовать для проверки утверждений ранее
+    объявленных лемм и теорем.  Два примера ниже -- леммы о умножении, которые
+    доказаны в стандартной библиотеке.  (Мы увидим, как доказать их самим, во
+    второй части занятия.) *)
 
 Check mult_n_O.
 (* ===> forall n : nat, 0 = n * 0 *)
@@ -1487,12 +1481,11 @@ Check mult_n_O.
 Check mult_n_Sm.
 (* ===> forall n m : nat, n * m + n = n * S m *)
 
-(** We can use the [rewrite] tactic with a previously proved theorem
-    instead of a hypothesis from the context. If the statement of the
-    previously proved theorem involves quantified variables, as in the
-    example below, Coq will try to fill in appropriate values for them
-    by matching the body of the previous theorem statement against the
-    current goal. *)
+(** Мы можем использовать тактику [rewrite] не только с гипотезами из контекста,
+    но и используя ранее доказанные теоремы. Если утверждение ранее доказанной
+    теоремы включает переменные под кванторами, как в примере ниже, Coq
+    попытается подставить вместо них соответствующие значения, сопоставив текст
+    утверждения теоремы с текущей целью. *)
 
 Theorem mult_n_0_m_0 : forall p q : nat,
   (p * 0) + (q * 0) = 0.
@@ -1502,51 +1495,49 @@ Proof.
   rewrite <- mult_n_O.
   reflexivity. Qed.
 
-(** **** Exercise: 1 star, standard (mult_n_1)
+(** **** Упражнение: 1 звезда, стандартное (mult_n_1)
 
-    Use [mult_n_Sm] and [mult_n_0] to prove the following
-    theorem.  (Recall that [1] is [S O].) *)
+    Используя [mult_n_Sm] и [mult_n_0], докажите следующую теорему.
+    (Напомним, [1] это [S O].) *)
 
 Theorem mult_n_1 : forall p : nat,
   p * 1 = p.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
 (* ################################################################# *)
-(** * Proof by Case Analysis *)
+(** * Доказательство разбором случаев *)
 
-(** Of course, not everything can be proved by simple
-    calculation and rewriting: In general, unknown, hypothetical
-    values (arbitrary numbers, booleans, lists, etc.) can block
-    simplification.  For example, if we try to prove the following
-    fact using the [simpl] tactic as above, we get stuck.  (We then
-    use the [Abort] command to give up on it for the moment.)*)
+(** Конечно, не всё можно доказать простым вычислением и переписывание: в целом,
+    неизвестные, гипотетические значения (произвольные числа, логические
+    значения, списки и т.д.) могут препятствовать упрощению.  Например, если мы
+    попытаемся доказать следующий факт, используя [simpl], мы попадаем в тупик.
+    (Затем мы используем команду [Abort], чтобы тактически отступить.) *)
 
 Theorem plus_1_neq_0_firsttry : forall n : nat,
   (n + 1) =? 0 = false.
 Proof.
   intros n.
-  simpl.  (* does nothing! *)
+  simpl.  (* ничего не делает! *)
 Abort.
 
-(** The reason for this is that the definitions of both [eqb]
-    and [+] begin by performing a [match] on their first argument.
-    Here, the first argument to [+] is the unknown number [n] and the
-    argument to [eqb] is the compound expression [n + 1]; neither can
-    be simplified.
+(** Причина этого в том, что определения как [eqb], так и [+] начинаются с
+    сопоставления по образцу для их первого аргумента. Здесь первым аргументом
+    для [+] является неизвестное число [n], а аргументом для [eqb] является
+    составное выражение [n + 1]; ни то, ни другое не может быть упрощено.
 
-    To make progress, we need to consider the possible forms of [n]
-    separately.  If [n] is [O], then we can calculate the final result
-    of [(n + 1) =? 0] and check that it is, indeed, [false].  And if
-    [n = S n'] for some [n'], then -- although we don't know exactly
-    what number [n + 1] represents -- we can calculate that at least
-    it will begin with one [S]; and this is enough to calculate that,
-    again, [(n + 1) =? 0] will yield [false].
+    Чтобы продвинуться вперед, нам нужно рассмотреть возможные случаи
+    внутреннего устройства [n] по отдельности.  Если [n] равно [O], то мы можем
+    вычислить конечный результат [(n + 1) =? 0] и убедиться, что, действительно,
+    он равен [false].  А если [n = S n'] для некоторого [n'], тогда -- хотя мы
+    точно не знаем, что из себя представляет число [n + 1] -- мы можем
+    вычислить, что, по крайней мере, оно будет начинаться с единицы [S]; и этого
+    достаточно, чтобы вычислить, что, опять же, [(n + 1) =? 0] вернёт [false].
 
-    The tactic that tells Coq to consider, separately, the cases where
-    [n = O] and where [n = S n'] is called [destruct]. *)
+    Тактика, которая предписывает Coq рассматривать отдельно случаи, где [n = O]
+    и где [n = S n'], называется [destruct]. *)
 
 Theorem plus_1_neq_0 : forall n : nat,
   (n + 1) =? 0 = false.
@@ -1555,68 +1546,61 @@ Proof.
   - reflexivity.
   - reflexivity.   Qed.
 
-(** The [destruct] generates _two_ subgoals, which we must then
-    prove, separately, in order to get Coq to accept the theorem.
+(** [destruct] генерирует _две_ подцели, которые мы затем должны доказать по
+    отдельности, чтобы заставить Coq принять доказательство.
 
-    The annotation "[as [| n']]" is called an _intro pattern_.  It
-    tells Coq what variable names to introduce in each subgoal.  In
-    general, what goes between the square brackets is a _list of
-    lists_ of names, separated by [|].  In this case, the first
-    component is empty, since the [O] constructor doesn't take any
-    arguments.  The second component gives a single name, [n'], since
-    [S] is a unary constructor.
+    Аннотация "[as [| n']]" называется _образец для входа_.  Он указывает Coq,
+    какие имена переменных вводить в каждую подцель.  В общем случае, в
+    квадратных скобках содержится список списков имен, разделенных символом [|].
+    В данном случае первый список пуст, поскольку конструктор [O] не принимает
+    никаких аргументов.  Во втором списке содержится единственное имя [n'],
+    поскольку [S] является унарным конструктором.
 
-    In each subgoal, Coq remembers the assumption about [n] that is
-    relevant for this subgoal -- either [n = 0] or [n = S n'] for some
-    n'.  The [eqn:E] annotation tells [destruct] to give the name [E]
-    to this equation.  (Leaving off the [eqn:E] annotation causes Coq
-    to elide these assumptions in the subgoals.  This slightly
-    streamlines proofs where the assumptions are not explicitly used,
-    but it is better practice to keep them for the sake of
-    documentation, as they can help keep you oriented when working
-    with the subgoals.)
+    В каждой подцели Coq запоминает предположение о [n], которое имеет отношение
+    к этой подцели - либо [n = 0], либо [n = S n'] для некоторого n'.  Аннотация
+    [eqn:E] указывает [destruct] присвоить этому уравнению имя [E].  (Пропуск
+    аннотации [eqn:E] приведёт к тому, что Coq устранит эти предположения в
+    подцелях.  Это немного упрощает доказательства, в которых допущения явно не
+    используются, но лучше оставлять их из соображений документации, поскольку
+    они могут помочь вам ориентироваться при работе с подцелями.)
 
-    The [-] signs on the second and third lines are called _bullets_,
-    and they mark the parts of the proof that correspond to the two
-    generated subgoals.  The part of the proof script that comes after
-    a bullet is the entire proof for the corresponding subgoal.  In
-    this example, each of the subgoals is easily proved by a single
-    use of [reflexivity], which itself performs some simplification --
-    e.g., the second one simplifies [(S n' + 1) =? 0] to [false] by
-    first rewriting [(S n' + 1)] to [S (n' + 1)], then unfolding
-    [eqb], and then simplifying the [match].
+    Знаки [-] во второй и третьей строках называются "буллетами", и они
+    обозначают части доказательства, соответствующие двум сгенерированным
+    подцелям.  Часть скрипта, которая следует за маркером -- это полное
+    доказательство для соответствующей подцели.  В этом примере каждая из
+    подцелей легко доказывается с помощью единственного вызова [reflexivity],
+    которая сама по себе обеспечивает некоторое упрощение -- например, второй
+    вызов упрощает [(S n' + 1) =? 0] до [false], сначала переписывая
+    [(S n' + 1)] на [S (n' + 1)], затем разворачивая [eqb], и, наконец, упрощая
+    [match].
 
-    Marking cases with bullets is optional: if bullets are not
-    present, Coq simply expects you to prove each subgoal in sequence,
-    one at a time. But it is a good idea to use bullets.  For one
-    thing, they make the structure of a proof apparent, improving
-    readability. Moreover, bullets instruct Coq to ensure that a
-    subgoal is complete before trying to verify the next one,
-    preventing proofs for different subgoals from getting mixed
-    up. These issues become especially important in larger
-    developments, where fragile proofs can lead to long debugging
-    sessions!
+    Отмечать отдельные случаи маркерами необязательно: если маркеров нет, Coq
+    просто ожидает, что вы будете доказывать каждую подцель последовательно, по
+    одной за раз. Но рекомендуется использовать маркеры.  Во-первых, они
+    упрощают структуру доказательства, улучшая читаемость. Кроме того, маркеры
+    указывают Coq, что перед проверкой следующей подцели необходимо убедиться в
+    том, что подцель выполнена, что предотвращает смешение доказательств для
+    разных подцелей. Эти детали становятся особенно важными в более крупных
+    разработках, где хрупкие доказательства могут привести к длительному
+    процессу отладки!
 
-    There are no hard and fast rules for how proofs should be
-    formatted in Coq -- e.g., where lines should be broken and how
-    sections of the proof should be indented to indicate their nested
-    structure.  However, if the places where multiple subgoals are
-    generated are marked with explicit bullets at the beginning of
-    lines, then the proof will be readable almost no matter what
-    choices are made about other aspects of layout.
+    В Coq не существует жестких правил оформления доказательств -- например, где
+    следует прерывать строки и какие отступы должны быть у разделов
+    доказательства, чтобы показать его вложенную структуру.  Однако, если места,
+    где генерируется несколько подцелей, помечены четкими маркерами в начале
+    строки, то доказательство будет читаемым практически независимо от того,
+    какие решения будут приняты в отношении других аспектов компоновки.
 
-    This is also a good place to mention one other piece of somewhat
-    obvious advice about line lengths.  Beginning Coq users sometimes
-    tend to the extremes, either writing each tactic on its own line
-    or writing entire proofs on a single line.  Good style lies
-    somewhere in the middle.  One reasonable guideline is to limit
-    yourself to 80- (or, if you have a wide screen or good eyes,
-    120-) character lines.
+    Здесь также уместно упомянуть еще один довольно очевидный совет по поводу
+    длины строк.  Начинающие пользователи Coq иногда бросаются в крайности и
+    либо пишут каждую тактику отдельно, либо пытаются уместить всё
+    доказательство в одну строчку.  Хороший стиль находится где-то посередине.
+    Например, разумной рекомендацией является ограничение в 80 (или, если у вас
+    широкий экран либо хорошие глаза, 120) символов в строчке.
 
-    The [destruct] tactic can be used with any inductively defined
-    datatype.  For example, we use it next to prove that boolean
-    negation is involutive -- i.e., that negation is its own
-    inverse. *)
+    Тактика [destruct] может быть использована с любым индуктивным типом данных.
+    Например, мы используем его далее, чтобы доказать, что булево отрицание
+    инволютивно, т.е. что отрицание обратно самому себе. *)
 
 Theorem negb_involutive : forall b : bool,
   negb (negb b) = b.
@@ -1625,18 +1609,16 @@ Proof.
   - reflexivity.
   - reflexivity.  Qed.
 
-(** Note that the [destruct] here has no [as] clause because
-    none of the subcases of the [destruct] need to bind any variables,
-    so there is no need to specify any names.  In fact, we can omit
-    the [as] clause from _any_ [destruct] and Coq will fill in
-    variable names automatically.  This is generally considered bad
-    style, since Coq often makes confusing choices of names when left
-    to its own devices.
+(** Обратите внимание, что здесь в [destruct] нет клозы [as], потому что ни в
+    одном из случаев [destruct] не требуется создавать какие-либо переменные,
+    поэтому нет необходимости указывать какие-либо имена.  На самом деле, мы
+    можем опустить клозу [as] из _любого_ вызова [destruct], и Coq заполнит
+    имена переменных автоматически.  Правда, это считается дурным тоном,
+    поскольку Coq чаще всего выбирает имена крайне неудачно.
 
-    It is sometimes useful to invoke [destruct] inside a subgoal,
-    generating yet more proof obligations. In this case, we use
-    different kinds of bullets to mark goals on different "levels."
-    For example: *)
+    Иногда полезно вызвать [destruct] внутри подцели, создавая еще больше
+    подцелей. В этом случае мы используем различные виды буллетов для
+    обозначения целей на разных "уровнях". Например: *)
 
 Theorem andb_commutative : forall b c, andb b c = andb c b.
 Proof.
@@ -1649,13 +1631,12 @@ Proof.
     + reflexivity.
 Qed.
 
-(** Each pair of calls to [reflexivity] corresponds to the
-    subgoals that were generated after the execution of the [destruct c]
-    line right above it. *)
+(** Каждая пара вызовов [reflexivity] соответствует подцелям, которые были
+    сгенерированы после исполнения строчек с [destruct c] прямо над ними. *)
 
-(** Besides [-] and [+], we can use [*] (asterisk) or any repetition
-    of a bullet symbol (e.g. [--] or [***]) as a bullet.  We can also
-    enclose sub-proofs in curly braces: *)
+(** Кроме [-] и [+], мы можем использовать [*] (астериск, звёздочку), а также
+    любой повтор буллета (например, [--] либо [***]) в качестве буллета.  Также
+    мы можем заключать под-доказательства в фигурные скобки: *)
 
 Theorem andb_commutative' : forall b c, andb b c = andb c b.
 Proof.
@@ -1668,12 +1649,11 @@ Proof.
     { reflexivity. } }
 Qed.
 
-(** Since curly braces mark both the beginning and the end of a proof,
-    they can be used for multiple subgoal levels, as this example
-    shows. Furthermore, curly braces allow us to reuse the same bullet
-    shapes at multiple levels in a proof. The choice of braces,
-    bullets, or a combination of the two is purely a matter of
-    taste. *)
+(** Поскольку фигурные скобки обозначают как начало, так и конец доказательства,
+    их можно использовать для нескольких уровней подцели, как в этом примере.
+    Кроме того, фигурные скобки позволяют нам повторно использовать одни и те же
+    формы маркеров на нескольких уровнях в доказательстве. Выбор скобок,
+    маркеров или их комбинации -- это исключительно дело вкуса. *)
 
 Theorem andb3_exchange :
   forall b c d, andb (andb b c) d = andb (andb b d) c.
@@ -1695,37 +1675,37 @@ Proof.
       - reflexivity. }
 Qed.
 
-(** **** Exercise: 2 stars, standard (andb_true_elim2)
+(** **** Упражнение: 2 звезды, стандартное (andb_true_elim2)
 
-    Prove the following claim, marking cases (and subcases) with
-    bullets when you use [destruct].
+    Докажите следующее утверждение, отмечая случаи (и под-случаи) с помощью
+    буллетов, когда вы используете [destruct].
 
-    Hint: You will eventually need to destruct both booleans, as in
-    the theorems above. But its best to delay introducing the
-    hypothesis until after you have an opportunity to simplify it.
+    Подсказка: В конечном итоге вам нужно будет деструктировать оба логических
+    значения, как в приведенных выше теоремах. Но лучше отложить ввод гипотезы
+    до тех пор, пока у вас не появится возможность упростить ее.
 
-    Hint 2: When you reach a contradiction in the hypotheses, focus on
-    how to [rewrite] with that contradiction. *)
+    Подсказка 2: Когда вы обнаружите противоречие в гипотезах, сосредоточьтесь
+    на том, как [переписать] это противоречие. *)
 
 Theorem andb_true_elim2 : forall b c : bool,
   andb b c = true -> c = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** Before closing the chapter, let's mention one final
-    convenience.  As you may have noticed, many proofs perform case
-    analysis on a variable right after introducing it:
+(** Прежде чем подытожить первую половину занятия, давайте упомянем еще об одном
+    удобстве.  Как вы, возможно, заметили, во многих доказательствах выполняется
+    разбор случаев для переменной сразу после ее введения:
 
        intros x y. destruct y as [|y] eqn:E.
 
-    This pattern is so common that Coq provides a shorthand for it: we
-    can perform case analysis on a variable when introducing it by
-    using an intro pattern instead of a variable name. For instance,
-    here is a shorter proof of the [plus_1_neq_0] theorem
-    above.  (You'll also note one downside of this shorthand: we lose
-    the equation recording the assumption we are making in each
-    subgoal, which we previously got from the [eqn:E] annotation.) *)
+    Этот паттерн настолько распространен, что Coq предоставляет для него
+    сокращенное описание: мы можем выполнить разбор случаев для переменной при
+    её введении, используя образец для входа вместо имени переменной. Например,
+    вот более краткое доказательство теоремы [plus_1_neq_0] выше.  (Также
+    заметьте один недостаток этого сокращения: мы теряем предположение, которое
+    мы делали в каждой из подцелей, которые мы ранее получали из аннотации
+    [eqn:E].) *)
 
 Theorem plus_1_neq_0' : forall n : nat,
   (n + 1) =? 0 = false.
@@ -1734,8 +1714,8 @@ Proof.
   - reflexivity.
   - reflexivity.  Qed.
 
-(** If there are no constructor arguments that need names, we can just
-    write [[]] to get the case analysis. *)
+(** Если нет аргументов конструктора, для которых нужны имена, мы можем просто
+    написать [[]], чтобы по очереди разобрать случаи. *)
 
 Theorem andb_commutative'' :
   forall b c, andb b c = andb c b.
@@ -1747,22 +1727,22 @@ Proof.
   - reflexivity.
 Qed.
 
-(** **** Exercise: 1 star, standard (zero_nbeq_plus_1) *)
+(** **** Упражнение: 1 звезда, стандартное (zero_nbeq_plus_1) *)
 Theorem zero_nbeq_plus_1 : forall n : nat,
   0 =? (n + 1) = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
 (* ================================================================= *)
-(** ** More on Notation (Optional) *)
+(** ** Подробнее о нотации (необязательно) *)
 
-(** (In general, sections marked Optional are not needed to follow the
-    rest of the book, except possibly other Optional sections.  On a
-    first reading, you might want to just skim these sections so that
-    you know what's there for future reference.)
+(** (Как правило, разделы, помеченные как необязательные, не нужны для
+    ознакомления с остальными материалами курса, за исключением, возможно,
+    других необязательных разделов.  При первом чтении вы можете просто
+    просмотреть эти разделы, чтобы знать, что там есть, и вернуться позднее.)
 
-    Recall the notation definitions for infix plus and times: *)
+    Вспомним определения обозначений для инфиксных плюса и умножения: *)
 
 Notation "x + y" := (plus x y)
                        (at level 50, left associativity)
@@ -1771,39 +1751,37 @@ Notation "x * y" := (mult x y)
                        (at level 40, left associativity)
                        : nat_scope.
 
-(** For each notation symbol in Coq, we can specify its _precedence
-    level_ and its _associativity_.  The precedence level [n] is
-    specified by writing [at level n]; this helps Coq parse compound
-    expressions.  The associativity setting helps to disambiguate
-    expressions containing multiple occurrences of the same
-    symbol. For example, the parameters specified above for [+] and
-    [*] say that the expression [1+2*3*4] is shorthand for
-    [(1+((2*3)*4))]. Coq uses precedence levels from 0 to 100, and
-    _left_, _right_, or _no_ associativity.  We will see more examples
-    of this later, e.g., in the [Lists] chapter.
+(** Для каждой нотации в Coq мы можем указать её _приоритет_ и
+    _ассоциативность_.  Приоритет [n] указывается записью [at level n]; это
+    помогает Coq считывать составные выражения.  Ассоциативность же помогает
+    устранить неоднозначность выражений, содержащий несколько повторений одного
+    и того же символа. Например, параметры, указанные выше для [+] и [*],
+    говорят о том, что выражение [1+2*3*4] является сокращением для
+    [(1+((2*3)*4))]. Coq использует приоритеты от 0 до 100 и _левую_ ([left]),
+    _правую_ ([right]) или _никакую_ ([no]) ассоциативность.  Мы увидим больше
+    примеров позже, например, когда будем работать со списками.
 
-    Each notation symbol is also associated with a _notation scope_.
-    Coq tries to guess what scope is meant from context, so when it
-    sees [S (O*O)] it guesses [nat_scope], but when it sees the pair
-    type type [bool*bool] (which we'll see in a later chapter) it
-    guesses [type_scope].  Occasionally, it is necessary to help it
-    out by writing, for example, [(x*y)%nat], and sometimes in what
-    Coq prints it will use [%nat] to indicate what scope a notation is
-    in.
+    Каждая нотация также связана со своей _областью видимости_. Coq пытается
+    угадать используемую область из контекста, поэтому, когда он видит
+    [S (O*O)], он угадывает [nat_scope], но когда он видит пару [bool*bool]
+    (которую мы увидим позднее), он угадывает [type_scope].  Иногда необходимо
+    помочь ему, написав, например, [(x*y)%nat]; иногда и сам Coq при печати
+    использует [%nat], чтобы указать, из какой области берётся та или иная
+    нотация.
 
-    Notation scopes also apply to numeral notations ([3], [4], [5],
-    [42], etc.), so you may sometimes see [0%nat], which means
-    [O] (the natural number [0] that we're using in this chapter), or
-    [0%Z], which means the integer zero (which comes from a different
-    part of the standard library).
+    Области видимости также применяются к цифровым обозначениям ([3], [4], [5],
+    [42], и т.д.), поэтому иногда вы увидите [0%nat], что означает [O]
+    (натуральное число [0], которое мы используем в этой главе) или [0%Z], что
+    означает целое число, равное нулю (которое взято из другой части стандартной
+    библиотеки).
 
-    Pro tip: Coq's notation mechanism is not especially powerful.
-    Don't expect too much from it. *)
+    Pro tip: механизм нотаций в Coq не особенно мощный. Не ждите от него слишком
+    многого. *)
 
 (* ================================================================= *)
-(** ** Fixpoints and Structural Recursion (Optional) *)
+(** ** Неподвижные точки и структурная рекурсия (необязательно) *)
 
-(** Here is a copy of the definition of addition: *)
+(** Вот копия определения сложения: *)
 
 Fixpoint plus' (n : nat) (m : nat) : nat :=
   match n with
@@ -1811,139 +1789,135 @@ Fixpoint plus' (n : nat) (m : nat) : nat :=
   | S n' => S (plus' n' m)
   end.
 
-(** When Coq checks this definition, it notes that [plus'] is
-    "decreasing on 1st argument."  What this means is that we are
-    performing a _structural recursion_ over the argument [n] -- i.e.,
-    that we make recursive calls only on strictly smaller values of
-    [n].  This implies that all calls to [plus'] will eventually
-    terminate.  Coq demands that some argument of _every_ [Fixpoint]
-    definition be "decreasing."
+(** Когда Coq проверяет это определение, он замечает, что [plus'] "уменьшается
+    в первом аргументе".  Это означает, что мы выполняем _структурную рекурсию_
+    по аргументу [n], т.е. мы выполняем рекурсивные вызовы только для строго
+    меньших значений [n].  Это означает, что все вызовы [plus'] в конечном итоге
+    завершатся.  Coq требует, чтобы некоторый аргумент определения _каждой_
+    [Неподвижной точки] был "убывающим".
 
-    This requirement is a fundamental feature of Coq's design: In
-    particular, it guarantees that every function that can be defined
-    in Coq will terminate on all inputs.  However, because Coq's
-    "decreasing analysis" is not very sophisticated, it is sometimes
-    necessary to write functions in slightly unnatural ways. *)
+    Это требование является фундаментальной особенностью дизайна Coq: в
+    частности, оно гарантирует, что каждая функция, которая может быть
+    определена в Coq, завершится на всех входных данных.  Однако, поскольку
+    "анализ убывания" в Coq не очень сложен, иногда приходится писать функции
+    несколько неестественным образом. *)
 
-(** **** Exercise: 2 stars, standard, optional (decreasing)
+(** **** Упражнение: 2 звезды, стандартное, необязательное (decreasing)
 
-    To get a concrete sense of this, find a way to write a sensible
-    [Fixpoint] definition (of a simple function on numbers, say) that
-    _does_ terminate on all inputs, but that Coq will reject because
-    of this restriction.
+    Чтобы ощутить это, найдите способ написать разумное определение [Fixpoint]
+    (например, простой функции для чисел), которое _завершается_ на всех входных
+    данных, но которое Coq отклоняет из-за своих ограничений.
 
-    (If you choose to turn in this optional exercise as part of a
-    homework assignment, make sure you comment out your solution so
-    that it doesn't cause Coq to reject the whole file!) *)
+    (Если вы решите включить это необязательное упражнение в домашнее задание,
+    обязательно закомментируйте свое решение, чтобы Coq не отклонил весь файл
+    целиком!) *)
 
-(* FILL IN HERE
+(* ЗАПОЛНИТЕ ЗДЕСЬ
 
     [] *)
 
 (* ################################################################# *)
-(** * More Exercises *)
+(** * Больше упражнений *)
 
 (* ================================================================= *)
-(** ** Warmups *)
+(** ** Разминка *)
 
-(** **** Exercise: 1 star, standard (identity_fn_applied_twice)
+(** **** Упражнение: 1 звезда, стандартное (identity_fn_applied_twice)
 
-    Use the tactics you have learned so far to prove the following
-    theorem about boolean functions. *)
+    Используйте тактики, которые вы освоили на данный момент, в доказательстве
+    следующей теоремы о булевых функциях. *)
 
 Theorem identity_fn_applied_twice :
   forall (f : bool -> bool),
   (forall (x : bool), f x = x) ->
   forall (b : bool), f (f b) = b.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
-(** **** Exercise: 1 star, standard (negation_fn_applied_twice)
+(** **** Упражнение: 1 звезда, стандартное (negation_fn_applied_twice)
 
-    Now state and prove a theorem [negation_fn_applied_twice] similar
-    to the previous one but where the second hypothesis says that the
-    function [f] has the property that [f x = negb x]. *)
+    Теперь сформулируйте и докажите теорему [negation_fn_applied_twice],
+    аналогичную предыдущей, но в которой вторая гипотеза гласит, что
+    функция [f] обладает свойством, что [f x = negb x]. *)
 
-(* FILL IN HERE *)
+(* ЗАПОЛНИТЕ ЗДЕСЬ *)
 
-(* Do not modify the following line: *)
+(* Не меняйте следующую строчку: *)
 Definition manual_grade_for_negation_fn_applied_twice : option (nat*string) := None.
-(** (The last definition is used by the autograder.)
+(** (Определение выше используется при автопроверке.)
 
     [] *)
 
-(** **** Exercise: 3 stars, standard, optional (andb_eq_orb)
+(** **** Упражнение: 3 звезды, стандартное, необязательное (andb_eq_orb)
 
-    Prove the following theorem.  (Hint: This can be a bit tricky,
-    depending on how you approach it.  You will probably need both
-    [destruct] and [rewrite], but destructing everything in sight is
-    not the best way.) *)
+   Докажите следующую теорему.  (Подсказка: это может быть немного сложно, в
+   зависимости от того, как вы подойдёте к доказательству.  Вероятно, вам
+   понадобятся и [destruct] и [rewrite], но [уничтожать] все, что попадается на
+   глаза -- не лучший подход.) *)
 
 Theorem andb_eq_orb :
   forall (b c : bool),
   (andb b c = orb b c) ->
   b = c.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
 (* ================================================================= *)
-(** ** Course Late Policies, Formalized *)
+(** ** Сдача после дедлайна: формализация *)
 
-(** Suppose that a course has a grading policy based on late days,
-    where a student's final letter grade is lowered if they submit too
-    many homework assignments late.
+(** Предположим, что на некотором курсе действует политика выставления оценок,
+    основанная на опозданиях, при которой итоговая оценка студента по системе
+    A-B-C-D-F снижается, если он сдает слишком много домашних заданий с
+    опозданием.
 
-    In the next series of problems, we model this situation using the
-    features of Coq that we have seen so far and prove some simple
-    facts about this grading policy.  *)
+    В следующей серии задач мы смоделируем эту ситуацию, используя средства Coq,
+    которые мы видели до сих пор, и докажем некоторые простые факты об этой
+    политике выставления оценок. *)
 
 Module LateDays.
 
-(** First, we inroduce a datatype for modeling the "letter" component
-    of a grade. *)
+(** Сначала мы вводим тип данных для моделирования "буквенной" части оценки. *)
 Inductive letter : Type :=
   | A | B | C | D | F.
 
-(** Then we define the modifiers -- a [Natural] [A] is just a "plain"
-    grade of [A]. *)
+(** Затем мы определяем модификаторы: [Natural] [A] это просто "обычная" оценка
+    [A]. *)
 Inductive modifier : Type :=
   | Plus | Natural | Minus.
 
-(** A full [grade], then, is just a [letter] and a [modifier].
+(** Тогда полная [оценка] - это просто [буква] и [модификатор].
 
-    We might write, informally, "A-" for the Coq value [Grade A Minus],
-    and similarly "C" for the Coq value [Grade C Natural]. *)
+    Неформально мы могли бы написать "A-" вместо [Grade A Minus] и, аналогично,
+    "C" вместо [Grade C Natural]. *)
 Inductive grade : Type :=
   Grade (l:letter) (m:modifier).
 
-(** We will want to be able to say when one grade is "better" than
-    another.  In other words, we need a way to compare two grades.  As
-    with natural numbers, we could define [bool]-valued functions
-    [grade_eqb], [grade_ltb], etc., and that would work fine.
-    However, we can also define a slightly more informative type for
-    comparing two values, as shown below.  This datatype has three
-    constructors that can be used to indicate whether two values are
-    "equal", "less than", or "greater than" one another. (This
-    definition also appears in the Coq standard libary.)  *)
+(** Мы захотим иметь возможность определить, когда одна оценка "лучше" другой.
+    Другими словами, нам нужен способ сравнить две оценки.  Как и в случае с
+    натуральными числами, мы могли бы определить функции, имеющие логическое
+    значение [grade_eqb], [grade_ltb] и т.д., и это будет работать нормально.
+    Однако мы также можем определить немного более информативный тип для
+    сравнения двух значений, как показано ниже.  Этот тип данных имеет три
+    конструктора, которые можно использовать для указания того, являются ли два
+    значения "равными", "меньше" или "больше" друг друга. (Это определение также
+    содержится в стандартной библиотеке Coq.)  *)
 
 Inductive comparison : Type :=
-  | Eq         (* "equal" *)
-  | Lt         (* "less than" *)
-  | Gt.        (* "greater than" *)
+  | Eq         (* равно, "equal" *)
+  | Lt         (* меньше чем, "less than" *)
+  | Gt.        (* больше чем, "greater than" *)
 
-(** Using pattern matching, it is not difficult to define the
-    comparison operation for two letters [l1] and [l2] (see below).
-    This definition uses two features of [match] patterns: First,
-    recall that we can match against _two_ values simultaneously by
-    separating them and the corresponding patterns with comma [,].
-    This is simply a convenient abbreviation for nested pattern
-    matching.  For example, the match expression on the left below is
-    just shorthand for the lower-level "expanded version" shown on the
-    right:
+(** Используя сопоставление с образцом, нетрудно определить операцию сравнения
+    для двух букв [l1] и [l2] (см. ниже). В этом определении используются две
+    особенности сопоставления с образцом: во-первых, напомним, что мы можем
+    сопоставлять одновременно два значения, разделяя их и соответствующие
+    образцы запятой [,]. Это просто удобное сокращение для вложенного
+    сопоставления.  Например, сопоставление слева ниже это просто сокращение для
+    более низкоуровневой "расширенной версии", показанной справа:
 
   match l1, l2 with          match l1 with
   | A, A => Eq               | A => match l2 with
@@ -1952,9 +1926,9 @@ Inductive comparison : Type :=
                                     end
                              end
 *)
-(** As another shorthand, we can also match one of several
-    possibilites by using [|] in the pattern.  For example the pattern
-    [C , (A | B)] stands for two cases: [C, A] and [C, B]. *)
+(** В качестве другого сокращения мы также можем сопоставить сразу несколько
+    образцов, используя [|] в шаблоне.  Например, образец [C , (A | B)]
+    захватывает сразу два случая: [C, A] и [C, B]. *)
 
 Definition letter_comparison (l1 l2 : letter) : comparison :=
   match l1, l2 with
@@ -1973,8 +1947,8 @@ Definition letter_comparison (l1 l2 : letter) : comparison :=
   | F, F => Eq
   end.
 
-(** We can test the [letter_comparison] operation by trying it out on a few
-    examples. *)
+(** Мы можем протестировать операцию [letter_comparison], опробовав ее на
+    нескольких примерах. *)
 Compute letter_comparison B A.
 (** ==> Lt *)
 Compute letter_comparison D D.
@@ -1982,19 +1956,19 @@ Compute letter_comparison D D.
 Compute letter_comparison B F.
 (** ==> Gt *)
 
-(** As a further sanity check, we can prove that the
-    [letter_comparison] function does indeed give the result [Eq] when
-    comparing a letter [l] against itself.  *)
-(** **** Exercise: 1 star, standard (letter_comparison) *)
+(** В качестве дополнительной проверки на разумность мы можем доказать, что
+    функция [letter_comparison] действительно выдает результат [Eq] при
+    сравнении буквы [l] с самой собой. *)
+(** **** Упражнение: 1 звезда, стандартное (letter_comparison) *)
 Theorem letter_comparison_Eq :
   forall l, letter_comparison l l = Eq.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** We can follow the same strategy to define the comparison operation
-    for two grade modifiers.  We consider them to be ordered as
-    [Plus > Natural > Minus]. *)
+(** Мы можем следовать той же стратегии, чтобы определить операцию сравнения
+    для двух модификаторов оценки.  Мы считаем, что они должны быть упорядочены
+    следующим образом: [Plus > Natural > Minus]. *)
 Definition modifier_comparison (m1 m2 : modifier) : comparison :=
   match m1, m2 with
   | Plus, Plus => Eq
@@ -2006,64 +1980,64 @@ Definition modifier_comparison (m1 m2 : modifier) : comparison :=
   | Minus, Minus => Eq
   end.
 
-(** **** Exercise: 2 stars, standard (grade_comparison)
+(** **** Упражнение: 2 звезды, стандартное (grade_comparison)
 
-    Use pattern matching to complete the following definition.
+    Используйте сопоставление с образцом для завершения следующего определения.
 
-    (This ordering on grades is sometimes called "lexicographic"
-    ordering: we first compare the letters, and we only consider the
-    modifiers in the case that the letters are equal.  I.e. all grade
-    variants of [A] are greater than all grade variants of [B].)
+    (Такое упорядочение оценок иногда называют "лексикографическим" порядком:
+    сначала мы сравниваем буквы, а модификаторы учитываем только в том случае,
+    если буквы равны.  Т.е. все варианты оценки [A] лучше, чем все варианты
+    [B].)
 
-    Hint: match against [g1] and [g2] simultaneously, but don't try to
-    enumerate all the cases.  Instead do case analysis on the result
-    of a suitable call to [letter_comparison] to end up with just [3]
-    possibilities. *)
+    Подсказка: сопоставляйте [g1] и [g2] одновременно, но не пытайтесь
+    перечислить все варианты.  Вместо этого проведите разбор случаев для
+    результата подходящего вызова [letter_comparison], чтобы в итоге получить
+    только [3] варианта. *)
 
 Definition grade_comparison (g1 g2 : grade) : comparison
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОКУ НА ":= _ваше_определение_ ." *). Admitted.
 
-(** The following "unit tests" of your [grade_comparison] function
-    should pass once you have defined it correctly. *)
+(** Следующие "юнит-тесты" вашей функции [grade_comparison] должны пройти,
+    как только вы правильно ее определите. *)
 
 Example test_grade_comparison1 :
   (grade_comparison (Grade A Minus) (Grade B Plus)) = Gt.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_grade_comparison2 :
   (grade_comparison (Grade A Minus) (Grade A Plus)) = Lt.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_grade_comparison3 :
   (grade_comparison (Grade F Plus) (Grade F Plus)) = Eq.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_grade_comparison4 :
   (grade_comparison (Grade B Minus) (Grade C Plus)) = Gt.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
-(** Now that we have a definition of grades and how they compare to
-    one another, let us implement a late-penalty fuction. *)
+(** Теперь, когда у нас есть определение оценок и то, как они соотносятся
+    друг с другом, давайте реализуем функцию штрафа за опоздание. *)
 
-(** First, we define what it means to lower the [letter] component of
-    a grade.  Since [F] is already the lowest grade possible, we just
-    leave it alone.  *)
+(** Сначала мы определяем, что значит понизить [буквенный] компонент оценки.
+    Поскольку [F] уже является самой низкой из возможных оценок, мы просто
+    оставляем её без изменений. *)
 Definition lower_letter (l : letter) : letter :=
   match l with
   | A => B
   | B => C
   | C => D
   | D => F
-  | F => F  (* Can't go lower than [F]! *)
+  | F => F  (* Нельзя получить меньше [F]! *)
   end.
 
-(** Our formalization can already help us understand some corner cases
-    of the grading policy.  For example, we might expect that if we
-    use the [lower_letter] function its result will actually be lower,
-    as claimed in the following theorem.  But this theorem is not
-    provable!  (Do you see why?) *)
+(** Наша формализация уже может помочь нам понять некоторые важные крайние
+    случаи в нашей политике выставления оценок.  Например, мы могли бы ожидать,
+    что если мы используем функцию [lower_letter], то ее результат действительно
+    будет ниже, как утверждается в следующей теореме.  Но эта теорема
+    недоказуема!  (Вы понимаете почему?) *)
 Theorem lower_letter_lowers: forall (l : letter),
   letter_comparison (lower_letter l) l = Lt.
 Proof.
@@ -2073,96 +2047,95 @@ Proof.
   - simpl. reflexivity.
   - simpl. reflexivity.
   - simpl. reflexivity.
-  - simpl. (* We get stuck here. *)
+  - simpl. (* Здесь-то мы и застряли. *)
 Abort.
 
-(** The problem, of course, has to do with the "edge case" of lowering
-    [F], as we can see like this: *)
+(** Проблема, конечно же, связана с "крайним случаем" понижения
+    [F], в чём мы можем убедиться следующим образом: *)
 Theorem lower_letter_F_is_F:
   lower_letter F = F.
 Proof.
   simpl. reflexivity.
 Qed.
 
-(** With this insight, we can state a better version of the lower
-    letter theorem that actually is provable.  In this version, the
-    hypothesis about [F] says that [F] is strictly smaller than [l],
-    which rules out the problematic case above. In other words, as
-    long as [l] is bigger than [F], it will be lowered. *)
-(** **** Exercise: 2 stars, standard (lower_letter_lowers)
+(** Вооружившись новым знанием, мы можем сформулировать улучшенную версию
+    теоремы, которая уже будет доказуема.  В этой версии гипотеза о [F] гласит,
+    что [F] строго меньше, чем [l], что исключает проблемный случай, описанный
+    выше. Другими словами, до тех пор, пока [l] больше, чем [F], оно будет
+    уменьшаться. *)
+(** **** Упражнение: 2 звезды, стандартное (lower_letter_lowers)
 
-    Prove the following theorem. *)
+    Докажите следующую теорему. *)
 
 Theorem lower_letter_lowers:
   forall (l : letter),
     letter_comparison F l = Lt ->
     letter_comparison (lower_letter l) l = Lt.
 Proof.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
-(** **** Exercise: 2 stars, standard (lower_grade)
+(** **** Упражнение: 2 звезды, стандартное (lower_grade)
 
-    We can now use the [lower_letter] definition as a helper to define
-    what it means to lower a grade by one step.  Complete the
-    definition below so that it sends a grade [g] to one step lower
-    (unless it is already [Grade F Minus], which should remain
-    unchanged).  Once you have implemented it correctly, the subsequent
-    "unit test" examples should hold trivially.
+    Теперь мы можем использовать определение [lower_letter] в качестве
+    вспомогательного средства для определения того, что значит понизить оценку
+    на одну ступень.  Заполните приведенное ниже определение так, чтобы оно
+    понизило оценку [g] на одну ступень (если только это уже не [оценка F с
+    минусом], которая должна остаться неизменной).  Как только вы правильно ее
+    реализуете, последующие "юнит-тесты" должны выполняться без ошибок.
 
-    Hint: To make this a succinct definition that is easy to prove
-    properties about, you will probably want to use nested pattern
-    matching. The outer match should not match on the specific letter
-    component of the grade -- it should consider only the modifier.
-    You should definitely _not_ try to enumerate all of the
-    cases.
+    Подсказка: Чтобы это определение было кратким, чтобы его свойства было легко
+    доказывать, вы, вероятно, захотите использовать вложенное сопоставление с
+    образцом. Внешний [match] не должен производить сопоставление с буквенной
+    частью оценки -- он должен учитывать только модификатор. _Не стоит_ пытаться
+    перечислить все случаи.
 
-    Our solution is under 10 lines of code total. *)
+    Наше решение содержит менее 10 строк кода. *)
 Definition lower_grade (g : grade) : grade
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОКУ НА ":= _ваше_определение_ ." *). Admitted.
 
 Example lower_grade_A_Plus :
   lower_grade (Grade A Plus) = (Grade A Natural).
 Proof.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example lower_grade_A_Natural :
   lower_grade (Grade A Natural) = (Grade A Minus).
 Proof.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example lower_grade_A_Minus :
   lower_grade (Grade A Minus) = (Grade B Plus).
 Proof.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example lower_grade_B_Plus :
   lower_grade (Grade B Plus) = (Grade B Natural).
 Proof.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example lower_grade_F_Natural :
   lower_grade (Grade F Natural) = (Grade F Minus).
 Proof.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example lower_grade_twice :
   lower_grade (lower_grade (Grade B Minus)) = (Grade C Natural).
 Proof.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example lower_grade_thrice :
   lower_grade (lower_grade (lower_grade (Grade B Minus))) = (Grade C Minus).
 Proof.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
-(** Coq makes no distinction between an [Example] and a [Theorem]. We
-    state the following as a [Theorem] only as a hint that we will use
-    it in proofs below. *)
+(** Coq не различает [Примеры] и [Теоремы]. Мы формулируем нижеследующее как
+    [Теорему] только в качестве намека на то, что мы будем использовать это
+    утверждение в доказательствах ниже. *)
 Theorem lower_grade_F_Minus : lower_grade (Grade F Minus) = (Grade F Minus).
 Proof.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (* GRADE_THEOREM 0.25: lower_grade_A_Plus *)
 (* GRADE_THEOREM 0.25: lower_grade_A_Natural *)
@@ -2175,34 +2148,41 @@ Proof.
 
     [] *)
 
-(** **** Exercise: 3 stars, standard (lower_grade_lowers)
+(** **** Упражнение: 3 звезды, стандартное (lower_grade_lowers)
 
-    Prove the following theorem, which says that, as long as the grade
-    starts out above F-, the [lower_grade] option does indeed lower
-    the grade.  As usual, destructing everything in sight is _not_ a
-    good idea.  Judicious use of [destruct] along with rewriting is a
-    better strategy.
+    Докажите следующую теорему, которая гласит, что до тех пор, пока оценка
+    начинается выше F-, [lower_grade] действительно понижает оценку.  Как
+    обычно, разрушать все, что попадается на глаза -- _плохая_ идея.
+    Разумное использование [destruct] вместе с переписыванием -- это уже
+    стратегия получше.
 
-    Hint: If you defined your [grade_comparison] function as
-    suggested, you will need to rewrite using [letter_comparison_Eq]
-    in two cases.  The remaining case is the only one in which you
-    need to destruct a [letter].  The case for [F] will probably
-    benefit from [lower_grade_F_Minus].  *)
+    Подсказка: Если вы определили свою функцию [grade_comparison] так, как было
+    предложено, вам нужно будет использовать [rewrite], используя
+    [letter_comparison_Eq], в двух случаях.  Последний случай -- единственный,
+    в котором вам нужно деструктировать [букву].  В случае для [F], вероятно,
+    пригодится [lower_grade_F_Minus].  *)
 Theorem lower_grade_lowers :
   forall (g : grade),
     grade_comparison (Grade F Minus) g = Lt ->
     grade_comparison (lower_grade g) g = Lt.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
-(** Now that we have implemented and tested a function that lowers a
-    grade by one step, we can implement a specific late-days policy.
-    Given a number of [late_days], the [apply_late_policy] function
-    computes the final grade from [g], the initial grade.
+(** Теперь, когда мы реализовали и протестировали функцию, которая снижает
+    оценку на одну ступень, мы можем внедрить специальную политику в отношении
+    работ, сданных после дедлайна. При заданном количестве дней опоздания
+    ([late_days]) функция [apply_late_policy] вычисляет итоговую оценку на
+    основе [g], начальной оценки.
 
-    This function encodes the following policy:
+    Эта функция кодирует следующую политику:
+
+    # дней опоздания  штраф
+         0 - 8        штрафов нет
+         9 - 16       понизить оценку на одну ступень (A+ => A, A => A-, A- => B+ и т.д.)
+        17 - 20       понизить оценку на две ступени
+          >= 21       понизить оценку на три ступени (на целую букву)
 
       # late days     penalty
          0 - 8        no penalty
@@ -2216,14 +2196,14 @@ Definition apply_late_policy (late_days : nat) (g : grade) : grade :=
   else if late_days <? 21 then lower_grade (lower_grade g)
   else lower_grade (lower_grade (lower_grade g)).
 
-(** Sometimes it is useful to be able to "unfold" a definition to be
-    able to make progress on a proof.  Soon, we will see how to do this
-    in a much simpler way automatically, but for now, it is easy to prove
-    that a use of any definition like [apply_late_policy] is equal to its
-    right hand side just by using reflexivity.
+(** Иногда полезно уметь "разворачивать" определение, чтобы иметь возможность
+    продвинуться в доказательстве.  Вскоре мы увидим, как сделать это гораздо
+    более простым способом автоматически, но пока легко доказать, что
+    использование любого определения вроде [apply_late_policy] равно его правой
+    части, просто используя рефлексивность.
 
-    This result is useful because it allows us to use [rewrite] to
-    expose the internals of the definition. *)
+    Этот результат полезен, поскольку позволяет нам использовать [rewrite] для
+    раскрытия внутренней части определения. *)
 Theorem apply_late_policy_unfold :
   forall (late_days : nat) (g : grade),
     (apply_late_policy late_days g)
@@ -2236,53 +2216,52 @@ Proof.
   intros. reflexivity.
 Qed.
 
-(** Now let's prove some properties about this policy. *)
+(** Теперь давайте докажем некоторые свойства этой политики. *)
 
-(** The next theorem states that if a student accrues no more than eight
-    late days throughout the semester, their grade is unaffected. It
-    is easy to prove: once you use the [apply_late_policy_unfold] you
-    can rewrite using the hypothesis. *)
+(** Следующая теорема гласит, что если ученик набирает не более восьми дней
+    опоздания, его оценка за семестр не меняется. Это легко доказать: как только
+    Вы используете [apply_late_policy_unfold], можно переписать оставшуюся цель,
+    используя гипотезу. *)
 
-(** **** Exercise: 2 stars, standard (no_penalty_for_mostly_on_time) *)
+(** **** Упражнение: 2 звезды, стандартное (no_penalty_for_mostly_on_time) *)
 Theorem no_penalty_for_mostly_on_time :
   forall (late_days : nat) (g : grade),
     (late_days <? 9 = true) ->
     apply_late_policy late_days g = g.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
-(** The following theorem states that, if a student has between 9 and
-    16 late days, their final grade is lowered by one step. *)
+(** Следующая теорема гласит, что если ученик накапливает от 9 до 16 дней
+    опозданий, его итоговая оценка снижается на одну ступень. *)
 
-(** **** Exercise: 2 stars, standard (graded_lowered_once) *)
+(** **** Упражнение: 2 звезды, стандартное (graded_lowered_once) *)
 Theorem grade_lowered_once :
   forall (late_days : nat) (g : grade),
     (late_days <? 9 = false) ->
     (late_days <? 17 = true) ->
     (apply_late_policy late_days g) = (lower_grade g).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 End LateDays.
 
 (* ================================================================= *)
-(** ** Binary Numerals *)
+(** ** Двоичные нумералы *)
 
-(** **** Exercise: 3 stars, standard (binary)
+(** **** Упражнение: 3 звезды, стандартное (binary)
 
-    We can generalize our unary representation of natural numbers to
-    the more efficient binary representation by treating a binary
-    number as a sequence of constructors [B0] and [B1] (representing 0s
-    and 1s), terminated by a [Z]. For comparison, in the unary
-    representation, a number is a sequence of [S] constructors terminated
-    by an [O].
+    Мы можем обобщить наше унарное представление натуральных чисел до
+    более эффективного двоичного представления, рассматривая двоичное число как
+    последовательность конструкторов [B0] и [B1] (представляющих 0s и 1s),
+    заканчивающихся [Z]. Для сравнения, в унарном представлении число -- это
+    последовательность конструкторов [S], заканчивающаяся символом [O].
 
-    For example:
+    Например:
 
-        decimal               binary                          unary
+       десятичная              двоичная                        унарная
            0                       Z                              O
            1                    B1 Z                            S O
            2                B0 (B1 Z)                        S (S O)
@@ -2293,182 +2272,176 @@ End LateDays.
            7            B1 (B1 (B1 Z))        S (S (S (S (S (S (S O))))))
            8        B0 (B0 (B0 (B1 Z)))    S (S (S (S (S (S (S (S O)))))))
 
-    Note that the low-order bit is on the left and the high-order bit
-    is on the right -- the opposite of the way binary numbers are
-    usually written.  This choice makes them easier to manipulate.
+    Обратите внимание, что младший бит расположен слева, а старший справа, в
+    отличие от обычного способа записи двоичных чисел.  Такой выбор упрощает
+    работу с ними.
 
-    (Comprehension check: What unary numeral does [B0 Z] represent?) *)
+    (Вопрос на понимание: какой унарный нумерал соответствует [B0 Z]?) *)
 
 Inductive bin : Type :=
   | Z
   | B0 (n : bin)
   | B1 (n : bin).
 
-(** Complete the definitions below of an increment function [incr]
-    for binary numbers, and a function [bin_to_nat] to convert
-    binary numbers to unary numbers. *)
+(** Завершите приведенные ниже определения функции инкремента [inc]
+    для двоичных чисел и функции [bin_to_nat] для преобразования
+    двоичных чисел в унарные. *)
 
 Fixpoint incr (m:bin) : bin
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОКУ НА ":= _ваше_определение_ ." *). Admitted.
 
 Fixpoint bin_to_nat (m:bin) : nat
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОКУ НА ":= _ваше_определение_ ." *). Admitted.
 
-(** The following "unit tests" of your increment and binary-to-unary
-    functions should pass after you have defined those functions correctly.
-    Of course, unit tests don't fully demonstrate the correctness of
-    your functions!  We'll return to that thought at the end of the
-    next chapter. *)
+(** Следующие "юнит-тесты" ваших функций инкремента и преобразования двоичного
+    кода в унарный должны выполняться успешно после того, как вы правильно
+    определили эти функции. Конечно, модульные тесты не в полной мере
+    демонстрируют корректность ваших функций!  Мы вернемся к этой мысли в конце
+    занятия. *)
 
 Example test_bin_incr1 : (incr (B1 Z)) = B0 (B1 Z).
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_bin_incr2 : (incr (B0 (B1 Z))) = B1 (B1 Z).
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_bin_incr3 : (incr (B1 (B1 Z))) = B0 (B0 (B1 Z)).
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_bin_incr4 : bin_to_nat (B0 (B1 Z)) = 2.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_bin_incr5 :
         bin_to_nat (incr (B1 Z)) = 1 + bin_to_nat (B1 Z).
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_bin_incr6 :
         bin_to_nat (incr (incr (B1 Z))) = 2 + bin_to_nat (B1 Z).
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
 (* ################################################################# *)
-(** * Optional: Testing Your Solutions *)
+(** * Необязательно: Тестирование Ваших решений *)
 
-(** Each SF chapter comes with a test file containing scripts that
-    check whether you have solved the required exercises. If you're
-    using SF as part of a course, your instructor will likely be
-    running these test files to autograde your solutions. You can also
-    use these test files, if you like, to make sure you haven't missed
-    anything.
+(** К каждому занятию прилагается тестовый файл, содержащий скрипты, которые
+    проверяют, выполнили ли вы необходимые упражнения. Они же запускаются в CI
+    для автоматической оценки Ваших решений. Вы также можете использовать эти
+    тестовые файлы, если хотите убедиться, что вы ничего не пропустили.
 
-    Important: This step is _optional_: if you've completed all the
-    non-optional exercises and Coq accepts your answers, this already
-    shows that you are in good shape.
+    Важно: Этот шаг является необязательным: если вы выполнили все
+    необязательные упражнения и Coq принял ваши ответы, это уже это показывает,
+    что вы находитесь в отличной форме.
 
-    The test file for this chapter is [BasicsTest.v]. To run it, make
-    sure you have saved [Basics.v] to disk.  Then first run
-    [coqc -Q . LF Basics.v] and then run [coqc -Q . LF BasicsTest.v];
-    or, if you have make installed, you can run [make BasicsTest.vo].
-    (Make sure you do this in a directory that also contains a file
-    named [_CoqProject] containing the single line [-Q . LF].)
+    Тестовый файл для этого занятия называется [Lecture1Test.v]. Чтобы запустить
+    его, убедитесь, что вы сохранили [Lecture1.v] на диск.  Сперва запустите
+    [coqc -Q . Lecture1.v] , а затем [coqc -Q . Lecture1Test.v]; или, если у вас
+    установлен make, вы можете запустить [make Lecture1Test.vo]. (Убедитесь, что
+    вы делаете это в каталоге, который также содержит файл с именем
+    [_CoqProject], содержащий одну строку [-Q . LF].)
 
-    If you accidentally deleted an exercise or changed its name, then
-    [make BasicsTest.vo] will fail with an error that tells you the
-    name of the missing exercise.  Otherwise, you will get a lot of
-    useful output:
+    Если Вы случайно удалили упражнение или изменили его название, то
+    [make Lecture1Test.vo] завершится ошибкой, в которой будет указано название
+    отсутствующего упражнения.  В противном случае вы получите много полезной
+    информации:
 
-    - First will be all the output produced by [Basics.v] itself.  At
-      the end of that you will see [COQC BasicsTest.v].
+    - Сначала будут представлены все результаты, полученные самим [Lecture1.v].
+      В конце вы увидите [COQC Lecture1Test.v].
 
-    - Second, for each required exercise, there is a report that tells
-      you its point value (the number of stars or some fraction
-      thereof if there are multiple parts to the exercise), whether
-      its type is ok, and what assumptions it relies upon.
+    - Во-вторых, для каждого обязательного упражнения будет выведен отчет, в
+      котором сообщается его сложность (количество звезд или какая-то дробь,
+      если упражнение состоит из нескольких частей), правильный ли у него тип и
+      на какие предположения он опирается.
 
-      If the _type_ is not [ok], it means you proved the wrong thing:
-      most likely, you accidentally modified the theorem statement
-      while you were proving it.  The autograder won't give you any
-      points in this case, so make sure to correct the theorem.
+      Если _тип_ не [ok], это означает, что вы доказали неправильную вещь:
+      скорее всего, вы случайно изменили утверждение теоремы во время
+      доказательства.  В этом случае автогрейдер не начислит вам никаких баллов,
+      поэтому обязательно исправьте теорему.
 
-      The _assumptions_ are any unproved theorems which your solution
-      relies upon.  "Closed under the global context" is a fancy way
-      of saying "none": you have solved the exercise. (Hooray!)  On
-      the other hand, a list of axioms means you haven't fully solved
-      the exercise. (But see below regarding "Allowed Axioms.") If the
-      exercise name itself is in the list, that means you haven't
-      solved it; probably you have [Admitted] it.
+      _Предположения_ -- это любые недоказанные теоремы, на которые ваше решение
+      полагается.  "Closed under the global context" -- это причудливый способ
+      сказать "нет": вы решили упражнение. (Ура!)  С другой стороны, список
+      аксиом означает, что вы еще не решили их полностью упражнение. (Но
+      смотрите ниже раздел "Допустимые аксиомы".) Если само название упражнения
+      есть в списке, это означает, что вы его не выполнили; вероятно, вы его
+      приняли на веру ([Admitted]).
 
-    - Third, you will see the maximum number of points in standard and
-      advanced versions of the assignment.  That number is based on
-      the number of stars in the non-optional exercises.  (In the
-      present file, there are no advanced exercises.)
+    - В-третьих, вы увидите максимальное количество баллов в стандартной и
+      расширенной версиях задания.  Это число основано на количестве звёзд в
+      обязательных упражнениях.  (В данном файле нет продвинутых упражнений.)
 
-    - Fourth, you will see a list of "Allowed Axioms".  These are
-      unproven theorems that your solution is permitted to depend
-      upon, aside from the fundamental axioms of Coq's logic.  You'll
-      probably see something about [functional_extensionality] for
-      this chapter; we'll cover what that means in a later chapter.
+    - В-четвертых, вы увидите список "Разрешённых аксиом".  Это недоказанные
+      теоремы, от которых может зависеть ваше решение, помимо фундаментальных
+      аксиом логики Coq-а.  Возможно, вы увидите что-то о [функциональной
+      экстенсиональности] для этого занятия; мы вскоре рассмотрим, что это
+      значит.
 
-    - Finally, you will see a summary of whether you have solved each
-      exercise.  Note that summary does not include the critical
-      information of whether the type is ok (that is, whether you
-      accidentally changed the theorem statement): you have to look
-      above for that information.
+    - Наконец, вы увидите сводную информацию о том, решили ли вы каждое из
+      упражнений.  Обратите внимание, что краткое изложение не включает
+      критическую информацию о том, подходит ли данный тип (то есть, не изменили
+      ли вы формулировку теоремы): вы должны посмотреть эту информацию выше.
 
-    Exercises that are manually graded will also show up in the
-    output.  But since they have to be graded by a human, the test
-    script won't be able to tell you much about them.  *)
+    Упражнения, которые оцениваются вручную, также будут отображаться в выводе.
+    Но поскольку они должны оцениваться человеком, скрипт не сможет ничего о них
+    рассказать. *)
 
-(** * Induction: Proof by Induction *)
+(** * Индукция: доказательства по индукции *)
 
 (* ################################################################# *)
-(** * Proof by Induction *)
+(** * Доказательство по индукции *)
 
-(** We can prove that [0] is a neutral element for [+] on the _left_
-    using just [reflexivity].  But the proof that it is also a neutral
-    element on the _right_ ... *)
+(** Мы можем доказать, что [0] является нейтральным элементом для [+] _слева_,
+    используя только [рефлексивность].  Но доказательство того, что это также
+    нейтральный элемент _справа_ ... *)
 
 Theorem add_0_r_firsttry : forall n:nat,
   n + 0 = n.
 
-(** ... can't be done in the same simple way.  Just applying
-  [reflexivity] doesn't work, since the [n] in [n + 0] is an arbitrary
-  unknown number, so the [match] in the definition of [+] can't be
-  simplified.  *)
+(** ... невозможно сделать таким же простым способом.  Простое применение
+  [рефлексивности] не работает, поскольку [n] в [n + 0] является произвольным
+  неизвестным числом, поэтому [match] в определении [+] не может быть упрощён.
+*)
 
 Proof.
   intros n.
-  simpl. (* Does nothing! *)
+  simpl. (* Ничего не делает! *)
 Abort.
 
-(** And reasoning by cases using [destruct n] doesn't get us much
-    further: the branch of the case analysis where we assume [n = 0]
-    goes through fine, but in the branch where [n = S n'] for some [n'] we
-    get stuck in exactly the same way. *)
+(** Разбор случаев с помощью [destruct n] тоже не позволяет особо продвинуться:
+    тот случай, где мы предполагаем, что [n = 0], проходит нормально, но в
+    случае, когда [n = S n'] для некоторого [n'], мы точно так же застреваем. *)
 
 Theorem add_0_r_secondtry : forall n:nat,
   n + 0 = n.
 Proof.
   intros n. destruct n as [| n'] eqn:E.
   - (* n = 0 *)
-    reflexivity. (* so far so good... *)
+    reflexivity. (* пока хорошо... *)
   - (* n = S n' *)
-    simpl.       (* ...but here we are stuck again *)
+    simpl.       (* ...а тут мы опять застряли *)
 Abort.
 
-(** We could use [destruct n'] to get one step further, but,
-    since [n] can be arbitrarily large, we'll never get all the there
-    if we just go on like this. *)
+(** Мы могли бы использовать [destruct n'], чтобы продвинуться еще на один шаг,
+    но, поскольку [n] может быть сколь угодно большим, мы никогда не получим то,
+    что нам нужно, если будем продолжать в том же духе. *)
 
-(** To prove interesting facts about numbers, lists, and other
-    inductively defined sets, we often need a more powerful reasoning
-    principle: _induction_.
+(** Чтобы доказывать интересные факты о числах, списках и других индуктивно
+    определяемых множествах, нам часто требуется более мощная техника
+    доказательств: _по индукции_.
 
-    Recall (from a discrete math course, probably) the _principle of
-    induction over natural numbers_: If [P(n)] is some proposition
-    involving a natural number [n] and we want to show that [P] holds for
-    all numbers [n], we can reason like this:
-         - show that [P(O)] holds;
-         - show that, for any [n'], if [P(n')] holds, then so does [P(S
-           n')];
-         - conclude that [P(n)] holds for all [n].
+    Вспомним (вероятно, из курса дискретной математики) _принцип математической
+    индукции_: если [P(n)] -- некоторое утверждение о натуральном числе [n], и
+    мы хотим показать, что [P] выполнено для всех чисел [n], мы можем рассуждать
+    следующим образом:
+         - показать, что [P(O)] выполнено;
+         - показать, что для любого [n'], если выполняется [P(n')], то
+           выполняется и [P(S n')];
+         - заключить, что [P(n)] выполняется для всех [n].
 
-    In Coq, the steps are the same: we begin with the goal of proving
-    [P(n)] for all [n] and break it down (by applying the [induction]
-    tactic) into two separate subgoals: one where we must show [P(O)] and
-    another where we must show [P(n') -> P(S n')].  Here's how this works
-    for the theorem at hand: *)
+    В Coq шаги те же: мы начинаем с цели доказать [P(n)] для всех [n] и
+    разбиваем эту задачу (с помощью тактики [induction]) на две отдельные
+    подцели: в одной мы должны показать [P(O)], а в другой --
+    [P(n') -> P(S n')].  Вот как это работает для данной теоремы: *)
 
 Theorem add_0_r : forall n:nat, n + 0 = n.
 Proof.
@@ -2476,69 +2449,67 @@ Proof.
   - (* n = 0 *)    reflexivity.
   - (* n = S n' *) simpl. rewrite -> IHn'. reflexivity.  Qed.
 
-(** Like [destruct], the [induction] tactic takes an [as...]
-    clause that specifies the names of the variables to be introduced
-    in the subgoals.  Since there are two subgoals, the [as...] clause
-    has two parts, separated by [|].  (Strictly speaking, we can omit
-    the [as...] clause and Coq will choose names for us.  In practice,
-    this is a bad idea, as Coq's automatic choices tend to be
-    confusing.)
+(** Как и [destruct], тактика [induction] получает клозу [as...], в которой
+    указываются имена переменных, которые будут введены в подцелях.  Поскольку
+    подцелей две, предложение [as...] состоит из двух частей, разделенных
+    символом [|].  (Строго говоря, мы можем опустить предложение [as...] и Coq
+    выберет имена для нас.  На практике это плохая идея, так как автоматический
+    выбор Coq, как правило, приводит к путанице.)
 
-    In the first subgoal, [n] is replaced by [0].  No new variables
-    are introduced (so the first part of the [as...] is empty), and
-    the goal becomes [0 = 0 + 0], which follows by simplification.
+    В первой подцели [n] заменяется на [0].  Новые переменные
+    не вводятся (поэтому первая часть [as...] пуста), и цель становится
+    [0 = 0 + 0], что легко доказать через упрощение.
 
-    In the second subgoal, [n] is replaced by [S n'], and the
-    assumption [n' + 0 = n'] is added to the context with the name
-    [IHn'] (i.e., the Induction Hypothesis for [n']).  These two names
-    are specified in the second part of the [as...] clause.  The goal
-    in this case becomes [S n' = (S n') + 0], which simplifies to
-    [S n' = S (n' + 0)], which in turn follows from [IHn']. *)
+    Во второй подцели [n] заменяется на [S n'], а предположение [n' + 0 = n']
+    добавляется в контекст с именем [IHn'] (т.е. гипотеза индукции для [n']).
+    Эти два имени указаны во второй части предложения [as...].  Целью в этом
+    случае становится [S n' = (S n') + 0], что упрощается до
+    [S n' = S (n' + 0)], что, в свою очередь, следует из [IHn']. *)
 
 Theorem minus_n_n : forall n,
   minus n n = 0.
 Proof.
-  (* WORKED IN CLASS *)
+  (* РАЗБИРАЕМ НА ЗАНЯТИИ *)
   intros n. induction n as [| n' IHn'].
   - (* n = 0 *)
     simpl. reflexivity.
   - (* n = S n' *)
     simpl. rewrite -> IHn'. reflexivity.  Qed.
 
-(** (The use of the [intros] tactic in these proofs is actually
-    redundant.  When applied to a goal that contains quantified
-    variables, the [induction] tactic will automatically move them
-    into the context as needed.) *)
+(** (Использование тактики [intros] в этих доказательствах на самом деле
+    излишне.  При применении к цели, содержащей переменные под квантором
+    всеобщности, тактика [induction] автоматически перенесет их в контекст по
+    мере необходимости.) *)
 
-(** **** Exercise: 2 stars, standard, especially useful (basic_induction)
+(** **** Упражнение: 2 звезды, стандартное, особенно полезное (basic_induction)
 
-    Prove the following using induction. You might need previously
-    proven results. *)
+    Докажите с помощью индукции. Возможно, вам понадобятся ранее полученные
+    результаты. *)
 
 Theorem mul_0_r : forall n:nat,
   n * 0 = 0.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Theorem plus_n_Sm : forall n m : nat,
   S (n + m) = n + (S m).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Theorem add_comm : forall n m : nat,
   n + m = m + n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Theorem add_assoc : forall n m p : nat,
   n + (m + p) = (n + m) + p.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** **** Exercise: 2 stars, standard (double_plus)
+(** **** Упражнение: 2 звезды, стандартное (double_plus)
 
-    Consider the following function, which doubles its argument: *)
+    Рассмотрим следующую функцию, которая удваивает свой аргумент: *)
 
 Fixpoint double (n:nat) :=
   match n with
@@ -2546,49 +2517,48 @@ Fixpoint double (n:nat) :=
   | S n' => S (S (double n'))
   end.
 
-(** Use induction to prove this simple fact about [double]: *)
+(** Используйте индукцию, чтобы доказать следующий простой факт о [double]: *)
 
 Lemma double_plus : forall n, double n = n + n .
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** **** Exercise: 2 stars, standard (eqb_refl)
+(** **** Упражнение: 2 звезды, стандартное (eqb_refl)
 
-    The following theorem relates the computational equality [=?] on
-    [nat] with the definitional equality [=] on [bool]. *)
+    Следующая теорема связывает вычислительное равенство [=?] в
+    [nat] с равенством по определению [=] в [bool]. *)
 Theorem eqb_refl : forall n : nat,
   (n =? n) = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** **** Exercise: 2 stars, standard, optional (even_S)
+(** **** Упражнение: 2 звезды, стандартное, optional (even_S)
 
-    One inconvenient aspect of our definition of [even n] is the
-    recursive call on [n - 2]. This makes proofs about [even n]
-    harder when done by induction on [n], since we may need an
-    induction hypothesis about [n - 2]. The following lemma gives an
-    alternative characterization of [even (S n)] that works better
-    with induction: *)
+    Одним из неудобных аспектов нашего определения [even n] является рекурсивный
+    вызов [n - 2]. Это затрудняет доказательство свойств [even] при выполнении
+    индукции по [n], поскольку нам может понадобиться индукционная гипотеза о
+    [n - 2]. Следующая лемма дает альтернативную характеристику [even (S n)],
+    которая лучше работает с индукцией: *)
 
 Theorem even_S : forall n : nat,
   even (S n) = negb (even n).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
 (* ################################################################# *)
-(** * Proofs Within Proofs *)
+(** * Доказательства внутри доказательств *)
 
-(** In Coq, as in informal mathematics, large proofs are often
-    broken into a sequence of theorems, with later proofs referring to
-    earlier theorems.  But sometimes a proof will involve some
-    miscellaneous fact that is too trivial and of too little general
-    interest to bother giving it its own top-level name.  In such
-    cases, it is convenient to be able to simply state and prove the
-    needed "sub-theorem" right at the point where it is used.  The
-    [assert] tactic allows us to do this. *)
+(** В Coq, как и в неформальной математике, большие доказательства часто
+    разбивают на последовательность теорем, причем более поздние доказательства
+    ссылаются на более ранние теоремы.  Но иногда доказательство будет включать
+    в себя некоторые другие факты, которые слишком тривиальны и не представляют
+    интереса, чтобы утруждать себя присвоением ему собственного имени на верхнем
+    уровне.  В таких случаях удобно иметь возможность просто сформулировать и
+    доказать необходимую "под-теорему" прямо в том месте, где она используется.
+    Тактика [assert] позволяет нам это делать. *)
 
 Theorem mult_0_plus' : forall n m : nat,
   (n + 0 + 0) * m = n * m.
@@ -2599,45 +2569,44 @@ Proof.
   rewrite -> H.
   reflexivity.  Qed.
 
-(** The [assert] tactic introduces two sub-goals.  The first is
-    the assertion itself; by prefixing it with [H:] we name the
-    assertion [H].  (We can also name the assertion with [as] just as
-    we did above with [destruct] and [induction], i.e., [assert (n + 0
-    + 0 = n) as H].)  Note that we surround the proof of this
-    assertion with curly braces [{ ... }], both for readability and so
-    that, when using Coq interactively, we can see more easily when we
-    have finished this sub-proof.  The second goal is the same as the
-    one at the point where we invoke [assert] except that, in the
-    context, we now have the assumption [H] that [n + 0 + 0 = n].
-    That is, [assert] generates one subgoal where we must prove the
-    asserted fact and a second subgoal where we can use the asserted
-    fact to make progress on whatever we were trying to prove in the
-    first place. *)
+(** Тактика [assert] создаёт две подцели.  Первая -- это утверждение леммы;
+    добавляя к нему префикс [H:], мы называем утверждение [H].  (Мы также можем
+    назвать утверждение с помощью [as] точно так же, как мы делали это выше с
+    помощью [destruct] и [induction], т.е. [assert (n + 0 + 0 = n) as H].)
+    Обратите внимание, что мы заключаем доказательство этого утверждения в
+    фигурные скобки [{ ... }], как для удобства чтения, так и для того, чтобы
+    при интерактивном использовании Coq нам было легче увидеть, когда мы
+    закончим это дополнительное доказательство.  Вторая цель -- точно такая же,
+    как и до вызова [assert], за исключением того, что в контексте теперь у нас
+    есть предположение [H], что [n + 0 + 0 = n]. То есть, [assert] порождает
+    одну подцель, где мы должны доказать утверждаемый факт, и вторую подцель,
+    где мы можем использовать утверждаемый факт, чтобы добиться прогресса в том,
+    что мы пытались доказать с самого начала. *)
 
-(** As another example, suppose we want to prove that [(n + m)
-    + (p + q) = (m + n) + (p + q)]. The only difference between the
-    two sides of the [=] is that the arguments [m] and [n] to the
-    first inner [+] are swapped, so it seems we should be able to use
-    the commutativity of addition ([add_comm]) to rewrite one into the
-    other.  However, the [rewrite] tactic is not very smart about
-    _where_ it applies the rewrite.  There are three uses of [+] here,
-    and it turns out that doing [rewrite -> add_comm] will affect only
-    the _outer_ one... *)
+(** В качестве другого примера предположим, что мы хотим доказать, что [(n + m)
+    + (p + q) = (m + n) + (p + q)]. Единственное различие между двумя сторонами
+    [=] заключается в том, что аргументы [m] и [n] для первого внутреннего [+]
+    меняются местами, поэтому, похоже, мы должны иметь возможность использовать
+    коммутативность сложения ([add_comm]), чтобы переписать одно в другое.
+    Однако тактика [rewrite] не слишком умна в отношении того, _где_ она
+    применяет переписывание.  Здесь есть три варианта использования [+],
+    и оказывается, что [rewrite -> add_comm] повлияет только на
+    _внешний_ плюс... *)
 
 Theorem plus_rearrange_firsttry : forall n m p q : nat,
   (n + m) + (p + q) = (m + n) + (p + q).
 Proof.
   intros n m p q.
-  (* We just need to swap (n + m) for (m + n)... seems
-     like add_comm should do the trick! *)
+  (* Нам просто нужно заменить (n + m) на (m + n)... выглядит так, как будто
+     add_comm должен помочь! *)
   rewrite add_comm.
-  (* Doesn't work... Coq rewrites the wrong plus! :-( *)
+  (* Не работает... Coq переписывает не тот плюс! :-( *)
 Abort.
 
-(** To use [add_comm] at the point where we need it, we can introduce
-    a local lemma stating that [n + m = m + n] (for the _particular_ [m]
-    and [n] that we are talking about here), prove this lemma using
-    [add_comm], and then use it to do the desired rewrite. *)
+(** Чтобы использовать [add_comm] там, где нам это нужно, мы можем ввести
+    локальную лемму, утверждающую, что [n + m = m + n] (для _конкретных_ [m] и
+    [n], о котором мы здесь говорим), доказать эту лемму, используя [add_comm],
+    а затем использовать ее для выполнения желаемого переписывания. *)
 
 Theorem plus_rearrange : forall n m p q : nat,
   (n + m) + (p + q) = (m + n) + (p + q).
@@ -2648,66 +2617,65 @@ Proof.
   rewrite H. reflexivity.  Qed.
 
 (* ################################################################# *)
-(** * Formal vs. Informal Proof *)
+(** * Формальные и неформальные доказательства *)
 
-(** "_Informal proofs are algorithms; formal proofs are code_." *)
+(** "_Неформальные доказательства -- это алгоритмы;
+    формальные доказательства -- это код_." *)
 
-(** What constitutes a successful proof of a mathematical claim?
-    The question has challenged philosophers for millennia, but a
-    rough and ready definition could be this: A proof of a
-    mathematical proposition [P] is a written (or spoken) text that
-    instills in the reader or hearer the certainty that [P] is true --
-    an unassailable argument for the truth of [P].  That is, a proof
-    is an act of communication.
+(** Что представляет собой успешное доказательство математического утверждения?
+    Этот вопрос волновал философов на протяжении тысячелетий, но приблизительное
+    определение может быть таким: Доказательство математического утверждения [P]
+    -- это письменный (или устный) текст, который вселяет в читателя или
+    слушателя уверенность в том, что [P] истинно -- неопровержимый аргумент в
+    пользу истинности [P].  То есть, доказательство -- это акт коммуникации.
 
-    Acts of communication may involve different sorts of readers.  On
-    one hand, the "reader" can be a program like Coq, in which case
-    the "belief" that is instilled is that [P] can be mechanically
-    derived from a certain set of formal logical rules, and the proof
-    is a recipe that guides the program in checking this fact.  Such
-    recipes are _formal_ proofs.
+    В актах коммуникации могут участвовать разные типы читателей.  С одной
+    стороны, "читателем" может быть программа, подобная Coq, и в этом случае
+    "вера", которая прививается, заключается в том, что [P] может быть
+    механически выведена из определенного набора формальных логических правил, а
+    доказательство -- это рецепт, которым руководствуется программа при проверке
+    этого факта.  Такие _рецепты_ -- это формальные доказательства.
 
-    Alternatively, the reader can be a human being, in which case the
-    proof will be written in English or some other natural language,
-    and will thus necessarily be _informal_.  Here, the criteria for
-    success are less clearly specified.  A "valid" proof is one that
-    makes the reader believe [P].  But the same proof may be read by
-    many different readers, some of whom may be convinced by a
-    particular way of phrasing the argument, while others may not be.
-    Some readers may be particularly pedantic, inexperienced, or just
-    plain thick-headed; the only way to convince them will be to make
-    the argument in painstaking detail.  But other readers, more
-    familiar in the area, may find all this detail so overwhelming
-    that they lose the overall thread; all they want is to be told the
-    main ideas, since it is easier for them to fill in the details for
-    themselves than to wade through a written presentation of them.
-    Ultimately, there is no universal standard, because there is no
-    single way of writing an informal proof that is guaranteed to
-    convince every conceivable reader.
+    В качестве альтернативы, читателем может быть человек, и в этом случае
+    доказательство будет написано на русском или каком-либо другом естественном
+    языке и, следовательно, обязательно будет _неформальным_.  Здесь критерии
+    успеха указаны менее четко.  "Достоверное" доказательство -- это такое,
+    которое заставляет читателя поверить в [P].  Но одно и то же доказательство
+    может быть прочитано множеством разных читателей, некоторых из которых может
+    убедить определенный способ формулировки аргумента, в то время как другие
+    могут и не поверить. Некоторые читатели могут быть особенно педантичными,
+    неопытными или просто толстокожими; единственный способ убедить их -- это
+    привести аргументацию в мельчайших деталях.  Но другие читатели, более
+    знакомые с этой областью, могут счесть все эти подробности настолько
+    ошеломляющими, что они теряют общую нить; все, чего они хотят, -- это чтобы
+    им рассказали об основных идеях, поскольку им легче самим разобраться в
+    деталях, чем продираться через их изложение их в письменном виде. В конечном
+    счете, универсального стандарта не существует, потому что не существует 
+    единого способа написания неформального доказательства, которое
+    гарантированно убедило бы каждого мыслимого читателя.
 
-    In practice, however, mathematicians have developed a rich set of
-    conventions and idioms for writing about complex mathematical
-    objects that -- at least within a certain community -- make
-    communication fairly reliable.  The conventions of this stylized
-    form of communication give a fairly clear standard for judging
-    proofs good or bad.
+    Однако на практике математики разработали богатый набор условных обозначений
+    и идиом для написания статей о сложных математических объектах, которые --
+    по крайней мере, в рамках определенного сообщества -- делают коммуникацию
+    довольно надежной.  Условности этой стилизованной формы общения задают
+    достаточно четкий стандарт для рассуждений о качестве доказательств.
 
-    Because we are using Coq in this course, we will be working
-    heavily with formal proofs.  But this doesn't mean we can
-    completely forget about informal ones!  Formal proofs are useful
-    in many ways, but they are _not_ very efficient ways of
-    communicating ideas between human beings. *)
+    Поскольку в этом курсе мы используем Coq, мы будем работать в значительной
+    степени с формальными доказательствами.  Но это не значит, что мы можем
+    полностью забыть о неформальных доказательствах!  Формальные доказательства
+    полезны во многих отношениях, но это _не очень_ эффективный способ передачи
+    идей между людьми. *)
 
-(** For example, here is a proof that addition is associative: *)
+(** Например, вот доказательство того, что сложение является ассоциативным: *)
 
 Theorem add_assoc' : forall n m p : nat,
   n + (m + p) = (n + m) + p.
 Proof. intros n m p. induction n as [| n' IHn']. reflexivity.
   simpl. rewrite IHn'. reflexivity.  Qed.
 
-(** Coq is perfectly happy with this.  For a human, however, it
-    is difficult to make much sense of it.  We can use comments and
-    bullets to show the structure a little more clearly... *)
+(** Coq это вполне устраивает.  Однако человеку в этом сложно разобраться.  Мы
+    можем использовать комментарии и маркеры, чтобы показать структуру более
+    четко... *)
 
 Theorem add_assoc'' : forall n m p : nat,
   n + (m + p) = (n + m) + p.
@@ -2718,151 +2686,148 @@ Proof.
   - (* n = S n' *)
     simpl. rewrite IHn'. reflexivity.   Qed.
 
-(** ... and if you're used to Coq you might be able to step
-    through the tactics one after the other in your mind and imagine
-    the state of the context and goal stack at each point, but if the
-    proof were even a little bit more complicated this would be next
-    to impossible.
+(** ... и если вы привыкли к Coq, то, возможно, сможете прокрутить в уме одну
+    тактику за другой и представить состояние контекста и стека целей в каждой
+    точке, но если бы доказательство было хотя бы немного сложнее, это было бы
+    практически невозможно.
 
-    A (pedantic) mathematician might write the proof something like
-    this: *)
+    (Педантичный) математик написал бы доказательство как-то так: *)
 
-(** - _Theorem_: For any [n], [m] and [p],
+(** - _Теорема_: Для любых [n], [m] и [p],
 
       n + (m + p) = (n + m) + p.
 
-    _Proof_: By induction on [n].
+    _Доказательство_: Индукцией по [n].
 
-    - First, suppose [n = 0].  We must show that
+    - Во-первых, пусть [n = 0].  Мы должны показать, что
 
         0 + (m + p) = (0 + m) + p.
 
-      This follows directly from the definition of [+].
+      Это напрямую следует из определения [+].
 
-    - Next, suppose [n = S n'], where
+    - Далее, пусть [n = S n'], где
 
         n' + (m + p) = (n' + m) + p.
 
-      We must now show that
+      Нам теперь нужно показать, что
 
         (S n') + (m + p) = ((S n') + m) + p.
 
-      By the definition of [+], this follows from
+      По определению [+], это следует из
 
         S (n' + (m + p)) = S ((n' + m) + p),
 
-      which is immediate from the induction hypothesis.  _Qed_. *)
+      что непосредственно следует из индукционной гипотезы.  _ЧТД_. *)
 
-(** The overall form of the proof is basically similar, and of
-    course this is no accident: Coq has been designed so that its
-    [induction] tactic generates the same sub-goals, in the same
-    order, as the bullet points that a mathematician would write.  But
-    there are significant differences of detail: the formal proof is
-    much more explicit in some ways (e.g., the use of [reflexivity])
-    but much less explicit in others (in particular, the "proof state"
-    at any given point in the Coq proof is completely implicit,
-    whereas the informal proof reminds the reader several times where
-    things stand). *)
+(** Общая форма доказательства в основном схожа, и, конечно, это не случайно:
+    Coq был разработан таким образом, что тактика [induction] генерирует те же
+    подцели, в том же порядке, что и основные пункты, которые написал бы
+    математик.  Но существуют существенные различия в деталях: формальное
+    доказательство в некоторых отношениях гораздо более явно (например,
+    при использовании [рефлексивности]), но гораздо менее явно в других (в
+    частности, "состояние доказательства" в любой заданной точке доказательства
+    Coq полностью неявно, в то время как неофициальное доказательство несколько
+    раз напоминает читателю, как обстоят дела). *)
 
-(** **** Exercise: 2 stars, advanced, especially useful (add_comm_informal)
+(** **** Упражнение: 2 звезды, продвинутое, особенно полезное (add_comm_informal)
 
-    Translate your solution for [add_comm] into an informal proof:
+    Переведите Ваше решение [add_comm] в неформальное доказательство:
 
-    Theorem: Addition is commutative.
+    Теорема: Сложение коммутативно.
 
-    Proof: (* FILL IN HERE *)
+    Доказательство: (* ЗАПОЛНИТЕ ЗДЕСЬ *)
 *)
 
-(* Do not modify the following line: *)
+(* Не меняйте следующую строчку: *)
 Definition manual_grade_for_add_comm_informal : option (nat*string) := None.
 (** [] *)
 
-(** **** Exercise: 2 stars, standard, optional (eqb_refl_informal)
+(** **** Упражнение: 2 звезды, стандартное, необязательное (eqb_refl_informal)
 
-    Write an informal proof of the following theorem, using the
-    informal proof of [add_assoc] as a model.  Don't just
-    paraphrase the Coq tactics into English!
+    Напишите неформальное доказательство следующей теоремы, используя
+    неформальное доказательство [add_assoc] в качестве примера.  Просто
+    перефразировать тактики Coq на русский недостаточно!
 
-    Theorem: [(n =? n) = true] for any [n].
+    Теорема: [(n =? n) = true] для любого [n].
 
-    Proof: (* FILL IN HERE *)
+    Доказательство: (* ЗАПОЛНИТЕ ЗДЕСЬ *)
 *)
 
-(* Do not modify the following line: *)
+(* Не меняйте следующую строчку: *)
 Definition manual_grade_for_eqb_refl_informal : option (nat*string) := None.
 (** [] *)
 
 (* ################################################################# *)
-(** * More Exercises *)
+(** * Больше упражнений *)
 
-(** **** Exercise: 3 stars, standard, especially useful (mul_comm)
+(** **** Упражнение: 3 звезды, стандартное, особенно полезное (mul_comm)
 
-    Use [assert] to help prove [add_shuffle3].  You don't need to
-    use induction yet. *)
+    Используйте [assert] в ходе доказательства [add_shuffle3].
+    Индукция здесь не нужна. *)
 
 Theorem add_shuffle3 : forall n m p : nat,
   n + (m + p) = m + (n + p).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
-(** Now prove commutativity of multiplication.  You will probably want
-    to look for (or define and prove) a "helper" theorem to be used in
-    the proof of this one. Hint: what is [n * (1 + k)]? *)
+(** Теперь докажите коммутативность умножения.  Вы, вероятно, захотите найти
+    (или определить и доказать) "вспомогательную" теорему, которая будет
+    использоваться при доказательстве основной теоремы.
+    Подсказка: что такое [n * (1 + k)]? *)
 
 Theorem mul_comm : forall m n : nat,
   m * n = n * m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** **** Exercise: 2 stars, standard, optional (plus_leb_compat_l)
+(** **** Упражнение: 2 звезды, стандартное, необязательное (plus_leb_compat_l)
 
-    If a hypothesis has the form [H: P -> a = b], then [rewrite H] will
-    rewrite [a] to [b] in the goal, and add [P] as a new subgoal. Use
-    that in the inductive step of this exercise. *)
+    Если гипотеза имеет вид [H: P -> a = b], то [rewrite H] перепишет [a] в цели
+    на [b] и добавит [P] в качестве новой подцели. Используйте это в шаге
+    индукции в этом упражнении. *)
 
 Check leb.
 
 Theorem plus_leb_compat_l : forall n m p : nat,
   n <=? m = true -> (p + n) <=? (p + m) = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
-(** **** Exercise: 3 stars, standard, optional (more_exercises)
+(** **** Упражнение: 3 звезды, стандартное, необязательное (more_exercises)
 
-    Take a piece of paper.  For each of the following theorems, first
-    _think_ about whether (a) it can be proved using only
-    simplification and rewriting, (b) it also requires case
-    analysis ([destruct]), or (c) it also requires induction.  Write
-    down your prediction.  Then fill in the proof.  (There is no need
-    to turn in your piece of paper; this is just to encourage you to
-    reflect before you hack!) *)
+    Возьмите лист бумаги.  Для каждой из следующих теорем сначала _подумайте_ о
+    том, можно ли (а) доказать ее, используя только упрощение и переписывание,
+    (б) для этого также требуется разбор случаев ([destruct]), или (c)
+    доказательство требует индукции.  Запишите свой прогноз.  Затем завершите
+    доказательства.  (Нет необходимости сдавать свой лист бумаги; это просто для
+    того, чтобы вы подумали, прежде чем начать писать код!) *)
 
 Theorem leb_refl : forall n:nat,
   (n <=? n) = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Theorem zero_neqb_S : forall n:nat,
   0 =? (S n) = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Theorem andb_false_r : forall b : bool,
   andb b false = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Theorem S_neqb_0 : forall n:nat,
   (S n) =? 0 = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Theorem mult_1_l : forall n:nat, 1 * n = n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Theorem all3_spec : forall b c : bool,
   orb
@@ -2871,63 +2836,49 @@ Theorem all3_spec : forall b c : bool,
          (negb c))
   = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Theorem mult_plus_distr_r : forall n m p : nat,
   (n + m) * p = (n * p) + (m * p).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Theorem mult_assoc : forall n m p : nat,
   n * (m * p) = (n * m) * p.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** **** Exercise: 2 stars, standard, optional (add_shuffle3')
+(** **** Упражнение: 2 звезды, стандартное, необязательное (add_shuffle3')
 
-    The [replace] tactic allows you to specify a particular subterm to
-   rewrite and what you want it rewritten to: [replace (t) with (u)]
-   replaces (all copies of) expression [t] in the goal by expression
-   [u], and generates [t = u] as an additional subgoal. This is often
-   useful when a plain [rewrite] acts on the wrong part of the goal.
+   Тактика [replace] позволяет указать конкретное подвыражение, которое нужно
+   переписать, и на что вы хотите его переписать: [replace (t) with (u)]
+   заменяет (все копии) выражения [t] в цели на выражение [u] и генерирует
+   [t = u] в качестве дополнительной подцели. Это часто полезно, когда простое
+   [переписывание] действует не на ту часть цели.
 
-   Use the [replace] tactic to do a proof of [add_shuffle3'], just like
-   [add_shuffle3] but without needing [assert]. *)
+   Используйте тактику [replace], чтобы выполнить доказательство
+   [add_shuffle 3'], точно так же, как [add_shuffle 3], но без [assert]. *)
 
 Theorem add_shuffle3' : forall n m p : nat,
   n + (m + p) = m + (n + p).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
 (* ################################################################# *)
-(** * Nat to Bin and Back to Nat *)
+(** * Из Nat в Bin и обратно *)
 
-(** Recall the [bin] type we defined in [Basics]: *)
+(** Вспомним определение [bin]: *)
 
-Inductive bin : Type :=
-  | Z
-  | B0 (n : bin)
-  | B1 (n : bin)
-.
-(** Before you start working on the next exercise, replace the stub
-    definitions of [incr] and [bin_to_nat], below, with your solution
-    from [Basics].  That will make it possible for this file to
-    be graded on its own. *)
+Print bin.
 
-Fixpoint incr (m:bin) : bin
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+(** В первой части занятия мы провели небольшое юнит-тестирование [bin_to_nat],
+    но не смогли доказать его корректность. Сейчас мы сделаем это. *)
 
-Fixpoint bin_to_nat (m:bin) : nat
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+(** **** Упражнение: 3 звезды, стандартное, особенно полезное (binary_commute)
 
-(** In [Basics], we did some unit testing of [bin_to_nat], but we
-    didn't prove its correctness. Now we'll do so. *)
-
-(** **** Exercise: 3 stars, standard, especially useful (binary_commute)
-
-    Prove that the following diagram commutes:
+    Докажите, что следующая диаграмма коммутирует:
 
                             incr
               bin ----------------------> bin
@@ -2938,139 +2889,140 @@ Fixpoint bin_to_nat (m:bin) : nat
               nat ----------------------> nat
                              S
 
-    That is, incrementing a binary number and then converting it to
-    a (unary) natural number yields the same result as first converting
-    it to a natural number and then incrementing.
+    То есть, увеличение двоичного числа и последующее преобразование его в
+    (унарное) натуральное число дает тот же результат, как при преобразовании в
+    натуральное число и последующем увеличении.
 
-    If you want to change your previous definitions of [incr] or [bin_to_nat]
-    to make the property easier to prove, feel free to do so! *)
+    Если вы хотите изменить свои предыдущие определения [inc] или [bin_to_nat],
+    чтобы упростить доказательство этого свойства, не стесняйтесь сделать это!
+*)
 
 Theorem bin_to_nat_pres_incr : forall b : bin,
   bin_to_nat (incr b) = 1 + bin_to_nat b.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
-(** **** Exercise: 3 stars, standard (nat_bin_nat) *)
+(** **** Упражнение: 3 звезды, стандартное (nat_bin_nat) *)
 
-(** Write a function to convert natural numbers to binary numbers. *)
+(** Напишите функцию для конвертации их унарной записи в бинарную. *)
 
 Fixpoint nat_to_bin (n:nat) : bin
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОКУ НА ":= _ваше_определение_ ." *). Admitted.
 
-(** Prove that, if we start with any [nat], convert it to [bin], and
-    convert it back, we get the same [nat] which we started with.
+(** Докажите, что, если мы начнем с любого [nat], преобразуем его в [bin] и
+    преобразуем обратно, мы получим тот же [nat], с которого мы начали.
 
-    Hint: This proof should go through smoothly using the previous
-    exercise about [incr] as a lemma. If not, revisit your definitions
-    of the functions involved and consider whether they are more
-    complicated than necessary: the shape of a proof by induction will
-    match the recursive structure of the program being verified, so
-    make the recursions as simple as possible. *)
+    Подсказка: Это доказательство должно пройти гладко, используя предыдущее
+    упражнение о [incr] в качестве леммы. Если нет, пересмотрите свои
+    определения о задействованных функциях и подумайте, являются ли они более
+    сложными, чем необходимо: общий вид доказательства с помощью индукции будет
+    соответствовать рекурсивной структуре проверяемой программы, поэтому
+    постарайтесь сделать рекурсии как можно более простыми. *)
 
 Theorem nat_bin_nat : forall n, bin_to_nat (nat_to_bin n) = n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
 (* ################################################################# *)
-(** * Bin to Nat and Back to Bin (Advanced) *)
+(** * Из Bin в Nat и обратно (продвинутое) *)
 
-(** The opposite direction -- starting with a [bin], converting to [nat],
-    then converting back to [bin] -- turns out to be problematic. That
-    is, the following theorem does not hold. *)
+(** Обратное направление - начать с [bin], преобразовать в [nat], затем
+    преобразовать обратно в [bin] - оказывается проблематичным. То есть
+    следующая теорема опровержима. *)
 
 Theorem bin_nat_bin_fails : forall b, nat_to_bin (bin_to_nat b) = b.
 Abort.
 
-(** Let's explore why that theorem fails, and how to prove a modified
-    version of it. We'll start with some lemmas that might seem
-    unrelated, but will turn out to be relevant. *)
+(** Давайте разберемся, почему эта теорема не работает и как доказать ее
+    модифицированную версию. Мы начнем с некоторых лемм, которые могут
+    показаться несвязанными, но, как окажется, очень полезными. *)
 
-(** **** Exercise: 2 stars, advanced (double_bin) *)
+(** **** Упражнение: 2 звезды, продвинутое (double_bin) *)
 
-(** Prove this lemma about [double], which we defined earlier in the
-    chapter. *)
+(** Докажите эту лемму о [double], которую мы определили ранее на этом
+    занятии. *)
 
 Lemma double_incr : forall n : nat, double (S n) = S (S (double n)).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
-(** Now define a similar doubling function for [bin]. *)
+(** Теперь определите аналогичную функцию удвоения для [bin]. *)
 
 Definition double_bin (b:bin) : bin
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОКУ НА ":= _ваше_определение_ ." *). Admitted.
 
-(** Check that your function correctly doubles zero. *)
+(** Убедитесь, что ваша функция правильно удваивает ноль. *)
 
 Example double_bin_zero : double_bin Z = Z.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
-(** Prove this lemma, which corresponds to [double_incr]. *)
+(** Докажите эту лемму, которая соответствует [double_incr]. *)
 
 Lemma double_incr_bin : forall b,
     double_bin (incr b) = incr (incr (double_bin b)).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
-(** Let's return to our desired theorem: *)
+(** Давайте вернемся к нашей желанной теореме: *)
 
 Theorem bin_nat_bin_fails : forall b, nat_to_bin (bin_to_nat b) = b.
 Abort.
 
-(** The theorem fails because there are some [bin] such that we won't
-    necessarily get back to the _original_ [bin], but instead to an
-    "equivalent" [bin].  (We deliberately leave that notion undefined
-    here for you to think about.)
+(** Теорема не выполняется, потому что существуют некоторые [bin] такие, что мы
+    не обязательно вернемся к исходному [bin], но вместо этого к
+    "эквивалентному" [bin].  (Мы намеренно оставляем это понятие неопределенным,
+    чтобы вы могли подумать.)
 
-    Explain in a comment, below, why this failure occurs. Your
-    explanation will not be graded, but it's important that you get it
-    clear in your mind before going on to the next part. If you're
-    stuck on this, think about alternative implementations of
-    [double_bin] that might have failed to satisfy [double_bin_zero]
-    yet otherwise seem correct. *)
+    Объясните в комментарии ниже, почему возникает этот сбой. Ваше объяснение не
+    будет оцениваться, но важно, чтобы Вы уяснили его для себя, прежде чем
+    переходить к следующей части. Если Вы застряли здесь, подумайте об
+    альтернативных реализациях [double_bin], которые, возможно, не удовлетворяют
+    [double_bin_zero], но в остальном похожи на правильное. *)
 
-(* FILL IN HERE *)
+(* ЗАПОЛНИТЕ ЗДЕСЬ *)
 
-(** To solve that problem, we can introduce a _normalization_ function
-    that selects the simplest [bin] out of all the equivalent
-    [bin]. Then we can prove that the conversion from [bin] to [nat] and
-    back again produces that normalized, simplest [bin]. *)
+(** Чтобы решить эту проблему, мы можем ввести функцию _нормализации_, которая
+    выбирает простейший [bin] из всех эквивалентных [bin]. Тогда мы сможем
+    доказать, что преобразование из [bin] в [nat] и обратно приводит к
+    нормализованным, простейшим [bin]-ам. *)
 
-(** **** Exercise: 4 stars, advanced (bin_nat_bin) *)
+(** **** Упражнение: 4 звезды, продвинутое (bin_nat_bin) *)
 
-(** Define [normalize]. You will need to keep its definition as simple
-    as possible for later proofs to go smoothly. Do not use
-    [bin_to_nat] or [nat_to_bin], but do use [double_bin].
+(** Определите [normalize]. Вам нужно будет сделать его как можно более простым,
+    насколько это возможно, для того, чтобы последующие проверки прошли гладко.
+    Не используйте [bin_to_nat] или [nat_to_bin], но используйте [double_bin].
 
-    Hint: Structure the recursion such that it _always_ reaches the
-    end of the [bin] and process each bit only once. Do not try to
-    "look ahead" at future bits. *)
+    Подсказка: Структурируйте рекурсию таким образом, чтобы она _всегда_
+    доходила до конца [bin]-а и обрабатывала каждый бит только один раз. Не
+    пытайтесь "заглядывать вперед" в будущие биты. *)
 
 Fixpoint normalize (b:bin) : bin
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОКУ НА ":= _ваше_определение_ ." *). Admitted.
 
-(** It would be wise to do some [Example] proofs to check that your definition of
-    [normalize] works the way you intend before you proceed. They won't be graded,
-    but fill them in below. *)
+(** Было бы разумно сделать несколько [Примеров] доказательств, чтобы убедиться,
+    что ваше определение [normalize] работает так, как вы предполагаете, прежде
+    чем продолжить. Они не будут оцениваться, но заполните их ниже. *)
 
-(* FILL IN HERE *)
+(* ЗАПОЛНИТЕ ЗДЕСЬ *)
 
-(** Finally, prove the main theorem. The inductive cases could be a
-    bit tricky.
+(** Наконец, докажите основную теорему. С шагом индукции может быть немного
+    сложнее.
 
-    Hint: Start by trying to prove the main statement, see where you
-    get stuck, and see if you can find a lemma -- perhaps requiring
-    its own inductive proof -- that will allow the main proof to make
-    progress. We have one lemma for the [B0] case (which also makes
-    use of [double_incr_bin]) and another for the [B1] case. *)
+    Подсказка: Начните с попытки доказать основное утверждение, посмотрите, где
+    вы застряли, и посмотрите, сможете ли вы придумать лемму -- возможно,
+    требующую своё собственное индуктивное доказательство -- что позволит
+    продвинуться в основном доказательстве. Мы использовали одну лемму для
+    случая [B0] (в которой также используется [double_incr_bin]) и другую для
+    случая [B1]. *)
 
 Theorem bin_nat_bin : forall b, nat_to_bin (bin_to_nat b) = normalize b.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
