@@ -1,0 +1,1985 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="common/css/sf.css" rel="stylesheet" type="text/css" />
+<title>Lecture2</title>
+<link href="common/jquery-ui/jquery-ui.css" rel="stylesheet">
+<script src="common/jquery-ui/external/jquery/jquery.js"></script>
+<script src="common/jquery-ui/jquery-ui.js"></script>
+<script src="common/toggleproofs.js"></script>
+<link href="common/css/lf.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="common/slides.js"></script>
+<link href="common/css/slides.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+<div id='logoinheader'><a href='https://softwarefoundations.cis.upenn.edu'>
+<img src='common/media/image/sf_logo_sm.png' alt='Software Foundations Logo'></a></div>
+<div class='booktitleinheader'><a href='index.html'>Volume 1: Logical Foundations</a></div>
+<ul id='menu'>
+   <li class='section_name'><a href='toc.html'>Table of Contents</a></li>
+   <li class='section_name'><a href='coqindex.html'>Index</a></li>
+   <li class='section_name'><a href='deps.html'>Roadmap</a></li>
+</ul>
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Lecture2</h1>
+
+
+<div class="doc">
+<a id="lab55"></a><h1 class="section">Прежде чем мы начнём</h1>
+
+<div class="paragraph"> </div>
+
+ На предыдущей лекции я забыл обратить Ваше внимание
+    на следующее важное упражнение: 
+</div>
+<div class="code">
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">eqb_refl</span> : <span class="id" title="keyword">∀</span> <span class="id" title="var">n</span> : <span class="id" title="var">nat</span>,<br/>
+&nbsp;&nbsp;(<span class="id" title="var">n</span> =? <span class="id" title="var">n</span>) = <span class="id" title="var">true</span>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="comment">(*&nbsp;FILL&nbsp;IN&nbsp;HERE&nbsp;*)</span> <span class="id" title="var">Admitted</span>.<br/>
+</div>
+
+<div class="doc">
+Оно содержится в полной версии предыдущей лекции
+    и наверняка пригодится Вам в Ваших будущих доказательствах. <a id="lab56"></a><h1 class="section">Списки и работа со структурами данных</h1>
+
+</div>
+
+<div class="doc">
+<a id="lab57"></a><h1 class="section">Раздельная компиляция</h1>
+
+<div class="paragraph"> </div>
+
+ Чтобы переиспользовать материал прошлой лекции,
+    мы сначала должны скомпилировать <span class="inlinecode"><span class="id" title="var">Lecture1.v</span></span> в <span class="inlinecode"><span class="id" title="var">Lecture1.vo</span></span> --
+    подробные инструкции можно найти в полной версии данного текста. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">From</span> <span class="id" title="var">Lectures</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="var">Lecture1</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab58"></a><h1 class="section">Пары натуральных чисел</h1>
+
+<div class="paragraph"> </div>
+
+ <span class="inlinecode">Индуктивное</span> определение пары натуральных чисел.  Оно содержит
+    единственный конструктор, получающий два аргумента: 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Inductive</span> <span class="id" title="var">natprod</span> : <span class="id" title="keyword">Type</span> :=<br/>
+&nbsp;&nbsp;| <span class="id" title="var">pair</span> (<span class="id" title="var">n<sub>1</sub></span> <span class="id" title="var">n<sub>2</sub></span> : <span class="id" title="var">nat</span>).<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Check</span> (<span class="id" title="var">pair</span> 3 5) : <span class="id" title="var">natprod</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab59"></a><h3 class="section"> </h3>
+
+<div class="paragraph"> </div>
+
+ Функции для извлечения первой и второй компонент пары
+    можно определить через сопоставление с образцом. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">fst</span> (<span class="id" title="var">p</span> : <span class="id" title="var">natprod</span>) : <span class="id" title="var">nat</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">p</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">pair</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span> ⇒ <span class="id" title="var">x</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">snd</span> (<span class="id" title="var">p</span> : <span class="id" title="var">natprod</span>) : <span class="id" title="var">nat</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">p</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">pair</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span> ⇒ <span class="id" title="var">y</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Compute</span> (<span class="id" title="var">fst</span> (<span class="id" title="var">pair</span> 3 5)).<br/>
+<span class="comment">(*&nbsp;===&gt;&nbsp;3&nbsp;*)</span><br/>
+</div>
+
+<div class="doc">
+<a id="lab60"></a><h3 class="section"> </h3>
+
+<div class="paragraph"> </div>
+
+ Более удобная нотация для пар: 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Notation</span> &quot;( x , y )" := (<span class="id" title="var">pair</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span>).<br/>
+</div>
+
+<div class="doc">
+Нотации можно использовать как в выражениях,
+    так и в сравнении с образцом. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Compute</span> (<span class="id" title="var">fst</span> (3,5)).<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">fst'</span> (<span class="id" title="var">p</span> : <span class="id" title="var">natprod</span>) : <span class="id" title="var">nat</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">p</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| (<span class="id" title="var">x</span>,<span class="id" title="var">y</span>) ⇒ <span class="id" title="var">x</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">snd'</span> (<span class="id" title="var">p</span> : <span class="id" title="var">natprod</span>) : <span class="id" title="var">nat</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">p</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| (<span class="id" title="var">x</span>,<span class="id" title="var">y</span>) ⇒ <span class="id" title="var">y</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">swap_pair</span> (<span class="id" title="var">p</span> : <span class="id" title="var">natprod</span>) : <span class="id" title="var">natprod</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">p</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| (<span class="id" title="var">x</span>,<span class="id" title="var">y</span>) ⇒ (<span class="id" title="var">y</span>,<span class="id" title="var">x</span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab61"></a><h3 class="section"> </h3>
+
+<div class="paragraph"> </div>
+
+ Если мы будем формулировать свойства пар несколько обходным путём, мы иногда
+    сможем завершить их доказательства чисто с помощью <span class="inlinecode">рефлексивности</span> и
+    встроенных упрощений: 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">surjective_pairing'</span> : <span class="id" title="keyword">∀</span> (<span class="id" title="var">n</span> <span class="id" title="var">m</span> : <span class="id" title="var">nat</span>),<br/>
+&nbsp;&nbsp;(<span class="id" title="var">n</span>,<span class="id" title="var">m</span>) = (<span class="id" title="var">fst</span> (<span class="id" title="var">n</span>,<span class="id" title="var">m</span>), <span class="id" title="var">snd</span> (<span class="id" title="var">n</span>,<span class="id" title="var">m</span>)).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab62"></a><h3 class="section"> </h3>
+ Однако просто <span class="inlinecode">рефлексивности</span> недостаточно, если мы сформулируем
+    утверждение леммы естественным образом: 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">surjective_pairing_stuck</span> : <span class="id" title="keyword">∀</span> (<span class="id" title="var">p</span> : <span class="id" title="var">natprod</span>),<br/>
+&nbsp;&nbsp;<span class="id" title="var">p</span> = (<span class="id" title="var">fst</span> <span class="id" title="var">p</span>, <span class="id" title="var">snd</span> <span class="id" title="var">p</span>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>. <span class="comment">(*&nbsp;Ничего&nbsp;не&nbsp;упрощает!&nbsp;*)</span><br/>
+<span class="id" title="keyword">Abort</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab63"></a><h3 class="section"> </h3>
+ Решение: использовать <span class="inlinecode"><span class="id" title="tactic">destruct</span></span>. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">surjective_pairing</span> : <span class="id" title="keyword">∀</span> (<span class="id" title="var">p</span> : <span class="id" title="var">natprod</span>),<br/>
+&nbsp;&nbsp;<span class="id" title="var">p</span> = (<span class="id" title="var">fst</span> <span class="id" title="var">p</span>, <span class="id" title="var">snd</span> <span class="id" title="var">p</span>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">p</span>. <span class="id" title="tactic">destruct</span> <span class="id" title="var">p</span> <span class="id" title="keyword">as</span> [<span class="id" title="var">n</span> <span class="id" title="var">m</span>]. <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab64"></a><h1 class="section">Списки натуральных чисел</h1>
+
+<div class="paragraph"> </div>
+
+ Индуктивное определение _списка_ чисел: 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Inductive</span> <span class="id" title="var">natlist</span> : <span class="id" title="keyword">Type</span> :=<br/>
+&nbsp;&nbsp;| <span class="id" title="var">nil</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">cons</span> (<span class="id" title="var">n</span> : <span class="id" title="var">nat</span>) (<span class="id" title="var">l</span> : <span class="id" title="var">natlist</span>).<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">mylist</span> := <span class="id" title="var">cons</span> 1 (<span class="id" title="var">cons</span> 2 (<span class="id" title="var">cons</span> 3 <span class="id" title="var">nil</span>)).<br/>
+</div>
+
+<div class="doc">
+<a id="lab65"></a><h3 class="section"> </h3>
+ Щепотка нотации для списков, чтобы жилось попроще: 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Notation</span> &quot;x :: l" := (<span class="id" title="var">cons</span> <span class="id" title="var">x</span> <span class="id" title="var">l</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 60, <span class="id" title="tactic">right</span> <span class="id" title="keyword">associativity</span>).<br/>
+<span class="id" title="keyword">Notation</span> &quot;[ ]" := <span class="id" title="var">nil</span>.<br/>
+<span class="id" title="keyword">Notation</span> &quot;[ x ; .. ; y ]" := (<span class="id" title="var">cons</span> <span class="id" title="var">x</span> .. (<span class="id" title="var">cons</span> <span class="id" title="var">y</span> <span class="id" title="var">nil</span>) ..).<br/>
+</div>
+
+<div class="doc">
+С нашей нотацией, все три определения ниже значат одно и то же: 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">mylist1</span> := 1 :: (2 :: (3 :: <span class="id" title="var">nil</span>)).<br/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">mylist2</span> := 1 :: 2 :: 3 :: <span class="id" title="var">nil</span>.<br/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">mylist3</span> := [1;2;3].<br/>
+</div>
+
+<div class="doc">
+Немножко функций, полезных в работе со списками... 
+<div class="paragraph"> </div>
+
+<a id="lab66"></a><h3 class="section">Повтор элемента</h3>
+
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="tactic">repeat</span> (<span class="id" title="var">n</span> <span class="id" title="var">count</span> : <span class="id" title="var">nat</span>) : <span class="id" title="var">natlist</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">count</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">O</span> ⇒ <span class="id" title="var">nil</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">S</span> <span class="id" title="var">count'</span> ⇒ <span class="id" title="var">n</span> :: (<span class="id" title="tactic">repeat</span> <span class="id" title="var">n</span> <span class="id" title="var">count'</span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab67"></a><h3 class="section">Длина списка</h3>
+
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">length</span> (<span class="id" title="var">l</span>:<span class="id" title="var">natlist</span>) : <span class="id" title="var">nat</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">nil</span> ⇒ <span class="id" title="var">O</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">h</span> :: <span class="id" title="var">t</span> ⇒ <span class="id" title="var">S</span> (<span class="id" title="var">length</span> <span class="id" title="var">t</span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab68"></a><h3 class="section">Конкатенация</h3>
+
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">app</span> (<span class="id" title="var">l<sub>1</sub></span> <span class="id" title="var">l<sub>2</sub></span> : <span class="id" title="var">natlist</span>) : <span class="id" title="var">natlist</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l<sub>1</sub></span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">nil</span>    ⇒ <span class="id" title="var">l<sub>2</sub></span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">h</span> :: <span class="id" title="var">t</span> ⇒ <span class="id" title="var">h</span> :: (<span class="id" title="var">app</span> <span class="id" title="var">t</span> <span class="id" title="var">l<sub>2</sub></span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Notation</span> &quot;x ++ y" := (<span class="id" title="var">app</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="tactic">right</span> <span class="id" title="keyword">associativity</span>, <span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 60).<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_app1</span>:             [1;2;3] ++ [4;5] = [1;2;3;4;5].<br/>
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_app2</span>:             <span class="id" title="var">nil</span> ++ [4;5] = [4;5].<br/>
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_app3</span>:             [1;2;3] ++ <span class="id" title="var">nil</span> = [1;2;3].<br/>
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab69"></a><h3 class="section">Голова и хвост</h3>
+
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">hd</span> (<span class="id" title="var">default</span> : <span class="id" title="var">nat</span>) (<span class="id" title="var">l</span> : <span class="id" title="var">natlist</span>) : <span class="id" title="var">nat</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">nil</span> ⇒ <span class="id" title="var">default</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">h</span> :: <span class="id" title="var">t</span> ⇒ <span class="id" title="var">h</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">tl</span> (<span class="id" title="var">l</span> : <span class="id" title="var">natlist</span>) : <span class="id" title="var">natlist</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">nil</span> ⇒ <span class="id" title="var">nil</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">h</span> :: <span class="id" title="var">t</span> ⇒ <span class="id" title="var">t</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_hd<sub>1</sub></span>:             <span class="id" title="var">hd</span> 0 [1;2;3] = 1.<br/>
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_hd<sub>2</sub></span>:             <span class="id" title="var">hd</span> 0 [] = 0.<br/>
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_tl</span>:              <span class="id" title="var">tl</span> [1;2;3] = [2;3].<br/>
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/><hr class='doublespaceincode'/>
+ <!-- /quiz -->
+</div><div class="quiz">
+
+
+<div class="doc">
+Что делает следующая функция? 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">foo</span> (<span class="id" title="var">n</span> : <span class="id" title="var">nat</span>) : <span class="id" title="var">natlist</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">n</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| 0 ⇒ <span class="id" title="var">nil</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">S</span> <span class="id" title="var">n'</span> ⇒ <span class="id" title="var">n</span> :: (<span class="id" title="var">foo</span> <span class="id" title="var">n'</span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+</div></div> <!-- /quiz -->
+
+<div class="doc">
+<a id="lab70"></a><h1 class="section">Суждения о списках</h1>
+
+<div class="paragraph"> </div>
+
+ Как было и с числами, для некоторых доказательств
+    о функциях на списках достаточно упростить выражения... 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">nil_app</span> : <span class="id" title="keyword">∀</span> <span class="id" title="var">l</span> : <span class="id" title="var">natlist</span>,<br/>
+&nbsp;&nbsp;[] ++ <span class="id" title="var">l</span> = <span class="id" title="var">l</span>.<br/>
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab71"></a><h3 class="section"> </h3>
+ ...а для некоторых потребуется анализ случаев. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">tl_length_pred</span> : <span class="id" title="keyword">∀</span> <span class="id" title="var">l</span>:<span class="id" title="var">natlist</span>,<br/>
+&nbsp;&nbsp;<span class="id" title="var">pred</span> (<span class="id" title="var">length</span> <span class="id" title="var">l</span>) = <span class="id" title="var">length</span> (<span class="id" title="var">tl</span> <span class="id" title="var">l</span>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">l</span>. <span class="id" title="tactic">destruct</span> <span class="id" title="var">l</span> <span class="id" title="keyword">as</span> [| <span class="id" title="var">n</span> <span class="id" title="var">l'</span>].<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;l&nbsp;=&nbsp;nil&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">reflexivity</span>.<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;l&nbsp;=&nbsp;cons&nbsp;n&nbsp;l'&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<div class="doc">
+Правда, чаще всего, доказательство интересных теорем о списках требует
+    использования _индукции по спискам_.  Сейчас мы увидим, как это делать. 
+</div>
+
+<div class="doc">
+<a id="lab72"></a><h2 class="section">Индукция на списках</h2>
+
+<div class="paragraph"> </div>
+
+ Coq генерирует _принцип индукции_ для каждого <span class="inlinecode">Индуктивного</span>
+    определения, включая списки.  Благодаря этому, например, мы можем
+    использовать тактику <span class="inlinecode"><span class="id" title="tactic">induction</span></span> на списках, чтобы доказать вещи вроде
+    ассоциативности конкатенации... 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">app_assoc</span> : <span class="id" title="keyword">∀</span> <span class="id" title="var">l<sub>1</sub></span> <span class="id" title="var">l<sub>2</sub></span> <span class="id" title="var">l<sub>3</sub></span> : <span class="id" title="var">natlist</span>,<br/>
+&nbsp;&nbsp;(<span class="id" title="var">l<sub>1</sub></span> ++ <span class="id" title="var">l<sub>2</sub></span>) ++ <span class="id" title="var">l<sub>3</sub></span> = <span class="id" title="var">l<sub>1</sub></span> ++ (<span class="id" title="var">l<sub>2</sub></span> ++ <span class="id" title="var">l<sub>3</sub></span>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">l<sub>1</sub></span> <span class="id" title="var">l<sub>2</sub></span> <span class="id" title="var">l<sub>3</sub></span>. <span class="id" title="tactic">induction</span> <span class="id" title="var">l<sub>1</sub></span> <span class="id" title="keyword">as</span> [| <span class="id" title="var">n</span> <span class="id" title="var">l<sub>1</sub>'</span> <span class="id" title="var">IHl1'</span>].<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;l<sub>1</sub>&nbsp;=&nbsp;nil&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">reflexivity</span>.<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;l<sub>1</sub>&nbsp;=&nbsp;cons&nbsp;n&nbsp;l<sub>1</sub>'&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">rewrite</span> → <span class="id" title="var">IHl1'</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab73"></a><h3 class="section"> </h3>
+ Для сравнения, вот неформальное (но строгое) доказательство
+    той же самой теоремы. 
+<div class="paragraph"> </div>
+
+ _Теорема_: Для всяких списков <span class="inlinecode"><span class="id" title="var">l<sub>1</sub></span></span>, <span class="inlinecode"><span class="id" title="var">l<sub>2</sub></span></span> и <span class="inlinecode"><span class="id" title="var">l<sub>3</sub></span></span> верно, что
+               <span class="inlinecode">(<span class="id" title="var">l<sub>1</sub></span></span> <span class="inlinecode">++</span> <span class="inlinecode"><span class="id" title="var">l<sub>2</sub></span>)</span> <span class="inlinecode">++</span> <span class="inlinecode"><span class="id" title="var">l<sub>3</sub></span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" title="var">l<sub>1</sub></span></span> <span class="inlinecode">++</span> <span class="inlinecode">(<span class="id" title="var">l<sub>2</sub></span></span> <span class="inlinecode">++</span> <span class="inlinecode"><span class="id" title="var">l<sub>3</sub></span>)</span>.
+
+<div class="paragraph"> </div>
+
+   _Доказательство_: Индукцией по <span class="inlinecode"><span class="id" title="var">l<sub>1</sub></span></span>.
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> База: <span class="inlinecode"><span class="id" title="var">l<sub>1</sub></span></span> <span class="inlinecode">=</span> <span class="inlinecode">[]</span>.  Необходимо показать, что
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;([] ++ <span class="id" title="var">l<sub>2</sub></span>) ++ <span class="id" title="var">l<sub>3</sub></span> = [] ++ (<span class="id" title="var">l<sub>2</sub></span> ++ <span class="id" title="var">l<sub>3</sub></span>),
+</span>     что напрямую следует из определения <span class="inlinecode">++</span>.
+
+<div class="paragraph"> </div>
+
+
+</li>
+<li> Переход: <span class="inlinecode"><span class="id" title="var">l<sub>1</sub></span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" title="var">n</span>::<span class="id" title="var">l<sub>1</sub>'</span></span>, причём
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="var">l<sub>1</sub>'</span> ++ <span class="id" title="var">l<sub>2</sub></span>) ++ <span class="id" title="var">l<sub>3</sub></span> = <span class="id" title="var">l<sub>1</sub>'</span> ++ (<span class="id" title="var">l<sub>2</sub></span> ++ <span class="id" title="var">l<sub>3</sub></span>)
+</span>     (по предположению индукции).  Необходимо показать, что
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;((<span class="id" title="var">n</span> :: <span class="id" title="var">l<sub>1</sub>'</span>) ++ <span class="id" title="var">l<sub>2</sub></span>) ++ <span class="id" title="var">l<sub>3</sub></span> = (<span class="id" title="var">n</span> :: <span class="id" title="var">l<sub>1</sub>'</span>) ++ (<span class="id" title="var">l<sub>2</sub></span> ++ <span class="id" title="var">l<sub>3</sub></span>).
+</span>     По определению <span class="inlinecode">++</span>, это следует из
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">n</span> :: ((<span class="id" title="var">l<sub>1</sub>'</span> ++ <span class="id" title="var">l<sub>2</sub></span>) ++ <span class="id" title="var">l<sub>3</sub></span>) = <span class="id" title="var">n</span> :: (<span class="id" title="var">l<sub>1</sub>'</span> ++ (<span class="id" title="var">l<sub>2</sub></span> ++ <span class="id" title="var">l<sub>3</sub></span>)),
+</span>     что также верно благодаря предположению индукции.  <font size=-2>&#9744;</font> 
+</li>
+</ul>
+
+<div class="paragraph"> </div>
+
+<a id="lab74"></a><h3 class="section">Усиление предположения индукции</h3>
+
+<div class="paragraph"> </div>
+
+ Иногда утверждения нужно усилить, чтобы доказать по индукции:  
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">repeat_double_firsttry</span> : <span class="id" title="keyword">∀</span> <span class="id" title="var">c</span> <span class="id" title="var">n</span>: <span class="id" title="var">nat</span>,<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">repeat</span> <span class="id" title="var">n</span> <span class="id" title="var">c</span> ++ <span class="id" title="tactic">repeat</span> <span class="id" title="var">n</span> <span class="id" title="var">c</span> = <span class="id" title="tactic">repeat</span> <span class="id" title="var">n</span> (<span class="id" title="var">c</span> + <span class="id" title="var">c</span>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">c</span>. <span class="id" title="tactic">induction</span> <span class="id" title="var">c</span> <span class="id" title="keyword">as</span> [| <span class="id" title="var">c'</span> <span class="id" title="var">IHc'</span>].<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;c&nbsp;=&nbsp;0&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">n</span>. <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">reflexivity</span>.<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;c&nbsp;=&nbsp;S&nbsp;c'&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">n</span>. <span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;&nbsp;Здесь-то&nbsp;мы,&nbsp;кажется,&nbsp;и&nbsp;застряли.&nbsp;&nbsp;Мы&nbsp;не&nbsp;можем&nbsp;использовать&nbsp;IH,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;чтобы&nbsp;переписать&nbsp;<span class="inlinecode"><span class="id" title="tactic">repeat</span></span> <span class="inlinecode"><span class="id" title="var">n</span></span> <span class="inlinecode">(<span class="id" title="var">c'</span></span> <span class="inlinecode">+</span> <span class="inlinecode"><span class="id" title="var">S</span></span> <span class="inlinecode"><span class="id" title="var">c'</span>)</span>:&nbsp;гипотеза&nbsp;работает&nbsp;только&nbsp;для<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="inlinecode"><span class="id" title="tactic">repeat</span></span> <span class="inlinecode"><span class="id" title="var">n</span></span> <span class="inlinecode">(<span class="id" title="var">c'</span></span> <span class="inlinecode">+</span> <span class="inlinecode"><span class="id" title="var">c'</span>)</span>.&nbsp;Если&nbsp;бы&nbsp;IH&nbsp;была&nbsp;более&nbsp;гибкой<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(например,&nbsp;если&nbsp;бы&nbsp;она&nbsp;работала&nbsp;для&nbsp;произвольного&nbsp;второго&nbsp;слагаемого),<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;доказательство&nbsp;бы&nbsp;прошло.&nbsp;*)</span><br/>
+<span class="id" title="keyword">Abort</span>.<br/>
+</div>
+
+<div class="doc">
+Усиление утверждения, которое приводит к более общему
+    предположению индукции: 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">repeat_plus</span>: <span class="id" title="keyword">∀</span> <span class="id" title="var">c<sub>1</sub></span> <span class="id" title="var">c<sub>2</sub></span> <span class="id" title="var">n</span>: <span class="id" title="var">nat</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">repeat</span> <span class="id" title="var">n</span> <span class="id" title="var">c<sub>1</sub></span> ++ <span class="id" title="tactic">repeat</span> <span class="id" title="var">n</span> <span class="id" title="var">c<sub>2</sub></span> = <span class="id" title="tactic">repeat</span> <span class="id" title="var">n</span> (<span class="id" title="var">c<sub>1</sub></span> + <span class="id" title="var">c<sub>2</sub></span>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">c<sub>1</sub></span> <span class="id" title="var">c<sub>2</sub></span> <span class="id" title="var">n</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">c<sub>1</sub></span> <span class="id" title="keyword">as</span> [| <span class="id" title="var">c<sub>1</sub>'</span> <span class="id" title="var">IHc1'</span>].<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">reflexivity</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">rewrite</span> &lt;- <span class="id" title="var">IHc1'</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">reflexivity</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab75"></a><h3 class="section">Разворот списка</h3>
+
+<div class="paragraph"> </div>
+
+ Более интересный подопытный для индукции на списках: 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">rev</span> (<span class="id" title="var">l</span>:<span class="id" title="var">natlist</span>) : <span class="id" title="var">natlist</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">nil</span>    ⇒ <span class="id" title="var">nil</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">h</span> :: <span class="id" title="var">t</span> ⇒ <span class="id" title="var">rev</span> <span class="id" title="var">t</span> ++ [<span class="id" title="var">h</span>]<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_rev1</span>:            <span class="id" title="var">rev</span> [1;2;3] = [3;2;1].<br/>
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_rev2</span>:            <span class="id" title="var">rev</span> <span class="id" title="var">nil</span> = <span class="id" title="var">nil</span>.<br/>
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab76"></a><h3 class="section"> </h3>
+ Давайте попробуем доказать, что <span class="inlinecode"><span class="id" title="var">length</span></span> <span class="inlinecode">(<span class="id" title="var">rev</span></span> <span class="inlinecode"><span class="id" title="var">l</span>)</span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" title="var">length</span></span> <span class="inlinecode"><span class="id" title="var">l</span></span>. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">rev_length_firsttry</span> : <span class="id" title="keyword">∀</span> <span class="id" title="var">l</span> : <span class="id" title="var">natlist</span>,<br/>
+&nbsp;&nbsp;<span class="id" title="var">length</span> (<span class="id" title="var">rev</span> <span class="id" title="var">l</span>) = <span class="id" title="var">length</span> <span class="id" title="var">l</span>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">l</span>. <span class="id" title="tactic">induction</span> <span class="id" title="var">l</span> <span class="id" title="keyword">as</span> [| <span class="id" title="var">n</span> <span class="id" title="var">l'</span> <span class="id" title="var">IHl'</span>].<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;l&nbsp;=&nbsp;nil&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">reflexivity</span>.<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;l&nbsp;=&nbsp;n&nbsp;::&nbsp;l'&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">rewrite</span> &lt;- <span class="id" title="var">IHl'</span>.<br/>
+<span class="id" title="keyword">Abort</span>.<br/>
+</div>
+
+<div class="doc">
+Первая попытка: 
+</div>
+<div class="code">
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">app_rev_length_S_firsttry</span>: <span class="id" title="keyword">∀</span> <span class="id" title="var">l</span> <span class="id" title="var">n</span>,<br/>
+&nbsp;&nbsp;<span class="id" title="var">length</span> (<span class="id" title="var">rev</span> <span class="id" title="var">l</span> ++ [<span class="id" title="var">n</span>]) = <span class="id" title="var">S</span> (<span class="id" title="var">length</span> (<span class="id" title="var">rev</span> <span class="id" title="var">l</span>)).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">l</span>. <span class="id" title="tactic">induction</span> <span class="id" title="var">l</span> <span class="id" title="keyword">as</span> [| <span class="id" title="var">m</span> <span class="id" title="var">l'</span> <span class="id" title="var">IHl'</span>].<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;l&nbsp;=&nbsp;<span class="inlinecode"></span>&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">n</span>. <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">reflexivity</span>.<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;l&nbsp;=&nbsp;m::&nbsp;l'&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">n</span>. <span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;IHl'&nbsp;не&nbsp;применима.&nbsp;*)</span><br/>
+<span class="id" title="keyword">Abort</span>.<br/>
+</div>
+
+<div class="doc">
+Слегка усиленное утверждение: 
+</div>
+<div class="code">
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">app_length_S</span>: <span class="id" title="keyword">∀</span> <span class="id" title="var">l</span> <span class="id" title="var">n</span>,<br/>
+&nbsp;&nbsp;<span class="id" title="var">length</span> (<span class="id" title="var">l</span> ++ [<span class="id" title="var">n</span>]) = <span class="id" title="var">S</span> (<span class="id" title="var">length</span> <span class="id" title="var">l</span>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">l</span> <span class="id" title="var">n</span>. <span class="id" title="tactic">induction</span> <span class="id" title="var">l</span> <span class="id" title="keyword">as</span> [| <span class="id" title="var">m</span> <span class="id" title="var">l'</span> <span class="id" title="var">IHl'</span>].<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;l&nbsp;=&nbsp;<span class="inlinecode"></span>&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">reflexivity</span>.<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;l&nbsp;=&nbsp;m::&nbsp;l'&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">rewrite</span> <span class="id" title="var">IHl'</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">reflexivity</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab77"></a><h3 class="section"> </h3>
+ Теперь мы можем закончить исходное доказательство. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">rev_length</span> : <span class="id" title="keyword">∀</span> <span class="id" title="var">l</span> : <span class="id" title="var">natlist</span>,<br/>
+&nbsp;&nbsp;<span class="id" title="var">length</span> (<span class="id" title="var">rev</span> <span class="id" title="var">l</span>) = <span class="id" title="var">length</span> <span class="id" title="var">l</span>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">l</span>. <span class="id" title="tactic">induction</span> <span class="id" title="var">l</span> <span class="id" title="keyword">as</span> [| <span class="id" title="var">n</span> <span class="id" title="var">l'</span> <span class="id" title="var">IHl'</span>].<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;l&nbsp;=&nbsp;nil&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">reflexivity</span>.<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;l&nbsp;=&nbsp;cons&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">rewrite</span> → <span class="id" title="var">app_length_S</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">rewrite</span> → <span class="id" title="var">IHl'</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">reflexivity</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab78"></a><h3 class="section"> </h3>
+ На самом деле, мы можем ещё больше усилить app_length_S, и доказать
+    утверждение про длину двух любых склеенных вместе списков. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">app_length</span> : <span class="id" title="keyword">∀</span> <span class="id" title="var">l<sub>1</sub></span> <span class="id" title="var">l<sub>2</sub></span> : <span class="id" title="var">natlist</span>,<br/>
+&nbsp;&nbsp;<span class="id" title="var">length</span> (<span class="id" title="var">l<sub>1</sub></span> ++ <span class="id" title="var">l<sub>2</sub></span>) = (<span class="id" title="var">length</span> <span class="id" title="var">l<sub>1</sub></span>) + (<span class="id" title="var">length</span> <span class="id" title="var">l<sub>2</sub></span>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="comment">(*&nbsp;WORK&nbsp;IN&nbsp;CLASS&nbsp;*)</span> <span class="id" title="var">Admitted</span>.<br/><hr class='doublespaceincode'/>
+ <!-- /quiz -->
+</div><div class="quiz">
+
+
+<div class="doc">
+Чтобы доказать следующую теорему, какие тактики потребуются, кроме
+    <span class="inlinecode"><span class="id" title="tactic">intros</span></span>, <span class="inlinecode"><span class="id" title="tactic">simpl</span></span>, <span class="inlinecode"><span class="id" title="tactic">rewrite</span></span> и <span class="inlinecode"><span class="id" title="tactic">reflexivity</span></span>?
+
+<div class="paragraph"> </div>
+
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">Theorem</span> <span class="id" title="var">foo1</span> : <span class="id" title="keyword">∀</span> <span class="id" title="var">n</span>:<span class="id" title="var">nat</span>, <span class="id" title="keyword">∀</span> <span class="id" title="var">l</span>:<span class="id" title="var">natlist</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">repeat</span> <span class="id" title="var">n</span> 0 = <span class="id" title="var">l</span> → <span class="id" title="var">length</span> <span class="id" title="var">l</span> = 0.
+</span>
+<div class="paragraph"> </div>
+
+    (1) никаких?
+
+<div class="paragraph"> </div>
+
+    (2) <span class="inlinecode"><span class="id" title="tactic">destruct</span></span>?
+
+<div class="paragraph"> </div>
+
+    (3) <span class="inlinecode"><span class="id" title="tactic">induction</span></span> <span class="inlinecode"><span class="id" title="var">on</span></span> <span class="inlinecode"><span class="id" title="var">n</span></span>?
+
+<div class="paragraph"> </div>
+
+    (4) <span class="inlinecode"><span class="id" title="tactic">induction</span></span> <span class="inlinecode"><span class="id" title="var">on</span></span> <span class="inlinecode"><span class="id" title="var">l</span></span>? Или
+
+<div class="paragraph"> </div>
+
+    (5) не было ещё таких тактик.
+
+</div>
+</div> <!-- /quiz -->
+<div class="quiz">
+
+
+<div class="doc">
+Как насчёт этой?
+
+<div class="paragraph"> </div>
+
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">Theorem</span> <span class="id" title="var">foo2</span> :  <span class="id" title="keyword">∀</span> <span class="id" title="var">n</span> <span class="id" title="var">m</span> : <span class="id" title="var">nat</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">length</span> (<span class="id" title="tactic">repeat</span> <span class="id" title="var">n</span> <span class="id" title="var">m</span>) = <span class="id" title="var">m</span>.
+</span>
+<div class="paragraph"> </div>
+
+    Какие тактики потребуются кроме <span class="inlinecode"><span class="id" title="tactic">intros</span></span>, <span class="inlinecode"><span class="id" title="tactic">simpl</span></span>, <span class="inlinecode"><span class="id" title="tactic">rewrite</span></span> и
+    <span class="inlinecode"><span class="id" title="tactic">reflexivity</span></span>?
+
+<div class="paragraph"> </div>
+
+    (1) никаких?
+
+<div class="paragraph"> </div>
+
+    (2) <span class="inlinecode"><span class="id" title="tactic">destruct</span></span>?
+
+<div class="paragraph"> </div>
+
+    (3) <span class="inlinecode"><span class="id" title="tactic">induction</span></span> <span class="inlinecode"><span class="id" title="var">on</span></span> <span class="inlinecode"><span class="id" title="var">n</span></span>?
+
+<div class="paragraph"> </div>
+
+    (4) <span class="inlinecode"><span class="id" title="tactic">induction</span></span> <span class="inlinecode"><span class="id" title="var">on</span></span> <span class="inlinecode"><span class="id" title="var">m</span></span>? Или
+
+<div class="paragraph"> </div>
+
+    (5) не было ещё таких тактик.
+
+</div>
+</div> <!-- /quiz -->
+
+<div class="doc">
+<a id="lab79"></a><h1 class="section">Частичные значения</h1>
+
+<div class="paragraph"> </div>
+
+ Пусть нам хочется функцию, возвращающую <span class="inlinecode"><span class="id" title="var">n</span></span>-й элемент списка.
+    Но что делать, если список слишком короткий? 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">nth_bad</span> (<span class="id" title="var">l</span>:<span class="id" title="var">natlist</span>) (<span class="id" title="var">n</span>:<span class="id" title="var">nat</span>) : <span class="id" title="var">nat</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">nil</span> ⇒ 42<br/>
+&nbsp;&nbsp;| <span class="id" title="var">a</span> :: <span class="id" title="var">l'</span> ⇒ <span class="id" title="keyword">match</span> <span class="id" title="var">n</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 0 ⇒ <span class="id" title="var">a</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">S</span> <span class="id" title="var">n'</span> ⇒ <span class="id" title="var">nth_bad</span> <span class="id" title="var">l'</span> <span class="id" title="var">n'</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab80"></a><h3 class="section"> </h3>
+
+<div class="paragraph"> </div>
+
+ Решение: <span class="inlinecode"><span class="id" title="var">natoption</span></span>. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Inductive</span> <span class="id" title="var">natoption</span> : <span class="id" title="keyword">Type</span> :=<br/>
+&nbsp;&nbsp;| <span class="id" title="var">Some</span> (<span class="id" title="var">n</span> : <span class="id" title="var">nat</span>)<br/>
+&nbsp;&nbsp;| <span class="id" title="var">None</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">nth_error</span> (<span class="id" title="var">l</span>:<span class="id" title="var">natlist</span>) (<span class="id" title="var">n</span>:<span class="id" title="var">nat</span>) : <span class="id" title="var">natoption</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">nil</span> ⇒ <span class="id" title="var">None</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">a</span> :: <span class="id" title="var">l'</span> ⇒ <span class="id" title="keyword">match</span> <span class="id" title="var">n</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">O</span> ⇒ <span class="id" title="var">Some</span> <span class="id" title="var">a</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">S</span> <span class="id" title="var">n'</span> ⇒ <span class="id" title="var">nth_error</span> <span class="id" title="var">l'</span> <span class="id" title="var">n'</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_nth_error1</span> : <span class="id" title="var">nth_error</span> [4;5;6;7] 0 = <span class="id" title="var">Some</span> 4.<br/>
+<div class="togglescript" id="proofcontrol1" onclick="toggleDisplay('proof1');toggleDisplay('proofcontrol1')"><span class="show"></span></div>
+<div class="proofscript" id="proof1" onclick="toggleDisplay('proof1');toggleDisplay('proofcontrol1')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_nth_error2</span> : <span class="id" title="var">nth_error</span> [4;5;6;7] 3 = <span class="id" title="var">Some</span> 7.<br/>
+<div class="togglescript" id="proofcontrol2" onclick="toggleDisplay('proof2');toggleDisplay('proofcontrol2')"><span class="show"></span></div>
+<div class="proofscript" id="proof2" onclick="toggleDisplay('proof2');toggleDisplay('proofcontrol2')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_nth_error3</span> : <span class="id" title="var">nth_error</span> [4;5;6;7] 9 = <span class="id" title="var">None</span>.<br/>
+<div class="togglescript" id="proofcontrol3" onclick="toggleDisplay('proof3');toggleDisplay('proofcontrol3')"><span class="show"></span></div>
+<div class="proofscript" id="proof3" onclick="toggleDisplay('proof3');toggleDisplay('proofcontrol3')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+</div>
+
+<div class="doc">
+<a id="lab81"></a><h3 class="section"> </h3>
+
+</div>
+<div class="code">
+
+<span class="id" title="keyword">End</span> <span class="id" title="var">NatList</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab82"></a><h1 class="section">Частичные функции</h1>
+
+<div class="paragraph"> </div>
+
+ В качестве последней иллюстрации того, как можно определять типы данных в
+    Coq, ниже мы введём тип данных _частичных функций_, аналогичный
+    ассоциативным массивам (aka словарям), которые легко найти в любом другом
+    языке программирования. 
+<div class="paragraph"> </div>
+
+ Во-первых, определим новый индуктивный тип данных <span class="inlinecode"><span class="id" title="var">id</span></span>, который будет
+    выступать в качестве "ключей" в наших словарях. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Inductive</span> <span class="id" title="var">id</span> : <span class="id" title="keyword">Type</span> :=<br/>
+&nbsp;&nbsp;| <span class="id" title="var">Id</span> (<span class="id" title="var">n</span> : <span class="id" title="var">nat</span>).<br/>
+</div>
+
+<div class="doc">
+Внутри <span class="inlinecode"><span class="id" title="var">id</span></span> лежит просто число.  Введение отдельного типа данных,
+    оборачивающего каждое число тэгом <span class="inlinecode"><span class="id" title="var">Id</span></span>, делает определения более читаемыми
+    и дарит нам гибкость в позднейшем изменении внутреннего представления <span class="inlinecode"><span class="id" title="var">Id</span></span>,
+    если впоследствии нам это потребуется. 
+<div class="paragraph"> </div>
+
+<a id="lab83"></a><h3 class="section"> </h3>
+ Также мы захотим проверять <span class="inlinecode"><span class="id" title="var">id</span></span> на равенство: 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">eqb_id</span> (<span class="id" title="var">x<sub>1</sub></span> <span class="id" title="var">x<sub>2</sub></span> : <span class="id" title="var">id</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">x<sub>1</sub></span>, <span class="id" title="var">x<sub>2</sub></span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">Id</span> <span class="id" title="var">n<sub>1</sub></span>, <span class="id" title="var">Id</span> <span class="id" title="var">n<sub>2</sub></span> ⇒ <span class="id" title="var">n<sub>1</sub></span> =? <span class="id" title="var">n<sub>2</sub></span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+</div>
+
+<div class="doc">
+<a id="lab85"></a><h3 class="section"> </h3>
+ Далее, определим тип частичных функций: 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Inductive</span> <span class="id" title="var">partial_map</span> : <span class="id" title="keyword">Type</span> :=<br/>
+&nbsp;&nbsp;| <span class="id" title="var">empty</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">record</span> (<span class="id" title="var">i</span> : <span class="id" title="var">id</span>) (<span class="id" title="var">v</span> : <span class="id" title="var">nat</span>) (<span class="id" title="var">m</span> : <span class="id" title="var">partial_map</span>).<br/>
+</div>
+
+<div class="doc">
+<a id="lab86"></a><h3 class="section"> </h3>
+ Функция <span class="inlinecode"><span class="id" title="var">update</span></span> перегружает запись для данного ключа в словаре с помощью
+    перекрытия старого определения новым (либо просто добавляет новую запись,
+    если такого ключа ещё нет). 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">update</span> (<span class="id" title="var">d</span> : <span class="id" title="var">partial_map</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="var">x</span> : <span class="id" title="var">id</span>) (<span class="id" title="var">value</span> : <span class="id" title="var">nat</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span class="id" title="var">partial_map</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">record</span> <span class="id" title="var">x</span> <span class="id" title="var">value</span> <span class="id" title="var">d</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab87"></a><h3 class="section"> </h3>
+ Мы можем определять функции на <span class="inlinecode"><span class="id" title="var">partial_map</span></span> с помощью сопоставления
+    с образцом. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">find</span> (<span class="id" title="var">x</span> : <span class="id" title="var">id</span>) (<span class="id" title="var">d</span> : <span class="id" title="var">partial_map</span>) : <span class="id" title="var">natoption</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">d</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">empty</span>         ⇒ <span class="id" title="var">None</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">record</span> <span class="id" title="var">y</span> <span class="id" title="var">v</span> <span class="id" title="var">d'</span> ⇒ <span class="id" title="keyword">if</span> <span class="id" title="var">eqb_id</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">then</span> <span class="id" title="var">Some</span> <span class="id" title="var">v</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">else</span> <span class="id" title="var">find</span> <span class="id" title="var">x</span> <span class="id" title="var">d'</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+ <!-- /quiz -->
+</div><div class="quiz">
+
+
+<div class="doc">
+Верно ли следующее утверждение? 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">quiz1</span> : <span class="id" title="keyword">∀</span> (<span class="id" title="var">d</span> : <span class="id" title="var">partial_map</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="var">x</span> : <span class="id" title="var">id</span>) (<span class="id" title="var">v</span>: <span class="id" title="var">nat</span>),<br/>
+&nbsp;&nbsp;<span class="id" title="var">find</span> <span class="id" title="var">x</span> (<span class="id" title="var">update</span> <span class="id" title="var">d</span> <span class="id" title="var">x</span> <span class="id" title="var">v</span>) = <span class="id" title="var">Some</span> <span class="id" title="var">v</span>.<br/><hr class='doublespaceincode'/>
+</div>
+
+<div class="doc">
+(1) Да
+
+<div class="paragraph"> </div>
+
+    (2) Нет
+
+<div class="paragraph"> </div>
+
+    (3) Не уверен
+
+</div>
+</div> <!-- /quiz -->
+<div class="quiz">
+
+
+<div class="doc">
+Верно ли следующее утверждение? 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Theorem</span> <span class="id" title="var">quiz2</span> : <span class="id" title="keyword">∀</span> (<span class="id" title="var">d</span> : <span class="id" title="var">partial_map</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="var">x</span> <span class="id" title="var">y</span> : <span class="id" title="var">id</span>) (<span class="id" title="var">o</span>: <span class="id" title="var">nat</span>),<br/>
+&nbsp;&nbsp;<span class="id" title="var">eqb_id</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span> = <span class="id" title="var">false</span> →<br/>
+&nbsp;&nbsp;<span class="id" title="var">find</span> <span class="id" title="var">x</span> (<span class="id" title="var">update</span> <span class="id" title="var">d</span> <span class="id" title="var">y</span> <span class="id" title="var">o</span>) = <span class="id" title="var">find</span> <span class="id" title="var">x</span> <span class="id" title="var">d</span>.<br/>
+</div>
+
+<div class="doc">
+(1) Да
+
+<div class="paragraph"> </div>
+
+    (2) Нет
+
+<div class="paragraph"> </div>
+
+    (3) Не уверен
+
+</div>
+</div> <!-- /quiz -->
+
+<div class="doc">
+<a id="lab88"></a><h1 class="section">Poly: полиморфизм и функции высшего порядка</h1>
+
+</div>
+
+<div class="doc">
+<a id="lab89"></a><h2 class="section">Полиморфные списки</h2>
+
+<div class="paragraph"> </div>
+
+ Вместо того, чтобы определять по новому тип списков для каждого типа
+    элементов, т.е. как-то так... 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Inductive</span> <span class="id" title="var">boollist</span> : <span class="id" title="keyword">Type</span> :=<br/>
+&nbsp;&nbsp;| <span class="id" title="var">bool_nil</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">bool_cons</span> (<span class="id" title="var">b</span> : <span class="id" title="var">bool</span>) (<span class="id" title="var">l</span> : <span class="id" title="var">boollist</span>).<br/>
+</div>
+
+<div class="doc">
+<a id="lab90"></a><h3 class="section"> </h3>
+
+<div class="paragraph"> </div>
+
+ ...Coq позволяет давать _полиморфные_ определения, позволяющие, в
+    частности, выбрать произвольный тип элементов списка: 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Inductive</span> <span class="id" title="var">list</span> (<span class="id" title="var">X</span>:<span class="id" title="keyword">Type</span>) : <span class="id" title="keyword">Type</span> :=<br/>
+&nbsp;&nbsp;| <span class="id" title="var">nil</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">cons</span> (<span class="id" title="var">x</span> : <span class="id" title="var">X</span>) (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">X</span>).<br/>
+</div>
+
+<div class="doc">
+Сам <span class="inlinecode"><span class="id" title="var">list</span></span> -- это _функция_ из типов в типы. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Check</span> <span class="id" title="var">list</span> : <span class="id" title="keyword">Type</span> → <span class="id" title="keyword">Type</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab91"></a><h3 class="section"> </h3>
+
+<div class="paragraph"> </div>
+
+ <span class="inlinecode"><span class="id" title="var">X</span></span> из определения <span class="inlinecode"><span class="id" title="var">list</span></span>
+    становится параметром конструкторов <span class="inlinecode"><span class="id" title="var">nil</span></span> и <span class="inlinecode"><span class="id" title="var">cons</span></span>. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Check</span> (<span class="id" title="var">nil</span> <span class="id" title="var">nat</span>) : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Check</span> (<span class="id" title="var">cons</span> <span class="id" title="var">nat</span> 3 (<span class="id" title="var">nil</span> <span class="id" title="var">nat</span>)) : <span class="id" title="var">list</span> <span class="id" title="var">nat</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Check</span> <span class="id" title="var">nil</span> : <span class="id" title="keyword">∀</span> <span class="id" title="var">X</span> : <span class="id" title="keyword">Type</span>, <span class="id" title="var">list</span> <span class="id" title="var">X</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Check</span> <span class="id" title="var">cons</span> : <span class="id" title="keyword">∀</span> <span class="id" title="var">X</span> : <span class="id" title="keyword">Type</span>, <span class="id" title="var">X</span> → <span class="id" title="var">list</span> <span class="id" title="var">X</span> → <span class="id" title="var">list</span> <span class="id" title="var">X</span>.<br/>
+</div>
+
+<div class="doc">
+Заметка о нотации: в файлах .v, квантор "forall" пишется побуквенно.
+    В соответствующих файлах HTML, он обычно пишется как стандартное
+    математическое "перевёрнутое A." 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Check</span> (<span class="id" title="var">cons</span> <span class="id" title="var">nat</span> 2 (<span class="id" title="var">cons</span> <span class="id" title="var">nat</span> 1 (<span class="id" title="var">nil</span> <span class="id" title="var">nat</span>)))<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span class="id" title="var">list</span> <span class="id" title="var">nat</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab92"></a><h3 class="section"> </h3>
+ Теперь мы можем определить полиморфные версии функций, которые мы уже
+    видели ранее... 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="tactic">repeat</span> (<span class="id" title="var">X</span> : <span class="id" title="keyword">Type</span>) (<span class="id" title="var">x</span> : <span class="id" title="var">X</span>) (<span class="id" title="var">count</span> : <span class="id" title="var">nat</span>) : <span class="id" title="var">list</span> <span class="id" title="var">X</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">count</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| 0 ⇒ <span class="id" title="var">nil</span> <span class="id" title="var">X</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">S</span> <span class="id" title="var">count'</span> ⇒ <span class="id" title="var">cons</span> <span class="id" title="var">X</span> <span class="id" title="var">x</span> (<span class="id" title="tactic">repeat</span> <span class="id" title="var">X</span> <span class="id" title="var">x</span> <span class="id" title="var">count'</span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_repeat1</span> :<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">repeat</span> <span class="id" title="var">nat</span> 4 2 = <span class="id" title="var">cons</span> <span class="id" title="var">nat</span> 4 (<span class="id" title="var">cons</span> <span class="id" title="var">nat</span> 4 (<span class="id" title="var">nil</span> <span class="id" title="var">nat</span>)).<br/>
+<div class="togglescript" id="proofcontrol4" onclick="toggleDisplay('proof4');toggleDisplay('proofcontrol4')"><span class="show"></span></div>
+<div class="proofscript" id="proof4" onclick="toggleDisplay('proof4');toggleDisplay('proofcontrol4')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<br/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_repeat2</span> :<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">repeat</span> <span class="id" title="var">bool</span> <span class="id" title="var">false</span> 1 = <span class="id" title="var">cons</span> <span class="id" title="var">bool</span> <span class="id" title="var">false</span> (<span class="id" title="var">nil</span> <span class="id" title="var">bool</span>).<br/>
+<div class="togglescript" id="proofcontrol5" onclick="toggleDisplay('proof5');toggleDisplay('proofcontrol5')"><span class="show"></span></div>
+<div class="proofscript" id="proof5" onclick="toggleDisplay('proof5');toggleDisplay('proofcontrol5')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<br/>
+ <!-- /quiz -->
+</div><div class="quiz">
+
+
+<div class="doc">
+Вспомним определения <span class="inlinecode"><span class="id" title="var">nil</span></span> и <span class="inlinecode"><span class="id" title="var">cons</span></span>:
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">nil</span> : <span class="id" title="keyword">∀</span> <span class="id" title="var">X</span> : <span class="id" title="keyword">Type</span>, <span class="id" title="var">list</span> <span class="id" title="var">X</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">cons</span> : <span class="id" title="keyword">∀</span> <span class="id" title="var">X</span> : <span class="id" title="keyword">Type</span>, <span class="id" title="var">X</span> → <span class="id" title="var">list</span> <span class="id" title="var">X</span> → <span class="id" title="var">list</span> <span class="id" title="var">X</span>
+</span>    Каков тип у <span class="inlinecode"><span class="id" title="var">cons</span></span> <span class="inlinecode"><span class="id" title="var">bool</span></span> <span class="inlinecode"><span class="id" title="var">true</span></span> <span class="inlinecode">(<span class="id" title="var">cons</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">3</span> <span class="inlinecode">(<span class="id" title="var">nil</span></span> <span class="inlinecode"><span class="id" title="var">nat</span>))</span>?
+
+<div class="paragraph"> </div>
+
+    (1) <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span>
+
+<div class="paragraph"> </div>
+
+    (2) <span class="inlinecode"><span class="id" title="keyword">∀</span></span> <span class="inlinecode">(<span class="id" title="var">X</span>:<span class="id" title="keyword">Type</span>),</span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span>
+
+<div class="paragraph"> </div>
+
+    (3) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span>
+
+<div class="paragraph"> </div>
+
+    (4) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">bool</span></span>
+
+<div class="paragraph"> </div>
+
+    (5) Никакого
+
+</div>
+</div> <!-- /quiz -->
+<div class="quiz">
+
+
+<div class="doc">
+Вспомним определение <span class="inlinecode"><span class="id" title="tactic">repeat</span></span>:
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">Fixpoint</span> <span class="id" title="tactic">repeat</span> (<span class="id" title="var">X</span> : <span class="id" title="keyword">Type</span>) (<span class="id" title="var">x</span> : <span class="id" title="var">X</span>) (<span class="id" title="var">count</span> : <span class="id" title="var">nat</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span class="id" title="var">list</span> <span class="id" title="var">X</span> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">count</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 0 ⇒ <span class="id" title="var">nil</span> <span class="id" title="var">X</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">S</span> <span class="id" title="var">count'</span> ⇒ <span class="id" title="var">cons</span> <span class="id" title="var">X</span> <span class="id" title="var">x</span> (<span class="id" title="tactic">repeat</span> <span class="id" title="var">X</span> <span class="id" title="var">x</span> <span class="id" title="var">count'</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span>.
+</span>    Каков тип <span class="inlinecode"><span class="id" title="tactic">repeat</span></span>?
+
+<div class="paragraph"> </div>
+
+    (1) <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span>
+
+<div class="paragraph"> </div>
+
+    (2) <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span>
+
+<div class="paragraph"> </div>
+
+    (3) <span class="inlinecode"><span class="id" title="keyword">∀</span></span> <span class="inlinecode">(<span class="id" title="var">X</span></span> <span class="inlinecode"><span class="id" title="var">Y</span>:</span> <span class="inlinecode"><span class="id" title="keyword">Type</span>),</span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">Y</span></span>
+
+<div class="paragraph"> </div>
+
+    (4) <span class="inlinecode"><span class="id" title="keyword">∀</span></span> <span class="inlinecode">(<span class="id" title="var">X</span>:<span class="id" title="keyword">Type</span>),</span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span>
+
+<div class="paragraph"> </div>
+
+    (5) Никакого
+
+</div>
+</div> <!-- /quiz -->
+<div class="quiz">
+
+
+<div class="doc">
+Каков тип <span class="inlinecode"><span class="id" title="tactic">repeat</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">1</span> <span class="inlinecode">2</span>?
+
+<div class="paragraph"> </div>
+
+    (1) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span>
+
+<div class="paragraph"> </div>
+
+    (2) <span class="inlinecode"><span class="id" title="keyword">∀</span></span> <span class="inlinecode">(<span class="id" title="var">X</span>:<span class="id" title="keyword">Type</span>),</span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span>
+
+<div class="paragraph"> </div>
+
+    (3) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">bool</span></span>
+
+<div class="paragraph"> </div>
+
+    (4) Никакого
+
+</div>
+</div> <!-- /quiz -->
+
+<div class="doc">
+<a id="lab93"></a><h3 class="section">Вывод аннотаций типов</h3>
+
+<div class="paragraph"> </div>
+
+ Давайте вновь выпишем определение <span class="inlinecode"><span class="id" title="tactic">repeat</span></span>, но в этот раз мы не будем
+    указывать типы аргументов.  Примет ли Coq такое определение? 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">repeat'</span> <span class="id" title="var">X</span> <span class="id" title="var">x</span> <span class="id" title="var">count</span> : <span class="id" title="var">list</span> <span class="id" title="var">X</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">count</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| 0        ⇒ <span class="id" title="var">nil</span> <span class="id" title="var">X</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">S</span> <span class="id" title="var">count'</span> ⇒ <span class="id" title="var">cons</span> <span class="id" title="var">X</span> <span class="id" title="var">x</span> (<span class="id" title="var">repeat'</span> <span class="id" title="var">X</span> <span class="id" title="var">x</span> <span class="id" title="var">count'</span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab94"></a><h3 class="section"> </h3>
+ Ну конечно.  Посмотрим, какой же тип он выдал <span class="inlinecode"><span class="id" title="var">repeat'</span></span>... 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Check</span> <span class="id" title="var">repeat'</span><br/>
+&nbsp;&nbsp;: <span class="id" title="keyword">∀</span> <span class="id" title="var">X</span> : <span class="id" title="keyword">Type</span>, <span class="id" title="var">X</span> → <span class="id" title="var">nat</span> → <span class="id" title="var">list</span> <span class="id" title="var">X</span>.<br/>
+<span class="id" title="keyword">Check</span> <span class="id" title="tactic">repeat</span><br/>
+&nbsp;&nbsp;: <span class="id" title="keyword">∀</span> <span class="id" title="var">X</span> : <span class="id" title="keyword">Type</span>, <span class="id" title="var">X</span> → <span class="id" title="var">nat</span> → <span class="id" title="var">list</span> <span class="id" title="var">X</span>.<br/>
+</div>
+
+<div class="doc">
+Coq использовал _вывод типов_, чтобы выяснить подходящие типы
+    для <span class="inlinecode"><span class="id" title="var">X</span></span>, <span class="inlinecode"><span class="id" title="var">x</span></span> и <span class="inlinecode"><span class="id" title="var">count</span></span>. 
+</div>
+
+<div class="doc">
+<a id="lab95"></a><h3 class="section">Синтез типового аргумента</h3>
+
+<div class="paragraph"> </div>
+
+ Предоставлять типовой _аргумент_ тоже тягостно, но Coq, как правило,
+    может их вывести: 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">repeat''</span> <span class="id" title="var">X</span> <span class="id" title="var">x</span> <span class="id" title="var">count</span> : <span class="id" title="var">list</span> <span class="id" title="var">X</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">count</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| 0        ⇒ <span class="id" title="var">nil</span> <span class="id" title="var">_</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">S</span> <span class="id" title="var">count'</span> ⇒ <span class="id" title="var">cons</span> <span class="id" title="var">_</span> <span class="id" title="var">x</span> (<span class="id" title="var">repeat''</span> <span class="id" title="var">_</span> <span class="id" title="var">x</span> <span class="id" title="var">count'</span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">list123'</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">cons</span> <span class="id" title="var">_</span> 1 (<span class="id" title="var">cons</span> <span class="id" title="var">_</span> 2 (<span class="id" title="var">cons</span> <span class="id" title="var">_</span> 3 (<span class="id" title="var">nil</span> <span class="id" title="var">_</span>))).<br/>
+</div>
+
+<div class="doc">
+<a id="lab96"></a><h3 class="section">Неявные аргументы</h3>
+
+<div class="paragraph"> </div>
+
+ На самом деле, мы можем пойти ещё дальше и вообще не писать <span class="inlinecode"><span class="id" title="var">_</span></span> в
+    большинстве случаев, попросив Coq _всегда_ выводить типовые аргументы
+    некоторой функции.
+
+<div class="paragraph"> </div>
+
+    Директива <span class="inlinecode"><span class="id" title="var">Arguments</span></span> сообщает имя функции (либо конструктора) и далее
+    перечисляет имена аргументов (начиная с первых), которые нужно считать
+    неявными; каждое такое имя окружено фигурными скобками. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Arguments</span> <span class="id" title="var">nil</span> {<span class="id" title="var">X</span>}.<br/>
+<span class="id" title="keyword">Arguments</span> <span class="id" title="var">cons</span> {<span class="id" title="var">X</span>}.<br/>
+<span class="id" title="keyword">Arguments</span> <span class="id" title="tactic">repeat</span> {<span class="id" title="var">X</span>}.<br/>
+</div>
+
+<div class="doc">
+Теперь в данном примере нам вообще не нужно указывать типовые аргументы: 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">list123''</span> := <span class="id" title="var">cons</span> 1 (<span class="id" title="var">cons</span> 2 (<span class="id" title="var">cons</span> 3 <span class="id" title="var">nil</span>)).<br/>
+</div>
+
+<div class="doc">
+<a id="lab97"></a><h3 class="section"> </h3>
+
+<div class="paragraph"> </div>
+
+ В качестве альтернативы, мы можем объявить аргумент неявным ещё на
+    этапе объявдения функции, окружив его в фигурные скобки вместо круглых.
+    Например: 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">repeat'''</span> {<span class="id" title="var">X</span> : <span class="id" title="keyword">Type</span>} (<span class="id" title="var">x</span> : <span class="id" title="var">X</span>) (<span class="id" title="var">count</span> : <span class="id" title="var">nat</span>) : <span class="id" title="var">list</span> <span class="id" title="var">X</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">count</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| 0        ⇒ <span class="id" title="var">nil</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">S</span> <span class="id" title="var">count'</span> ⇒ <span class="id" title="var">cons</span> <span class="id" title="var">x</span> (<span class="id" title="var">repeat'''</span> <span class="id" title="var">x</span> <span class="id" title="var">count'</span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab98"></a><h3 class="section"> </h3>
+
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">app</span> {<span class="id" title="var">X</span> : <span class="id" title="keyword">Type</span>} (<span class="id" title="var">l<sub>1</sub></span> <span class="id" title="var">l<sub>2</sub></span> : <span class="id" title="var">list</span> <span class="id" title="var">X</span>) : <span class="id" title="var">list</span> <span class="id" title="var">X</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l<sub>1</sub></span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">nil</span>      ⇒ <span class="id" title="var">l<sub>2</sub></span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">cons</span> <span class="id" title="var">h</span> <span class="id" title="var">t</span> ⇒ <span class="id" title="var">cons</span> <span class="id" title="var">h</span> (<span class="id" title="var">app</span> <span class="id" title="var">t</span> <span class="id" title="var">l<sub>2</sub></span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab99"></a><h3 class="section"> </h3>
+
+</div>
+<div class="code">
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">rev</span> {<span class="id" title="var">X</span>:<span class="id" title="keyword">Type</span>} (<span class="id" title="var">l</span>:<span class="id" title="var">list</span> <span class="id" title="var">X</span>) : <span class="id" title="var">list</span> <span class="id" title="var">X</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">nil</span>      ⇒ <span class="id" title="var">nil</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">cons</span> <span class="id" title="var">h</span> <span class="id" title="var">t</span> ⇒ <span class="id" title="var">app</span> (<span class="id" title="var">rev</span> <span class="id" title="var">t</span>) (<span class="id" title="var">cons</span> <span class="id" title="var">h</span> <span class="id" title="var">nil</span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">length</span> {<span class="id" title="var">X</span> : <span class="id" title="keyword">Type</span>} (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">X</span>) : <span class="id" title="var">nat</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">nil</span> ⇒ 0<br/>
+&nbsp;&nbsp;| <span class="id" title="var">cons</span> <span class="id" title="var">_</span> <span class="id" title="var">l'</span> ⇒ <span class="id" title="var">S</span> (<span class="id" title="var">length</span> <span class="id" title="var">l'</span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_rev1</span> :<br/>
+&nbsp;&nbsp;<span class="id" title="var">rev</span> (<span class="id" title="var">cons</span> 1 (<span class="id" title="var">cons</span> 2 <span class="id" title="var">nil</span>)) = (<span class="id" title="var">cons</span> 2 (<span class="id" title="var">cons</span> 1 <span class="id" title="var">nil</span>)).<br/>
+<div class="togglescript" id="proofcontrol6" onclick="toggleDisplay('proof6');toggleDisplay('proofcontrol6')"><span class="show"></span></div>
+<div class="proofscript" id="proof6" onclick="toggleDisplay('proof6');toggleDisplay('proofcontrol6')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<br/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_rev2</span>:<br/>
+&nbsp;&nbsp;<span class="id" title="var">rev</span> (<span class="id" title="var">cons</span> <span class="id" title="var">true</span> <span class="id" title="var">nil</span>) = <span class="id" title="var">cons</span> <span class="id" title="var">true</span> <span class="id" title="var">nil</span>.<br/>
+<div class="togglescript" id="proofcontrol7" onclick="toggleDisplay('proof7');toggleDisplay('proofcontrol7')"><span class="show"></span></div>
+<div class="proofscript" id="proof7" onclick="toggleDisplay('proof7');toggleDisplay('proofcontrol7')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<br/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_length1</span>: <span class="id" title="var">length</span> (<span class="id" title="var">cons</span> 1 (<span class="id" title="var">cons</span> 2 (<span class="id" title="var">cons</span> 3 <span class="id" title="var">nil</span>))) = 3.<br/>
+<div class="togglescript" id="proofcontrol8" onclick="toggleDisplay('proof8');toggleDisplay('proofcontrol8')"><span class="show"></span></div>
+<div class="proofscript" id="proof8" onclick="toggleDisplay('proof8');toggleDisplay('proofcontrol8')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+</div>
+
+<div class="doc">
+<a id="lab100"></a><h3 class="section">Явная передача типовых аргументов</h3>
+
+<div class="paragraph"> </div>
+
+ В целом, вполне нормально просто позволить Coq вывести типовые
+    аргументы. Однако иногда это может привести к проблемам: 
+</div>
+<div class="code">
+
+<span class="id" title="var">Fail</span> <span class="id" title="keyword">Definition</span> <span class="id" title="var">mynil</span> := <span class="id" title="var">nil</span>.<br/>
+</div>
+
+<div class="doc">
+Мы можем исправить это с помощью явной аннотации типов: 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">mynil</span> : <span class="id" title="var">list</span> <span class="id" title="var">nat</span> := <span class="id" title="var">nil</span>.<br/>
+</div>
+
+<div class="doc">
+Также можно сделать все аргументы явными,
+    добавив <span class="inlinecode">@</span> перед именем функции. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Check</span> @<span class="id" title="var">nil</span> : <span class="id" title="keyword">∀</span> <span class="id" title="var">X</span> : <span class="id" title="keyword">Type</span>, <span class="id" title="var">list</span> <span class="id" title="var">X</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">mynil'</span> := @<span class="id" title="var">nil</span> <span class="id" title="var">nat</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab101"></a><h3 class="section"> </h3>
+ Используя синтез аргументов и неявные аргументы, мы можем
+    определить нотации, работающие для списков произвольного типа. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Notation</span> &quot;x :: y" := (<span class="id" title="var">cons</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 60, <span class="id" title="tactic">right</span> <span class="id" title="keyword">associativity</span>).<br/>
+<span class="id" title="keyword">Notation</span> &quot;[ ]" := <span class="id" title="var">nil</span>.<br/>
+<span class="id" title="keyword">Notation</span> &quot;[ x ; .. ; y ]" := (<span class="id" title="var">cons</span> <span class="id" title="var">x</span> .. (<span class="id" title="var">cons</span> <span class="id" title="var">y</span> []) ..).<br/>
+<span class="id" title="keyword">Notation</span> &quot;x ++ y" := (<span class="id" title="var">app</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 60, <span class="id" title="tactic">right</span> <span class="id" title="keyword">associativity</span>).<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">list123'''</span> := [1; 2; 3].<br/><hr class='doublespaceincode'/>
+ <!-- /quiz -->
+</div><div class="quiz">
+
+
+<div class="doc">
+Какой тип Coq присваивает следующему выражению? 
+</div>
+
+<div class="doc">
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[1;2;3]
+</span>
+<div class="paragraph"> </div>
+
+    (1) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span>
+
+<div class="paragraph"> </div>
+
+    (2) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">bool</span></span>
+
+<div class="paragraph"> </div>
+
+    (3) <span class="inlinecode"><span class="id" title="var">bool</span></span>
+
+<div class="paragraph"> </div>
+
+    (4) Никакой
+
+</div>
+</div> <!-- /quiz -->
+<div class="quiz">
+
+
+<div class="doc">
+Как насчёт этого?
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[3 + 4] ++ <span class="id" title="var">nil</span>
+</span>
+<div class="paragraph"> </div>
+
+    (1) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span>
+
+<div class="paragraph"> </div>
+
+    (2) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">bool</span></span>
+
+<div class="paragraph"> </div>
+
+    (3) <span class="inlinecode"><span class="id" title="var">bool</span></span>
+
+<div class="paragraph"> </div>
+
+    (4) Никакой
+
+</div>
+</div> <!-- /quiz -->
+<div class="quiz">
+
+
+<div class="doc">
+Как насчёт этого?
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">andb</span> <span class="id" title="var">true</span> <span class="id" title="var">false</span> ++ <span class="id" title="var">nil</span>
+</span>
+<div class="paragraph"> </div>
+
+    (1) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span>
+
+<div class="paragraph"> </div>
+
+    (2) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">bool</span></span>
+
+<div class="paragraph"> </div>
+
+    (3) <span class="inlinecode"><span class="id" title="var">bool</span></span>
+
+<div class="paragraph"> </div>
+
+    (4) Никакой
+
+</div>
+</div> <!-- /quiz -->
+<div class="quiz">
+
+
+<div class="doc">
+Как насчёт этого?
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[1; <span class="id" title="var">nil</span>]
+</span>
+<div class="paragraph"> </div>
+
+    (1) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span>
+
+<div class="paragraph"> </div>
+
+    (2) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode">(<span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span>)</span>
+
+<div class="paragraph"> </div>
+
+    (3) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">bool</span></span>
+
+<div class="paragraph"> </div>
+
+    (4) Никакой
+
+</div>
+</div> <!-- /quiz -->
+<div class="quiz">
+
+
+<div class="doc">
+Как насчёт этого?
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[1]; <span class="id" title="var">nil</span>]
+</span>
+<div class="paragraph"> </div>
+
+    (1) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span>
+
+<div class="paragraph"> </div>
+
+    (2) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode">(<span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span>)</span>
+
+<div class="paragraph"> </div>
+
+    (3) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">bool</span></span>
+
+<div class="paragraph"> </div>
+
+    (4) Никакой
+
+</div>
+</div> <!-- /quiz -->
+<div class="quiz">
+
+
+<div class="doc">
+А как насчёт этого?
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[1] :: [<span class="id" title="var">nil</span>]
+</span>
+<div class="paragraph"> </div>
+
+    (1) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span>
+
+<div class="paragraph"> </div>
+
+    (2) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode">(<span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span>)</span>
+
+<div class="paragraph"> </div>
+
+    (3) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">bool</span></span>
+
+<div class="paragraph"> </div>
+
+    (4) Никакой
+
+</div>
+</div> <!-- /quiz -->
+<div class="quiz">
+
+
+<div class="doc">
+А для этого?
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@<span class="id" title="var">nil</span> <span class="id" title="var">bool</span>
+</span>
+<div class="paragraph"> </div>
+
+    (1) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span>
+
+<div class="paragraph"> </div>
+
+    (2) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode">(<span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span>)</span>
+
+<div class="paragraph"> </div>
+
+    (3) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">bool</span></span>
+
+<div class="paragraph"> </div>
+
+    (4) Никакой
+
+</div>
+</div> <!-- /quiz -->
+<div class="quiz">
+
+
+<div class="doc">
+А для этого?
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">nil</span> <span class="id" title="var">bool</span>
+</span>
+<div class="paragraph"> </div>
+
+    (1) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span>
+
+<div class="paragraph"> </div>
+
+    (2) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode">(<span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span>)</span>
+
+<div class="paragraph"> </div>
+
+    (3) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">bool</span></span>
+
+<div class="paragraph"> </div>
+
+    (4) Никакой
+
+</div>
+</div> <!-- /quiz -->
+<div class="quiz">
+
+
+<div class="doc">
+Для этого?
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@<span class="id" title="var">nil</span> 3
+</span>
+<div class="paragraph"> </div>
+
+    (1) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span>
+
+<div class="paragraph"> </div>
+
+    (2) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode">(<span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span>)</span>
+
+<div class="paragraph"> </div>
+
+    (3) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">bool</span></span>
+
+<div class="paragraph"> </div>
+
+    (4) Никакой
+
+</div>
+</div> <!-- /quiz -->
+
+<div class="doc">
+<a id="lab105"></a><h2 class="section">Полиморфные пары</h2>
+
+<div class="paragraph"> </div>
+
+ Похожим образом... 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Inductive</span> <span class="id" title="var">prod</span> (<span class="id" title="var">X</span> <span class="id" title="var">Y</span> : <span class="id" title="keyword">Type</span>) : <span class="id" title="keyword">Type</span> :=<br/>
+| <span class="id" title="var">pair</span> (<span class="id" title="var">x</span> : <span class="id" title="var">X</span>) (<span class="id" title="var">y</span> : <span class="id" title="var">Y</span>).<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Arguments</span> <span class="id" title="var">pair</span> {<span class="id" title="var">X</span>} {<span class="id" title="var">Y</span>}.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Notation</span> &quot;( x , y )" := (<span class="id" title="var">pair</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span>).<br/>
+</div>
+
+<div class="doc">
+Мы вновь можем воспользоваться механизмом <span class="inlinecode">Нотаций</span>, чтобы определить
+    стандартную нотацию для _типов-произведений_ (т.е. типов пар): 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Notation</span> &quot;X * Y" := (<span class="id" title="var">prod</span> <span class="id" title="var">X</span> <span class="id" title="var">Y</span>) : <span class="id" title="var">type_scope</span>.<br/>
+</div>
+
+<div class="doc">
+(Аннотация <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" title="var">type_scope</span></span> сообщает Coq-у, что это сокращение
+    можно использовать только при синтаксическом разборе типов, но не при
+    разборе выражений.  Это позволяет избежать коллизий
+    с символом умножения.) 
+<div class="paragraph"> </div>
+
+ Будьте осторожны и не путайте <span class="inlinecode">(<span class="id" title="var">x</span>,<span class="id" title="var">y</span>)</span> с <span class="inlinecode"><span class="id" title="var">X</span>×<span class="id" title="var">Y</span></span>! <a id="lab106"></a><h3 class="section"> </h3>
+
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">fst</span> {<span class="id" title="var">X</span> <span class="id" title="var">Y</span> : <span class="id" title="keyword">Type</span>} (<span class="id" title="var">p</span> : <span class="id" title="var">X</span> × <span class="id" title="var">Y</span>) : <span class="id" title="var">X</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">p</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| (<span class="id" title="var">x</span>, <span class="id" title="var">y</span>) ⇒ <span class="id" title="var">x</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">snd</span> {<span class="id" title="var">X</span> <span class="id" title="var">Y</span> : <span class="id" title="keyword">Type</span>} (<span class="id" title="var">p</span> : <span class="id" title="var">X</span> × <span class="id" title="var">Y</span>) : <span class="id" title="var">Y</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">p</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| (<span class="id" title="var">x</span>, <span class="id" title="var">y</span>) ⇒ <span class="id" title="var">y</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab107"></a><h3 class="section"> </h3>
+ Что делает эта функция? 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">combine</span> {<span class="id" title="var">X</span> <span class="id" title="var">Y</span> : <span class="id" title="keyword">Type</span>} (<span class="id" title="var">lx</span> : <span class="id" title="var">list</span> <span class="id" title="var">X</span>) (<span class="id" title="var">ly</span> : <span class="id" title="var">list</span> <span class="id" title="var">Y</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span class="id" title="var">list</span> (<span class="id" title="var">X</span>×<span class="id" title="var">Y</span>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">lx</span>, <span class="id" title="var">ly</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| [], <span class="id" title="var">_</span> ⇒ []<br/>
+&nbsp;&nbsp;| <span class="id" title="var">_</span>, [] ⇒ []<br/>
+&nbsp;&nbsp;| <span class="id" title="var">x</span> :: <span class="id" title="var">tx</span>, <span class="id" title="var">y</span> :: <span class="id" title="var">ty</span> ⇒ (<span class="id" title="var">x</span>, <span class="id" title="var">y</span>) :: (<span class="id" title="var">combine</span> <span class="id" title="var">tx</span> <span class="id" title="var">ty</span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab108"></a><h2 class="section">Полиморфные частичные значения</h2>
+
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Module</span> <span class="id" title="var">OptionPlayground</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Inductive</span> <span class="id" title="var">option</span> (<span class="id" title="var">X</span>:<span class="id" title="keyword">Type</span>) : <span class="id" title="keyword">Type</span> :=<br/>
+&nbsp;&nbsp;| <span class="id" title="var">Some</span> (<span class="id" title="var">x</span> : <span class="id" title="var">X</span>)<br/>
+&nbsp;&nbsp;| <span class="id" title="var">None</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Arguments</span> <span class="id" title="var">Some</span> {<span class="id" title="var">X</span>}.<br/>
+<span class="id" title="keyword">Arguments</span> <span class="id" title="var">None</span> {<span class="id" title="var">X</span>}.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">End</span> <span class="id" title="var">OptionPlayground</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab109"></a><h3 class="section"> </h3>
+
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">nth_error</span> {<span class="id" title="var">X</span> : <span class="id" title="keyword">Type</span>} (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">X</span>) (<span class="id" title="var">n</span> : <span class="id" title="var">nat</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span class="id" title="var">option</span> <span class="id" title="var">X</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">nil</span> ⇒ <span class="id" title="var">None</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">a</span> :: <span class="id" title="var">l'</span> ⇒ <span class="id" title="keyword">match</span> <span class="id" title="var">n</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">O</span> ⇒ <span class="id" title="var">Some</span> <span class="id" title="var">a</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">S</span> <span class="id" title="var">n'</span> ⇒ <span class="id" title="var">nth_error</span> <span class="id" title="var">l'</span> <span class="id" title="var">n'</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_nth_error1</span> : <span class="id" title="var">nth_error</span> [4;5;6;7] 0 = <span class="id" title="var">Some</span> 4.<br/>
+<div class="togglescript" id="proofcontrol9" onclick="toggleDisplay('proof9');toggleDisplay('proofcontrol9')"><span class="show"></span></div>
+<div class="proofscript" id="proof9" onclick="toggleDisplay('proof9');toggleDisplay('proofcontrol9')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_nth_error2</span> : <span class="id" title="var">nth_error</span> [[1];[2]] 1 = <span class="id" title="var">Some</span> [2].<br/>
+<div class="togglescript" id="proofcontrol10" onclick="toggleDisplay('proof10');toggleDisplay('proofcontrol10')"><span class="show"></span></div>
+<div class="proofscript" id="proof10" onclick="toggleDisplay('proof10');toggleDisplay('proofcontrol10')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_nth_error3</span> : <span class="id" title="var">nth_error</span> [<span class="id" title="var">true</span>] 2 = <span class="id" title="var">None</span>.<br/>
+<div class="togglescript" id="proofcontrol11" onclick="toggleDisplay('proof11');toggleDisplay('proofcontrol11')"><span class="show"></span></div>
+<div class="proofscript" id="proof11" onclick="toggleDisplay('proof11');toggleDisplay('proofcontrol11')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+</div>
+
+<div class="doc">
+<a id="lab110"></a><h1 class="section">Функции в качестве данных</h1>
+
+</div>
+
+<div class="doc">
+<a id="lab111"></a><h2 class="section">Функции высшего порядка</h2>
+
+<div class="paragraph"> </div>
+
+ Функции в Coq _первоклассные_. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">doit3times</span> {<span class="id" title="var">X</span> : <span class="id" title="keyword">Type</span>} (<span class="id" title="var">f</span> : <span class="id" title="var">X</span>→<span class="id" title="var">X</span>) (<span class="id" title="var">n</span> : <span class="id" title="var">X</span>) : <span class="id" title="var">X</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">f</span> (<span class="id" title="var">f</span> (<span class="id" title="var">f</span> <span class="id" title="var">n</span>)).<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Check</span> @<span class="id" title="var">doit3times</span> : <span class="id" title="keyword">∀</span> <span class="id" title="var">X</span> : <span class="id" title="keyword">Type</span>, (<span class="id" title="var">X</span> → <span class="id" title="var">X</span>) → <span class="id" title="var">X</span> → <span class="id" title="var">X</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_doit3times</span>: <span class="id" title="var">doit3times</span> <span class="id" title="var">minustwo</span> 9 = 3.<br/>
+<div class="togglescript" id="proofcontrol12" onclick="toggleDisplay('proof12');toggleDisplay('proofcontrol12')"><span class="show"></span></div>
+<div class="proofscript" id="proof12" onclick="toggleDisplay('proof12');toggleDisplay('proofcontrol12')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<br/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_doit3times'</span>: <span class="id" title="var">doit3times</span> <span class="id" title="var">negb</span> <span class="id" title="var">true</span> = <span class="id" title="var">false</span>.<br/>
+<div class="togglescript" id="proofcontrol13" onclick="toggleDisplay('proof13');toggleDisplay('proofcontrol13')"><span class="show"></span></div>
+<div class="proofscript" id="proof13" onclick="toggleDisplay('proof13');toggleDisplay('proofcontrol13')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+</div>
+
+<div class="doc">
+<a id="lab112"></a><h2 class="section">Фильтрация списка</h2>
+
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">filter</span> {<span class="id" title="var">X</span>:<span class="id" title="keyword">Type</span>} (<span class="id" title="var">test</span>: <span class="id" title="var">X</span>→<span class="id" title="var">bool</span>) (<span class="id" title="var">l</span>:<span class="id" title="var">list</span> <span class="id" title="var">X</span>) : <span class="id" title="var">list</span> <span class="id" title="var">X</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| [] ⇒ []<br/>
+&nbsp;&nbsp;| <span class="id" title="var">h</span> :: <span class="id" title="var">t</span> ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">if</span> <span class="id" title="var">test</span> <span class="id" title="var">h</span> <span class="id" title="keyword">then</span> <span class="id" title="var">h</span> :: (<span class="id" title="var">filter</span> <span class="id" title="var">test</span> <span class="id" title="var">t</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">else</span> <span class="id" title="var">filter</span> <span class="id" title="var">test</span> <span class="id" title="var">t</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_filter1</span>: <span class="id" title="var">filter</span> <span class="id" title="var">even</span> [1;2;3;4] = [2;4].<br/>
+<div class="togglescript" id="proofcontrol14" onclick="toggleDisplay('proof14');toggleDisplay('proofcontrol14')"><span class="show"></span></div>
+<div class="proofscript" id="proof14" onclick="toggleDisplay('proof14');toggleDisplay('proofcontrol14')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+</div>
+
+<div class="doc">
+<a id="lab113"></a><h3 class="section"> </h3>
+
+</div>
+<div class="code">
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">length_is_1</span> {<span class="id" title="var">X</span> : <span class="id" title="keyword">Type</span>} (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">X</span>) : <span class="id" title="var">bool</span> :=<br/>
+&nbsp;&nbsp;(<span class="id" title="var">length</span> <span class="id" title="var">l</span>) =? 1.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_filter2</span>:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">filter</span> <span class="id" title="var">length_is_1</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ [1; 2]; [3]; [4]; [5;6;7]; []; [8] ]<br/>
+&nbsp;&nbsp;= [ [3]; [4]; [8] ].<br/>
+<div class="togglescript" id="proofcontrol15" onclick="toggleDisplay('proof15');toggleDisplay('proofcontrol15')"><span class="show"></span></div>
+<div class="proofscript" id="proof15" onclick="toggleDisplay('proof15');toggleDisplay('proofcontrol15')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+</div>
+
+<div class="doc">
+<a id="lab114"></a><h3 class="section"> </h3>
+ Функция <span class="inlinecode"><span class="id" title="var">filter</span></span> (особенно в комбинации с функциями, которые
+    мы встретим чуть позже) позволяет использовать мощный _комбинаторный_
+    (здесь -- _коллекционно-ориентированный_) стиль программирования. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">countoddmembers'</span> (<span class="id" title="var">l</span>:<span class="id" title="var">list</span> <span class="id" title="var">nat</span>) : <span class="id" title="var">nat</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">length</span> (<span class="id" title="var">filter</span> <span class="id" title="var">odd</span> <span class="id" title="var">l</span>).<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_countoddmembers'1</span>:   <span class="id" title="var">countoddmembers'</span> [1;0;3;1;4;5] = 4.<br/>
+<div class="togglescript" id="proofcontrol16" onclick="toggleDisplay('proof16');toggleDisplay('proofcontrol16')"><span class="show"></span></div>
+<div class="proofscript" id="proof16" onclick="toggleDisplay('proof16');toggleDisplay('proofcontrol16')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_countoddmembers'2</span>:   <span class="id" title="var">countoddmembers'</span> [0;2;4] = 0.<br/>
+<div class="togglescript" id="proofcontrol17" onclick="toggleDisplay('proof17');toggleDisplay('proofcontrol17')"><span class="show"></span></div>
+<div class="proofscript" id="proof17" onclick="toggleDisplay('proof17');toggleDisplay('proofcontrol17')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_countoddmembers'3</span>:   <span class="id" title="var">countoddmembers'</span> <span class="id" title="var">nil</span> = 0.<br/>
+<div class="togglescript" id="proofcontrol18" onclick="toggleDisplay('proof18');toggleDisplay('proofcontrol18')"><span class="show"></span></div>
+<div class="proofscript" id="proof18" onclick="toggleDisplay('proof18');toggleDisplay('proofcontrol18')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+</div>
+
+<div class="doc">
+<a id="lab115"></a><h2 class="section">Анонимные функции</h2>
+
+<div class="paragraph"> </div>
+
+ Функции можно конструировать "на лету", без именования. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_anon_fun'</span>:<br/>
+&nbsp;&nbsp;<span class="id" title="var">doit3times</span> (<span class="id" title="keyword">fun</span> <span class="id" title="var">n</span> ⇒ <span class="id" title="var">n</span> × <span class="id" title="var">n</span>) 2 = 256.<br/>
+<div class="togglescript" id="proofcontrol19" onclick="toggleDisplay('proof19');toggleDisplay('proofcontrol19')"><span class="show"></span></div>
+<div class="proofscript" id="proof19" onclick="toggleDisplay('proof19');toggleDisplay('proofcontrol19')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+</div>
+
+<div class="doc">
+Выражение <span class="inlinecode">(<span class="id" title="keyword">fun</span></span> <span class="inlinecode"><span class="id" title="var">n</span></span> <span class="inlinecode">⇒</span> <span class="inlinecode"><span class="id" title="var">n</span></span> <span class="inlinecode">×</span> <span class="inlinecode"><span class="id" title="var">n</span>)</span> можно прочитать как "функция, которая, получив
+    число <span class="inlinecode"><span class="id" title="var">n</span></span>, возвращает <span class="inlinecode"><span class="id" title="var">n</span></span> <span class="inlinecode">×</span> <span class="inlinecode"><span class="id" title="var">n</span></span>." 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_filter2'</span>:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">filter</span> (<span class="id" title="keyword">fun</span> <span class="id" title="var">l</span> ⇒ (<span class="id" title="var">length</span> <span class="id" title="var">l</span>) =? 1)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ [1; 2]; [3]; [4]; [5;6;7]; []; [8] ]<br/>
+&nbsp;&nbsp;= [ [3]; [4]; [8] ].<br/>
+<div class="togglescript" id="proofcontrol20" onclick="toggleDisplay('proof20');toggleDisplay('proofcontrol20')"><span class="show"></span></div>
+<div class="proofscript" id="proof20" onclick="toggleDisplay('proof20');toggleDisplay('proofcontrol20')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+</div>
+
+<div class="doc">
+<a id="lab116"></a><h2 class="section">Поэлементное отображение</h2>
+
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">map</span> {<span class="id" title="var">X</span> <span class="id" title="var">Y</span> : <span class="id" title="keyword">Type</span>} (<span class="id" title="var">f</span> : <span class="id" title="var">X</span>→<span class="id" title="var">Y</span>) (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">X</span>) : <span class="id" title="var">list</span> <span class="id" title="var">Y</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| []     ⇒ []<br/>
+&nbsp;&nbsp;| <span class="id" title="var">h</span> :: <span class="id" title="var">t</span> ⇒ (<span class="id" title="var">f</span> <span class="id" title="var">h</span>) :: (<span class="id" title="var">map</span> <span class="id" title="var">f</span> <span class="id" title="var">t</span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_map1</span>: <span class="id" title="var">map</span> (<span class="id" title="keyword">fun</span> <span class="id" title="var">x</span> ⇒ <span class="id" title="var">plus</span> 3 <span class="id" title="var">x</span>) [2;0;2] = [5;3;5].<br/>
+<div class="togglescript" id="proofcontrol21" onclick="toggleDisplay('proof21');toggleDisplay('proofcontrol21')"><span class="show"></span></div>
+<div class="proofscript" id="proof21" onclick="toggleDisplay('proof21');toggleDisplay('proofcontrol21')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<br/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_map2</span>:<br/>
+&nbsp;&nbsp;<span class="id" title="var">map</span> <span class="id" title="var">odd</span> [2;1;2;5] = [<span class="id" title="var">false</span>;<span class="id" title="var">true</span>;<span class="id" title="var">false</span>;<span class="id" title="var">true</span>].<br/>
+<div class="togglescript" id="proofcontrol22" onclick="toggleDisplay('proof22');toggleDisplay('proofcontrol22')"><span class="show"></span></div>
+<div class="proofscript" id="proof22" onclick="toggleDisplay('proof22');toggleDisplay('proofcontrol22')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<br/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_map3</span>:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">map</span> (<span class="id" title="keyword">fun</span> <span class="id" title="var">n</span> ⇒ [<span class="id" title="var">even</span> <span class="id" title="var">n</span>;<span class="id" title="var">odd</span> <span class="id" title="var">n</span>]) [2;1;2;5]<br/>
+&nbsp;&nbsp;= [[<span class="id" title="var">true</span>;<span class="id" title="var">false</span>];[<span class="id" title="var">false</span>;<span class="id" title="var">true</span>];[<span class="id" title="var">true</span>;<span class="id" title="var">false</span>];[<span class="id" title="var">false</span>;<span class="id" title="var">true</span>]].<br/>
+<div class="togglescript" id="proofcontrol23" onclick="toggleDisplay('proof23');toggleDisplay('proofcontrol23')"><span class="show"></span></div>
+<div class="proofscript" id="proof23" onclick="toggleDisplay('proof23');toggleDisplay('proofcontrol23')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<br/>
+ <!-- /quiz -->
+</div><div class="quiz">
+
+
+<div class="doc">
+Вспомним определение <span class="inlinecode"><span class="id" title="var">map</span></span>:
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">Fixpoint</span> <span class="id" title="var">map</span> {<span class="id" title="var">X</span> <span class="id" title="var">Y</span> : <span class="id" title="keyword">Type</span>} (<span class="id" title="var">f</span> : <span class="id" title="var">X</span>→<span class="id" title="var">Y</span>) (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">X</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span class="id" title="var">list</span> <span class="id" title="var">Y</span> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| []     ⇒ []<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">h</span> :: <span class="id" title="var">t</span> ⇒ (<span class="id" title="var">f</span> <span class="id" title="var">h</span>) :: (<span class="id" title="var">map</span> <span class="id" title="var">f</span> <span class="id" title="var">t</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span>.
+</span>    Каков тип выражения <span class="inlinecode">@<span class="id" title="var">map</span></span>?
+
+<div class="paragraph"> </div>
+
+    (1) <span class="inlinecode"><span class="id" title="keyword">∀</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" title="keyword">Type</span>,</span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">Y</span></span>
+
+<div class="paragraph"> </div>
+
+    (2) <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">Y</span></span>
+
+<div class="paragraph"> </div>
+
+    (3) <span class="inlinecode"><span class="id" title="keyword">∀</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" title="keyword">Type</span>,</span> <span class="inlinecode">(<span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span>)</span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">Y</span></span>
+
+<div class="paragraph"> </div>
+
+    (4) <span class="inlinecode"><span class="id" title="keyword">∀</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" title="keyword">Type</span>,</span> <span class="inlinecode">(<span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">X</span>)</span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span>
+
+</div>
+</div> <!-- /quiz -->
+
+<div class="doc">
+<a id="lab117"></a><h3 class="section"> </h3>
+
+<div class="paragraph"> </div>
+
+ Списки -- не единственный индуктивный тип, для которого можно осмысленно
+    определить <span class="inlinecode"><span class="id" title="var">map</span></span>. Вот определение <span class="inlinecode"><span class="id" title="var">map</span></span> для типа <span class="inlinecode"><span class="id" title="var">option</span></span>: 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">option_map</span> {<span class="id" title="var">X</span> <span class="id" title="var">Y</span> : <span class="id" title="keyword">Type</span>} (<span class="id" title="var">f</span> : <span class="id" title="var">X</span> → <span class="id" title="var">Y</span>) (<span class="id" title="var">xo</span> : <span class="id" title="var">option</span> <span class="id" title="var">X</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span class="id" title="var">option</span> <span class="id" title="var">Y</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">xo</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">None</span> ⇒ <span class="id" title="var">None</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">Some</span> <span class="id" title="var">x</span> ⇒ <span class="id" title="var">Some</span> (<span class="id" title="var">f</span> <span class="id" title="var">x</span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab118"></a><h2 class="section">Свёртка</h2>
+
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Fixpoint</span> <span class="id" title="tactic">fold</span> {<span class="id" title="var">X</span> <span class="id" title="var">Y</span>: <span class="id" title="keyword">Type</span>} (<span class="id" title="var">f</span> : <span class="id" title="var">X</span>→<span class="id" title="var">Y</span>→<span class="id" title="var">Y</span>) (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">X</span>) (<span class="id" title="var">b</span> : <span class="id" title="var">Y</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span class="id" title="var">Y</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">nil</span> ⇒ <span class="id" title="var">b</span><br/>
+&nbsp;&nbsp;| <span class="id" title="var">h</span> :: <span class="id" title="var">t</span> ⇒ <span class="id" title="var">f</span> <span class="id" title="var">h</span> (<span class="id" title="tactic">fold</span> <span class="id" title="var">f</span> <span class="id" title="var">t</span> <span class="id" title="var">b</span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+</div>
+
+<div class="doc">
+Буквально "reduce" из map/reduce. 
+<div class="paragraph"> </div>
+
+<a id="lab119"></a><h3 class="section"> </h3>
+
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Check</span> (<span class="id" title="tactic">fold</span> <span class="id" title="var">andb</span>) : <span class="id" title="var">list</span> <span class="id" title="var">bool</span> → <span class="id" title="var">bool</span> → <span class="id" title="var">bool</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">fold_example1</span> :<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">fold</span> <span class="id" title="var">andb</span> [<span class="id" title="var">true</span>;<span class="id" title="var">true</span>;<span class="id" title="var">false</span>;<span class="id" title="var">true</span>] <span class="id" title="var">true</span> = <span class="id" title="var">false</span>.<br/>
+<div class="togglescript" id="proofcontrol24" onclick="toggleDisplay('proof24');toggleDisplay('proofcontrol24')"><span class="show"></span></div>
+<div class="proofscript" id="proof24" onclick="toggleDisplay('proof24');toggleDisplay('proofcontrol24')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<br/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">fold_example2</span> :<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">fold</span> <span class="id" title="var">mult</span> [1;2;3;4] 1 = 24.<br/>
+<div class="togglescript" id="proofcontrol25" onclick="toggleDisplay('proof25');toggleDisplay('proofcontrol25')"><span class="show"></span></div>
+<div class="proofscript" id="proof25" onclick="toggleDisplay('proof25');toggleDisplay('proofcontrol25')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<br/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">fold_example3</span> :<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">fold</span> <span class="id" title="var">app</span>  [[1];[];[2;3];[4]] [] = [1;2;3;4].<br/>
+<div class="togglescript" id="proofcontrol26" onclick="toggleDisplay('proof26');toggleDisplay('proofcontrol26')"><span class="show"></span></div>
+<div class="proofscript" id="proof26" onclick="toggleDisplay('proof26');toggleDisplay('proofcontrol26')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<br/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">foldexample4</span> : <br/>
+&nbsp;&nbsp;<span class="id" title="tactic">fold</span> (<span class="id" title="keyword">fun</span> <span class="id" title="var">l</span> <span class="id" title="var">n</span> ⇒ <span class="id" title="var">length</span> <span class="id" title="var">l</span> + <span class="id" title="var">n</span>) [[1];[];[2;3;2];[4]] 0 = 5.<br/>
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/><hr class='doublespaceincode'/>
+ <!-- /quiz -->
+</div><div class="quiz">
+
+
+<div class="doc">
+Вот, вновь, определение <span class="inlinecode"><span class="id" title="tactic">fold</span></span>:
+<br/>
+<span class="inlinecode">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">Fixpoint</span> <span class="id" title="tactic">fold</span> {<span class="id" title="var">X</span> <span class="id" title="var">Y</span> : <span class="id" title="keyword">Type</span>}<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="var">f</span> : <span class="id" title="var">X</span>→<span class="id" title="var">Y</span>→<span class="id" title="var">Y</span>) (<span class="id" title="var">l</span> : <span class="id" title="var">list</span> <span class="id" title="var">X</span>) (<span class="id" title="var">b</span> : <span class="id" title="var">Y</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span class="id" title="var">Y</span> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">l</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">nil</span> ⇒ <span class="id" title="var">b</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">h</span> :: <span class="id" title="var">t</span> ⇒ <span class="id" title="var">f</span> <span class="id" title="var">h</span> (<span class="id" title="tactic">fold</span> <span class="id" title="var">f</span> <span class="id" title="var">t</span> <span class="id" title="var">b</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span>.
+</span>    Каков тип у выражения <span class="inlinecode">@<span class="id" title="tactic">fold</span></span>?
+
+<div class="paragraph"> </div>
+
+    (1) <span class="inlinecode"><span class="id" title="keyword">∀</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" title="keyword">Type</span>,</span> <span class="inlinecode">(<span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span>)</span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span>
+
+<div class="paragraph"> </div>
+
+    (2) <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">→</span> <span class="inlinecode">(<span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span>)</span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span>
+
+<div class="paragraph"> </div>
+
+    (3) <span class="inlinecode"><span class="id" title="keyword">∀</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" title="keyword">Type</span>,</span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span>
+
+<div class="paragraph"> </div>
+
+    (4) <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">→</span>  <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span>
+
+<div class="paragraph"> </div>
+
+
+</div>
+</div> <!-- /quiz -->
+<div class="quiz">
+
+
+<div class="doc">
+Каков тип у выражения <span class="inlinecode"><span class="id" title="tactic">fold</span></span> <span class="inlinecode"><span class="id" title="var">plus</span></span>?
+
+<div class="paragraph"> </div>
+
+    (1) <span class="inlinecode"><span class="id" title="keyword">∀</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" title="keyword">Type</span>,</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span>
+
+<div class="paragraph"> </div>
+
+    (2) <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">nat</span></span>
+
+<div class="paragraph"> </div>
+
+    (3) <span class="inlinecode"><span class="id" title="keyword">∀</span></span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" title="keyword">Type</span>,</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">nat</span></span>
+
+<div class="paragraph"> </div>
+
+    (4) <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">nat</span></span>
+
+<div class="paragraph"> </div>
+
+    (5) <span class="inlinecode"><span class="id" title="keyword">∀</span></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode"><span class="id" title="var">Y</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" title="keyword">Type</span>,</span> <span class="inlinecode"><span class="id" title="var">list</span></span> <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">nat</span></span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">nat</span></span>
+
+<div class="paragraph"> </div>
+
+
+</div>
+</div> <!-- /quiz -->
+<div class="quiz">
+
+
+<div class="doc">
+До какого выражения упрощается <span class="inlinecode"><span class="id" title="tactic">fold</span></span> <span class="inlinecode"><span class="id" title="var">plus</span></span> <span class="inlinecode">[1;2;3;4]</span> <span class="inlinecode">0</span>?
+
+<div class="paragraph"> </div>
+
+   (1) <span class="inlinecode">[1;2;3;4]</span>
+
+<div class="paragraph"> </div>
+
+   (2) <span class="inlinecode">0</span>
+
+<div class="paragraph"> </div>
+
+   (3) <span class="inlinecode">10</span>
+
+<div class="paragraph"> </div>
+
+   (4) <span class="inlinecode">[3;7;0]</span>
+
+<div class="paragraph"> </div>
+
+
+</div>
+</div> <!-- /quiz -->
+
+<div class="doc">
+<a id="lab120"></a><h2 class="section">Функции, конструирующие функции</h2>
+
+<div class="paragraph"> </div>
+
+ Есть ещё и функции, которые _возвращают_ другие функции
+    в качестве результата. 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">constfun</span> {<span class="id" title="var">X</span>: <span class="id" title="keyword">Type</span>} (<span class="id" title="var">x</span>: <span class="id" title="var">X</span>) : <span class="id" title="var">nat</span> → <span class="id" title="var">X</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">fun</span> (<span class="id" title="var">k</span>:<span class="id" title="var">nat</span>) ⇒ <span class="id" title="var">x</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">ftrue</span> := <span class="id" title="var">constfun</span> <span class="id" title="var">true</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">constfun_example1</span> : <span class="id" title="var">ftrue</span> 0 = <span class="id" title="var">true</span>.<br/>
+<div class="togglescript" id="proofcontrol27" onclick="toggleDisplay('proof27');toggleDisplay('proofcontrol27')"><span class="show"></span></div>
+<div class="proofscript" id="proof27" onclick="toggleDisplay('proof27');toggleDisplay('proofcontrol27')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+
+<br/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">constfun_example2</span> : (<span class="id" title="var">constfun</span> 5) 99 = 5.<br/>
+<div class="togglescript" id="proofcontrol28" onclick="toggleDisplay('proof28');toggleDisplay('proofcontrol28')"><span class="show"></span></div>
+<div class="proofscript" id="proof28" onclick="toggleDisplay('proof28');toggleDisplay('proofcontrol28')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+</div>
+
+<div class="doc">
+<a id="lab121"></a><h3 class="section"> </h3>
+ Вообще, функция от двух аргументов в Coq -- это просто функция,
+    которая возвращает функцию! 
+</div>
+<div class="code">
+
+<span class="id" title="keyword">Check</span> <span class="id" title="var">plus</span> : <span class="id" title="var">nat</span> → <span class="id" title="var">nat</span> → <span class="id" title="var">nat</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Definition</span> <span class="id" title="var">plus3</span> := <span class="id" title="var">plus</span> 3.<br/>
+<span class="id" title="keyword">Check</span> <span class="id" title="var">plus3</span> : <span class="id" title="var">nat</span> → <span class="id" title="var">nat</span>.<br/><hr class='doublespaceincode'/>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_plus3</span> :    <span class="id" title="var">plus3</span> 4 = 7.<br/>
+<div class="togglescript" id="proofcontrol29" onclick="toggleDisplay('proof29');toggleDisplay('proofcontrol29')"><span class="show"></span></div>
+<div class="proofscript" id="proof29" onclick="toggleDisplay('proof29');toggleDisplay('proofcontrol29')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_plus3'</span> :   <span class="id" title="var">doit3times</span> <span class="id" title="var">plus3</span> 0 = 9.<br/>
+<div class="togglescript" id="proofcontrol30" onclick="toggleDisplay('proof30');toggleDisplay('proofcontrol30')"><span class="show"></span></div>
+<div class="proofscript" id="proof30" onclick="toggleDisplay('proof30');toggleDisplay('proofcontrol30')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+<span class="id" title="keyword">Example</span> <span class="id" title="var">test_plus3''</span> :  <span class="id" title="var">doit3times</span> (<span class="id" title="var">plus</span> 3) 0 = 9.<br/>
+<div class="togglescript" id="proofcontrol31" onclick="toggleDisplay('proof31');toggleDisplay('proofcontrol31')"><span class="show"></span></div>
+<div class="proofscript" id="proof31" onclick="toggleDisplay('proof31');toggleDisplay('proofcontrol31')">
+<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">reflexivity</span>. <span class="id" title="keyword">Qed</span>.<br/>
+</div>
+</div>
+</div>
+
+<div id="footer">
+<hr/><a href="coqindex.html">Index</a><hr/>This page has been generated by <a href="http://coq.inria.fr/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>
