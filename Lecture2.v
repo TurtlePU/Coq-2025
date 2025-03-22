@@ -226,18 +226,18 @@ Proof.
     что [natprod] можно построить единственным способом --
     вызовом его единственного конструктора. *)
 
-(** **** Exercise: 1 star, standard (snd_fst_is_swap) *)
+(** **** Упражнение: 1 звезда, стандартное (snd_fst_is_swap) *)
 Theorem snd_fst_is_swap : forall (p : natprod),
   (snd p, fst p) = swap_pair p.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** **** Exercise: 1 star, standard, optional (fst_swap_is_snd) *)
+(** **** Упражнение: 1 звезда, стандартное, необязательное (fst_swap_is_snd) *)
 Theorem fst_swap_is_snd : forall (p : natprod),
   fst (swap_pair p) = snd p.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
 (* ################################################################# *)
@@ -382,24 +382,24 @@ Proof. reflexivity. Qed.
 (* ----------------------------------------------------------------- *)
 (** *** Упражнения *)
 
-(** **** Exercise: 2 stars, standard, especially useful (list_funs)
+(** **** Упражнение: 2 звезды, стандартное, особенно полезное (list_funs)
 
     Завершите определения [nonzeros], [oddmembers] и [countoddmembers] ниже.
     Ознакомьтесь с тестами, чтобы понять, что должны делать эти функции. *)
 
 Fixpoint nonzeros (l:natlist) : natlist
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example test_nonzeros:
   nonzeros [0;1;0;2;3;0;0] = [1;2;3].
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Fixpoint oddmembers (l:natlist) : natlist
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example test_oddmembers:
   oddmembers [0;1;0;2;3;0;0] = [1;3].
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** Для следующей задачки, [countoddmembers], мы даём Вам заголовок,
     использующий ключевое слово [Definition] вместо [Fixpoint].
@@ -408,22 +408,22 @@ Example test_oddmembers:
     вместо того чтобы вновь выписывать рекурсивное определение. *)
 
 Definition countoddmembers (l:natlist) : nat
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example test_countoddmembers1:
   countoddmembers [1;0;3;1;4;5] = 4.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_countoddmembers2:
   countoddmembers [0;2;4] = 0.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_countoddmembers3:
   countoddmembers nil = 0.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** **** Exercise: 3 stars, advanced (alternate)
+(** **** Упражнение: 3 звезды, продвинутое (alternate)
 
     Завершите определение [alternate], которая перемежает элементы двух списков:
     [[элемент первого; элемент второго; ...]].
@@ -436,23 +436,23 @@ Example test_countoddmembers3:
     сразу оба списка с помощью мультипаттерна. *)
 
 Fixpoint alternate (l1 l2 : natlist) : natlist
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example test_alternate1:
   alternate [1;2;3] [4;5;6] = [1;4;2;5;3;6].
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_alternate2:
   alternate [1] [4;5;6] = [1;4;5;6].
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_alternate3:
   alternate [1;2;3] [4] = [1;4;2;3].
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_alternate4:
   alternate [] [20;30] = [20;30].
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
 (* ----------------------------------------------------------------- *)
@@ -465,20 +465,20 @@ Example test_alternate4:
 
 Definition bag := natlist.
 
-(** **** Exercise: 3 stars, standard, especially useful (bag_functions)
+(** **** Упражнение: 3 звезды, стандартное, особенно полезное (bag_functions)
 
     Завершите определения функций [count],
     [sum], [add], и [member] для мультимножеств. *)
 
 Fixpoint count (v : nat) (s : bag) : nat
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 (** Все утверждения ниже можно доказать с помощью [рефлексивности]. *)
 
 Example test_count1:              count 1 [1;2;3;1;4;1] = 3.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 Example test_count2:              count 6 [1;2;3;1;4;1] = 0.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [сумма] мультимножеств похожа на объединение множеств: [sum a b]
     содержит все элементы [a] и [b].  (Математики обычно определяют
@@ -490,30 +490,30 @@ Example test_count2:              count 6 [1;2;3;1;4;1] = 0.
     Реализуйте [sum] с помощью уже определённой функции, не меняя заголовок. *)
 
 Definition sum : bag -> bag -> bag
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example test_sum1:              count 1 (sum [1;2;3] [1;4;1]) = 3.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Definition add (v : nat) (s : bag) : bag
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example test_add1:                count 1 (add 1 [1;4;1]) = 3.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 Example test_add2:                count 5 (add 1 [1;4;1]) = 0.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Fixpoint member (v : nat) (s : bag) : bool
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example test_member1:             member 1 [1;4;1] = true.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_member2:             member 2 [1;4;1] = false.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** **** Exercise: 3 stars, standard, optional (bag_more_functions)
+(** **** Упражнение: 3 звезды, стандартное, необязательное (bag_more_functions)
 
     Вот ещё немного функций на мультимножествах, чтобы вы попрактиковались. *)
 
@@ -523,46 +523,46 @@ Example test_member2:             member 2 [1;4;1] = false.
     понадобится для решения более поздних дополнительных задачек.) *)
 
 Fixpoint remove_one (v : nat) (s : bag) : bag
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example test_remove_one1:
   count 5 (remove_one 5 [2;1;5;4;1]) = 0.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_remove_one2:
   count 5 (remove_one 5 [2;1;4;1]) = 0.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_remove_one3:
   count 4 (remove_one 5 [2;1;4;5;1;4]) = 2.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_remove_one4:
   count 5 (remove_one 5 [2;1;5;4;5;1;4]) = 1.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Fixpoint remove_all (v:nat) (s:bag) : bag
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example test_remove_all1:  count 5 (remove_all 5 [2;1;5;4;1]) = 0.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 Example test_remove_all2:  count 5 (remove_all 5 [2;1;4;1]) = 0.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 Example test_remove_all3:  count 4 (remove_all 5 [2;1;4;5;1;4]) = 2.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 Example test_remove_all4:  count 5 (remove_all 5 [2;1;5;4;5;1;4;5;1;4]) = 0.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Fixpoint included (s1 : bag) (s2 : bag) : bool
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example test_included1:              included [1;2] [2;1;4;1] = true.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 Example test_included2:              included [1;2;2] [2;1;4;1] = false.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** **** Exercise: 2 stars, standard, especially useful (add_inc_count)
+(** **** Упражнение: 2 звезды, стандартное, особенно полезное (add_inc_count)
 
     Добавление значения в мультимножество должно инкрементировать значение
     [count] для этого значения. Сформулируйте это утверждение в виде теоремы
@@ -965,26 +965,26 @@ Search (?x + ?y = ?y + ?x).
 (* ================================================================= *)
 (** ** Упражнения на списки, часть 1 *)
 
-(** **** Exercise: 3 stars, standard (list_exercises)
+(** **** Упражнение: 3 звезды, стандартное (list_exercises)
 
     Больше практики со списками: *)
 
 Theorem app_nil_r : forall l : natlist,
   l ++ [] = l.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Theorem rev_app_distr: forall l1 l2 : natlist,
   rev (l1 ++ l2) = rev l2 ++ rev l1.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** _Инволюция_ это функция, которая обратна сама себе. То есть,
     применение функции дважды не меняет исходное значение. *)
 Theorem rev_involutive : forall l : natlist,
   rev (rev l) = l.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** Для следующей теоремы есть краткое решение.  Если чувствуете,
     что запутались, отступитесь и попробуйте найти решение попроще. *)
@@ -992,40 +992,40 @@ Proof.
 Theorem app_assoc4 : forall l1 l2 l3 l4 : natlist,
   l1 ++ (l2 ++ (l3 ++ l4)) = ((l1 ++ l2) ++ l3) ++ l4.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** Упражнение про Вашу реализацию [nonzeros]: *)
 
 Lemma nonzeros_app : forall l1 l2 : natlist,
   nonzeros (l1 ++ l2) = (nonzeros l1) ++ (nonzeros l2).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** **** Exercise: 2 stars, standard (eqblist)
+(** **** Упражнение: 2 звезды, стандартное (eqblist)
 
     Завершите определение [eqblist], функции, проверяющей списки на равенство.
     Докажите, что [eqblist l l] возвращает [true] для любого [l]. *)
 
 Fixpoint eqblist (l1 l2 : natlist) : bool
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example test_eqblist1 :
   (eqblist nil nil = true).
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_eqblist2 :
   eqblist [1;2;3] [1;2;3] = true.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_eqblist3 :
   eqblist [1;2;3] [1;2;4] = false.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Theorem eqblist_refl : forall l:natlist,
   true = eqblist l l.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
 (* ================================================================= *)
@@ -1033,11 +1033,11 @@ Proof.
 
 (** Вот ещё несколько небольших теорем про мультимножества. *)
 
-(** **** Exercise: 1 star, standard (count_member_nonzero) *)
+(** **** Упражнение: 1 звезда, стандартное (count_member_nonzero) *)
 Theorem count_member_nonzero : forall (s : bag),
   1 <=? (count 1 (1 :: s)) = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
 (** Следующая лемма о [leb] может помочь Вам в следующем упражнении
@@ -1054,14 +1054,14 @@ Proof.
 
 (** Перед тем, как приступить к следующему упражнению, убедитесь, что Вы
    завершили определение [remove_one] выше. *)
-(** **** Exercise: 3 stars, advanced (remove_does_not_increase_count) *)
+(** **** Упражнение: 3 звезды, продвинутое (remove_does_not_increase_count) *)
 Theorem remove_does_not_increase_count: forall (s : bag),
   (count 0 (remove_one 0 s)) <=? (count 0 s) = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** **** Exercise: 3 stars, standard, optional (bag_count_sum)
+(** **** Упражнение: 3 звезды, стандартное, необязательное (bag_count_sum)
 
     Сформулируйте ниже интересную теорему [bag_count_sum] о мультимножествах,
     связывающую функции [count] и [sum], и докажите её с помощью Coq.
@@ -1070,11 +1070,11 @@ Proof.
     [=?], Вам может быть полезно узнать, что [destruct] работает не только для
     переменных, но и для вообще произвольных утверждений.)
 *)
-(* FILL IN HERE
+(* ЗАПОЛНИТЕ ЗДЕСЬ
 
     [] *)
 
-(** **** Exercise: 3 stars, advanced (involution_injective) *)
+(** **** Упражнение: 3 звезды, продвинутое (involution_injective) *)
 
 (** Докажите, что всякая инволюция инъективна.
 
@@ -1085,11 +1085,11 @@ Proof.
 Theorem involution_injective : forall (f : nat -> nat),
     (forall n : nat, n = f (f n)) -> (forall n1 n2 : nat, f n1 = f n2 -> n1 = n2).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
-(** **** Exercise: 2 stars, advanced (rev_injective)
+(** **** Упражнение: 2 звезды, продвинутое (rev_injective)
 
     Докажите, что [rev] инъективна. Не советую доказывать по индукции --
     это будет сложно. Вместо этого переиспользуйте ту же технику, что Вы
@@ -1099,7 +1099,7 @@ Proof.
 Theorem rev_injective : forall (l1 l2 : natlist),
   rev l1 = rev l2 -> l1 = l2.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
 (* ################################################################# *)
@@ -1163,33 +1163,33 @@ Definition option_elim (d : nat) (o : natoption) : nat :=
   | None => d
   end.
 
-(** **** Exercise: 2 stars, standard (hd_error)
+(** **** Упражнение: 2 звезды, стандартное (hd_error)
 
     Используя ту же идею, исправьте функцию [hd], определённую ранее, так, чтобы
     нам не пришлось передавать значение по умолчанию для случая [nil].  *)
 
 Definition hd_error (l : natlist) : natoption
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example test_hd_error1 : hd_error [] = None.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_hd_error2 : hd_error [1] = Some 1.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_hd_error3 : hd_error [5;6] = Some 5.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
-(** **** Exercise: 1 star, standard, optional (option_elim_hd)
+(** **** Упражнение: 1 звезда, стандартное, необязательное (option_elim_hd)
 
     Это упражнение связывает вашу [hd_error] с более ранней [hd]. *)
 
 Theorem option_elim_hd : forall (l:natlist) (default:nat),
   hd default l = option_elim default (hd_error l).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
 End NatList.
@@ -1220,10 +1220,10 @@ Definition eqb_id (x1 x2 : id) :=
   | Id n1, Id n2 => n1 =? n2
   end.
 
-(** **** Exercise: 1 star, standard (eqb_id_refl) *)
+(** **** Упражнение: 1 звезда, стандартное (eqb_id_refl) *)
 Theorem eqb_id_refl : forall x, eqb_id x x = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
 (** Далее, определим тип частичных функций: *)
@@ -1263,20 +1263,20 @@ Fixpoint find (x : id) (d : partial_map) : natoption :=
                      else find x d'
   end.
 
-(** **** Exercise: 1 star, standard (update_eq) *)
+(** **** Упражнение: 1 звезда, стандартное (update_eq) *)
 Theorem update_eq :
   forall (d : partial_map) (x : id) (v: nat),
     find x (update d x v) = Some v.
 Proof.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** **** Exercise: 1 star, standard (update_neq) *)
+(** **** Упражнение: 1 звезда, стандартное (update_neq) *)
 Theorem update_neq :
   forall (d : partial_map) (x y : id) (o: nat),
     eqb_id x y = false -> find x (update d y o) = find x d.
 Proof.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 End PartialMap.
 
@@ -1408,7 +1408,7 @@ Example test_repeat2 :
   repeat bool false 1 = cons bool false (nil bool).
 Proof. reflexivity. Qed.
 
-(** **** Exercise: 2 stars, standard, optional (mumble_grumble)
+(** **** Упражнение: 2 звезды, стандартное, необязательное (mumble_grumble)
 
     Рассмотрим следующие два индуктивных типа данных. *)
 
@@ -1432,7 +1432,7 @@ Inductive grumble (X:Type) : Type :=
       - [e mumble (b c 0)]
       - [e bool (b c 0)]
       - [c]  *)
-(* FILL IN HERE *)
+(* ЗАПОЛНИТЕ ЗДЕСЬ *)
 End MumbleGrumble.
 (** [] *)
 
@@ -1611,16 +1611,16 @@ Proof. reflexivity. Qed.
 
 Fail Definition mynil := nil.
 
-(** (The [Fail] qualifier that appears before [Definition] can be
-    used with _any_ command, and is used to ensure that that command
-    indeed fails when executed. If the command does fail, Coq prints
-    the corresponding error message, but continues processing the rest
-    of the file.)
+(** (Квалификатор [Fail] (который здесь перед [Definition]) можно
+    использовать вместе с _любой_ командой. Его используют, чтобы убедиться, что
+    исполнение команды действительно завершается ошибкой. В случае, если это
+    действительно так, Coq печатает соответствующее сообщение об ошибке, но
+    продолжает дальнейшую обработку файла.)
 
-    Here, Coq gives us an error because it doesn't know what type
-    argument to supply to [nil].  We can help it by providing an
-    explicit type declaration (so that Coq has more information
-    available when it gets to the "application" of [nil]): *)
+    Здесь Coq возвращает ошибку потому, что он не знает, какой типовой аргумент
+    нужно подставить в [nil]. Мы можем помочь ему, предъявив явную аннотацию
+    типа (так что у Coq-а станет доступно больше информации, когда он доберётся
+    до "применения" [nil]): *)
 
 Definition mynil : list nat := nil.
 
@@ -1631,10 +1631,10 @@ Check @nil : forall X : Type, list X.
 
 Definition mynil' := @nil nat.
 
-(** Using argument synthesis and implicit arguments, we can
-    define convenient notation for lists, as before.  Since we have
-    made the constructor type arguments implicit, Coq will know to
-    automatically infer these when we use the notations. *)
+(** Используя синтез аргументов и неявные аргументы, мы можем определить
+    удобную нотацию для списков, как раньше.  Так как мы сделали типовые
+    аргументы конструкторов неявными, Coq будет автоматически их выводить, когда
+    мы будем эти нотации использовать. *)
 
 Notation "x :: y" := (cons x y)
                      (at level 60, right associativity).
@@ -1643,64 +1643,64 @@ Notation "[ x ; .. ; y ]" := (cons x .. (cons y []) ..).
 Notation "x ++ y" := (app x y)
                      (at level 60, right associativity).
 
-(** Now lists can be written just the way we'd hope: *)
+(** Теперь списки можно записывать ровно так, как хотелось бы: *)
 
 Definition list123''' := [1; 2; 3].
 
 (* ----------------------------------------------------------------- *)
-(** *** Exercises *)
+(** *** Упражнения *)
 
-(** **** Exercise: 2 stars, standard (poly_exercises)
+(** **** Упражнение: 2 звезды, стандартное (poly_exercises)
 
-    Here are a few simple exercises, just like ones in the first part
-    of the lecture, for practice with polymorphism.  Complete the proofs
-    below. *)
+    Ниже приведено несколько простых упражнений, в точности таких же, как в
+    первой части лекции, чтобы попрактиковаться с полиморфизмом.
+    Закончите доказательства ниже. *)
 
 Theorem app_nil_r : forall (X:Type), forall l:list X,
   l ++ [] = l.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Theorem app_assoc : forall A (l m n:list A),
   l ++ m ++ n = (l ++ m) ++ n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Lemma app_length : forall (X:Type) (l1 l2 : list X),
   length (l1 ++ l2) = length l1 + length l2.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** **** Exercise: 2 stars, standard (more_poly_exercises)
+(** **** Упражнение: 2 звезды, стандартное (more_poly_exercises)
 
-    Here are some slightly more interesting ones... *)
+    Вот несколько упражнений слегка поинтереснее... *)
 
 Theorem rev_app_distr: forall X (l1 l2 : list X),
   rev (l1 ++ l2) = rev l2 ++ rev l1.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Theorem rev_involutive : forall X : Type, forall l : list X,
   rev (rev l) = l.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
 (* ================================================================= *)
 (** ** Полиморфные пары *)
 
-(** Following the same pattern, the definition for pairs of
-    numbers that we gave in the first part of the lecture can be generalized to
-    _polymorphic pairs_, often called _products_: *)
+(** Следуя тому же паттерну, определение пар чисел, которое мы дали в
+    первой части занятия, можно обобщить до _полиморфных пар_, часто называемых
+    _произведением_: *)
 
 Inductive prod (X Y : Type) : Type :=
 | pair (x : X) (y : Y).
 
 Arguments pair {X} {Y}.
 
-(** As with lists, we make the type arguments implicit and define the
-    familiar concrete notation. *)
+(** Как и со списками, мы делаем типовые аргументы неявными и определяем
+    уже знакомую нам нотацию. *)
 
 Notation "( x , y )" := (pair x y).
 
@@ -1714,13 +1714,13 @@ Notation "X * Y" := (prod X Y) : type_scope.
     разборе выражений.  Это позволяет избежать коллизий
     с символом умножения.) *)
 
-(** It is easy at first to get [(x,y)] and [X*Y] confused.
-    Remember that [(x,y)] is a _value_ built from two other values,
-    while [X*Y] is a _type_ built from two other types.  If [x] has
-    type [X] and [y] has type [Y], then [(x,y)] has type [X*Y]. *)
+(** Поначалу, [(x,y)] и [X*Y] легко перепутать. Помните, что [(x,y)]
+    -- это _значение_, построенное из двух других значений, когда как [X*Y]
+    -- это _тип_, построенный из двух других типов.  Если [x] имеет тип [X],
+    а [y] имеет тип [Y], тогда [(x,y)] имеет тип [X*Y]. *)
 
-(** The first and second projection functions now look pretty
-    much as they would in any functional programming language. *)
+(** Первая и вторая проекции теперь выглядят примерно так же, как бы они
+    выглядели в любом другом функциональном языке программирования. *)
 
 Definition fst {X Y : Type} (p : X * Y) : X :=
   match p with
@@ -1732,10 +1732,9 @@ Definition snd {X Y : Type} (p : X * Y) : Y :=
   | (x, y) => y
   end.
 
-(** The following function takes two lists and combines them
-    into a list of pairs.  In other functional languages, it is often
-    called [zip]; we call it [combine] for consistency with Coq's
-    standard library. *)
+(** Следующая функция принимает два списка и комбинирует их в список пар.
+    В других функциональных ЯП, её часто называют [zip]; мы называем её
+    [combine] для консистентности со стандартной библиотекой Coq. *)
 
 Fixpoint combine {X Y : Type} (lx : list X) (ly : list Y)
            : list (X*Y) :=
@@ -1745,46 +1744,43 @@ Fixpoint combine {X Y : Type} (lx : list X) (ly : list Y)
   | x :: tx, y :: ty => (x, y) :: (combine tx ty)
   end.
 
-(** **** Exercise: 1 star, standard, optional (combine_checks)
+(** **** Упражнение: 1 звезда, стандартное, необязательное (combine_checks)
 
-    Try answering the following questions on paper and
-    checking your answers in Coq:
-    - What is the type of [combine] (i.e., what does [Check
-      @combine] print?)
-    - What does
+    Попробуйте сначала ответить на следующие вопросы на бумаге, а затем
+    проверьте ваши ответы в Coq:
+    - Какой тип имеет функция [combine] (т.е., что печатает команда
+      [Check @combine])?
+    - Что получится, если применить следующую команду:
 
         Compute (combine [1;2] [false;false;true;true]).
+*)
+(** [] *)
 
-      print?
+(** **** Упражнение: 2 звезды, стандартное, особенно полезное (split)
 
-    [] *)
+    Функция [split] -- _правая обратная_ к [combine]: она получает список пар
+    и возвращает пару списков.  Во многих функциональных ЯП она называется
+    [unzip].
 
-(** **** Exercise: 2 stars, standard, especially useful (split)
-
-    The function [split] is the right inverse of [combine]: it takes a
-    list of pairs and returns a pair of lists.  In many functional
-    languages, it is called [unzip].
-
-    Fill in the definition of [split] below.  Make sure it passes the
-    given unit test. *)
+    Заполните определение [split] ниже.  Убедитесь, что она проходит
+    предоставленный юнит-тест. *)
 
 Fixpoint split {X Y : Type} (l : list (X*Y)) : (list X) * (list Y)
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example test_split:
   split [(1,false);(2,false)] = ([1;2],[false;false]).
 Proof.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
 (* ================================================================= *)
 (** ** Полиморфные частичные значения *)
 
-(** Our last polymorphic type for now is _polymorphic options_,
-    which generalize [natoption] from the first part of the lecture.  (We put
-    the definition inside a module because the standard library
-    already defines [option] and it's this one that we want to use
-    below.) *)
+(** В этот раз остановимся на _полиморфном типе частичных значений_,
+    обобщающем [natoption] из первой части лекции.  (Мы помещаем определение
+    в отдельный модуль, потому что стандартная библиотека уже определяет
+    [option], который мы собственно и хотим использовать в дальнейшем.) *)
 
 Module OptionPlayground.
 
@@ -1797,8 +1793,8 @@ Arguments None {X}.
 
 End OptionPlayground.
 
-(** We can now rewrite the [nth_error] function so that it works
-    with any type of lists. *)
+(** Теперь мы можем переписать [nth_error] так, что она сработает с любым
+    типом списков. *)
 
 Fixpoint nth_error {X : Type} (l : list X) (n : nat)
                    : option X :=
@@ -1817,47 +1813,46 @@ Proof. reflexivity. Qed.
 Example test_nth_error3 : nth_error [true] 2 = None.
 Proof. reflexivity. Qed.
 
-(** **** Exercise: 1 star, standard, optional (hd_error_poly)
+(** **** Упражнение: 1 звезда, стандартное, необязательное (hd_error_poly)
 
-    Complete the definition of a polymorphic version of the
-    [hd_error] function from the first part of the lecture. Be sure that it
-    passes the unit tests below. *)
+    Завершите определение полиморфной версии функции [hd_error]
+    из первой части лекции. Убедитесь, что она проходит юнит-тесты ниже. *)
 
 Definition hd_error {X : Type} (l : list X) : option X
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
-(** Once again, to force the implicit arguments to be explicit,
-    we can use [@] before the name of the function. *)
+(** Опять же, чтобы сделать все аргументы функции явными,
+    можно поставить [@] перед именем функции. *)
 
 Check @hd_error : forall X : Type, list X -> option X.
 
 Example test_hd_error1 : hd_error [1;2] = Some 1.
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 Example test_hd_error2 : hd_error  [[1];[2]]  = Some [1].
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
 (* ################################################################# *)
 (** * Функции в качестве данных *)
 
-(** Like most modern programming languages -- especially other
-    "functional" languages, including OCaml, Haskell, Racket, Scala,
-    Clojure, etc. -- Coq treats functions as first-class citizens,
-    allowing them to be passed as arguments to other functions,
-    returned as results, stored in data structures, etc. *)
+(** Как и в большинстве современных языков программирования (особенно
+    в "функциональных" ЯП, включая OCaml, Haskell, Racket, Scala,
+    Clojure и т.д.), функции в Coq являются _объектами первого класса_,
+    что позволяет как передавать их в качестве аргументов другим функциям,
+    так и возвращать в качестве результата,
+    хранить их в структурах данных и т.д.. *)
 
 (* ================================================================= *)
 (** ** Функции высшего порядка *)
 
-(** Functions that manipulate other functions are often called
-    _higher-order_ functions.  Here's a simple one: *)
+(** Функции, манипулирующие другими функциями, часто называются
+    функциями _высшего порядка_.  Вот один из примеров: *)
 
 Definition doit3times {X : Type} (f : X->X) (n : X) : X :=
   f (f (f n)).
 
-(** The argument [f] here is itself a function (from [X] to
-    [X]); the body of [doit3times] applies [f] three times to some
-    value [n]. *)
+(** Здесь, аргумент [f] сам является функцией (из [X] в [X]);
+    тело [doit3times] применяет [f] трижды к некоторому значению [n]. *)
 
 Check @doit3times : forall X : Type, (X -> X) -> X -> X.
 
@@ -1870,10 +1865,11 @@ Proof. reflexivity. Qed.
 (* ================================================================= *)
 (** ** Фильтрация списка *)
 
-(** Here is a more useful higher-order function, taking a list
-    of [X]s and a _predicate_ on [X] (a function from [X] to [bool])
-    and "filtering" the list, returning a new list containing just
-    those elements for which the predicate returns [true]. *)
+(** Вот пример более полезной функции высшего порядка, по списку
+    элементов типа [X] и _предикату_ на [X] (функции из [X] в [bool])
+    "фильтрующей" этот список, т.е. возвращающей новый список, содержащий
+    в точности те элементы исходного списка, на которых предикат возвращает
+    [true]. *)
 
 Fixpoint filter {X:Type} (test: X->bool) (l:list X) : list X :=
   match l with
@@ -1883,9 +1879,8 @@ Fixpoint filter {X:Type} (test: X->bool) (l:list X) : list X :=
     else filter test t
   end.
 
-(** For example, if we apply [filter] to the predicate [even]
-    and a list of numbers [l], it returns a list containing just the
-    even members of [l]. *)
+(** Например, если мы применим [filter] к предикату [even] и списку чисел
+    [l], она вернёт список, содержащий только чётные элементы [l]. *)
 
 Example test_filter1: filter even [1;2;3;4] = [2;4].
 Proof. reflexivity. Qed.
@@ -1899,8 +1894,8 @@ Example test_filter2:
   = [ [3]; [4]; [8] ].
 Proof. reflexivity. Qed.
 
-(** We can use [filter] to give a concise version of the
-    [countoddmembers] function defined earlier. *)
+(** Мы можем использовать [filter], чтобы сформулировать более
+    краткую версию функции [countoddmembers], определённой ранее. *)
 
 Definition countoddmembers' (l:list nat) : nat :=
   length (filter odd l).
@@ -1915,18 +1910,17 @@ Proof. reflexivity. Qed.
 (* ================================================================= *)
 (** ** Анонимные функции *)
 
-(** It is arguably a little sad, in the example just above, to
-    be forced to define the function [length_is_1] and give it a name
-    just to be able to pass it as an argument to [filter], since we
-    will probably never use it again.  Moreover, this is not an
-    isolated example: when using higher-order functions, we often want
-    to pass as arguments "one-off" functions that we will never use
-    again; having to give each of these functions a name would be
-    tedious.
+(** Немного грустно, что в примере выше нам пришлось выделить целое
+    _определение_ на функцию [length_is_1] (и выдать ей имя) только для того,
+    чтобы передать её в качестве аргумента в [filter] и больше никогда не
+    использовать.  Более того, это не какой-то особый отдельный случай:
+    используя функции высшего порядка, мы часто хотим передавать такие
+    "одноразовые" функции, которые мы ни разу больше не будем использовать;
+    выдавать каждый раз какое-то имя каждой из этих функций было бы излишне и
+    утомительно.
 
-    Fortunately, there is a better way.  We can construct a function
-    "on the fly" without declaring it at the top level or giving it a
-    name. *)
+    К счастью, у нас есть способ получше.  Мы можем сконструировать функцию
+    "на лету" без её именования и объявления на верхнем уровне. *)
 
 Example test_anon_fun':
   doit3times (fun n => n * n) 2 = 256.
@@ -1935,8 +1929,8 @@ Proof. reflexivity. Qed.
 (** Выражение [(fun n => n * n)] можно прочитать как "функция, которая, получив
     число [n], возвращает [n * n]." *)
 
-(** Here is the [filter] example, rewritten to use an anonymous
-    function. *)
+(** Ниже пример использования [filter], переписанный с использованием
+    анонимной функции. *)
 
 Example test_filter2':
     filter (fun l => (length l) =? 1)
@@ -1944,49 +1938,48 @@ Example test_filter2':
   = [ [3]; [4]; [8] ].
 Proof. reflexivity. Qed.
 
-(** **** Exercise: 2 stars, standard (filter_even_gt7)
+(** **** Упражнение: 2 звезды, стандартное (filter_even_gt7)
 
-    Use [filter] (instead of [Fixpoint]) to write a Coq function
-    [filter_even_gt7] that takes a list of natural numbers as input
-    and returns a list of just those that are even and greater than
-    7. *)
+    Используйте [filter] (вместо [Fixpoint]), чтобы написать функцию
+    [filter_even_gt7], по списку натуральных чисел [l] возвращающую список
+    элементов [l], больших 7 (и только их). *)
 
 Definition filter_even_gt7 (l : list nat) : list nat
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example test_filter_even_gt7_1 :
   filter_even_gt7 [1;2;6;9;10;3;12;8] = [10;12;8].
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example test_filter_even_gt7_2 :
   filter_even_gt7 [5;2;6;19;129] = [].
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** **** Exercise: 3 stars, standard (partition)
+(** **** Упражнение: 3 звезды, стандартное (partition)
 
-    Use [filter] to write a Coq function [partition]:
+    Используя [filter], напишите функцию [partition]:
 
       partition : forall X : Type,
                   (X -> bool) -> list X -> list X * list X
 
-   Given a set [X], a predicate of type [X -> bool] and a [list X],
-   [partition] should return a pair of lists.  The first member of the
-   pair is the sublist of the original list containing the elements
-   that satisfy the test, and the second is the sublist containing
-   those that fail the test.  The order of elements in the two
-   sublists should be the same as their order in the original list. *)
+   По множеству [X], предикату типа [X -> bool] и [list X],
+   [partition] должна возвращать пару списков.  Первая компонента этой пары --
+   подпоследовательность исходного списка, содержащая элементы, удовлетворяющие
+   предикату (и только их), а вторая -- наоборот, ему не удовлетворяющие.
+   Порядок элементов в этих двух подсписках должен быть таким же, каким он был в
+   исходном списке. *)
 
 Definition partition {X : Type}
                      (test : X -> bool)
                      (l : list X)
                    : list X * list X
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example test_partition1: partition odd [1;2;3;4;5] = ([1;3;5], [2;4]).
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 Example test_partition2: partition (fun x => false) [5;9;0] = ([], [5;9;0]).
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
 (* ================================================================= *)
@@ -2000,25 +1993,25 @@ Fixpoint map {X Y : Type} (f : X->Y) (l : list X) : list Y :=
   | h :: t => (f h) :: (map f t)
   end.
 
-(** It takes a function [f] and a list [ l = [n1, n2, n3, ...] ]
-    and returns the list [ [f n1, f n2, f n3,...] ], where [f] has
-    been applied to each element of [l] in turn.  For example: *)
+(** Она получает функцию [f] и список [ l = [n1, n2, n3, ...] ],
+    и возвращает [ [f n1, f n2, f n3,...] ], т.е. [f] применили
+    к списку [l] поэлементно.  Например: *)
 
 Example test_map1: map (fun x => plus 3 x) [2;0;2] = [5;3;5].
 Proof. reflexivity. Qed.
 
-(** The element types of the input and output lists need not be
-    the same, since [map] takes _two_ type arguments, [X] and [Y]; it
-    can thus be applied to a list of numbers and a function from
-    numbers to booleans to yield a list of booleans: *)
+(** Типы элементов исходного и результирующего списков не обязаны
+    совпадать, поскольку [map] принимает _два_ типовых аргумента, [X] и [Y];
+    например, [map] можно применить к списку чисел и функции, по числу
+    возвращающей логическое значение, и получить список логических значений: *)
 
 Example test_map2:
   map odd [2;1;2;5] = [false;true;false;true].
 Proof. reflexivity. Qed.
 
-(** It can even be applied to a list of numbers and
-    a function from numbers to _lists_ of booleans to
-    yield a _list of lists_ of booleans: *)
+(** И, конечно, её можно применить к списку чисел и функции из чисел в
+    _списки_ логических значений; в результате получится _список списков_
+    логических значений: *)
 
 Example test_map3:
     map (fun n => [even n;odd n]) [2;1;2;5]
@@ -2026,26 +2019,25 @@ Example test_map3:
 Proof. reflexivity. Qed.
 
 (* ----------------------------------------------------------------- *)
-(** *** Exercises *)
+(** *** Упражнения *)
 
-(** **** Exercise: 3 stars, standard (map_rev)
+(** **** Упражнение: 3 звезды, стандартное (map_rev)
 
-    Show that [map] and [rev] commute.  You may need to define an
-    auxiliary lemma. *)
+    Покажите, что [map] и [rev] коммутируют.  Возможно, вам понадобится ввести
+    вспомогательную лемму. *)
 
 Theorem map_rev : forall (X Y : Type) (f : X -> Y) (l : list X),
   map f (rev l) = rev (map f l).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** **** Exercise: 2 stars, standard, especially useful (flat_map)
+(** **** Упражнение: 2 звезды, стандартное, особенно полезное (flat_map)
 
-    The function [map] maps a [list X] to a [list Y] using a function
-    of type [X -> Y].  We can define a similar function, [flat_map],
-    which maps a [list X] to a [list Y] using a function [f] of type
-    [X -> list Y].  Your definition should work by 'flattening' the
-    results of [f], like so:
+    Функция [map] отображает [list X] в [list Y], используя функцию типа
+    [X -> Y].  Мы можем определить похожую функцию, [flat_map], которая
+    отображает [list X] в [list Y], используя функцию [f] типа [X -> list Y].
+    Ваше определение должно 'сплющить' результаты [f] следующим образом:
 
         flat_map (fun n => [n;n+1;n+2]) [1;5;10]
       = [1; 2; 3; 5; 6; 7; 10; 11; 12].
@@ -2053,12 +2045,12 @@ Proof.
 
 Fixpoint flat_map {X Y: Type} (f: X -> list Y) (l: list X)
                    : list Y
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example test_flat_map1:
   flat_map (fun n => [n;n;n]) [1;5;4]
   = [1; 1; 1; 5; 5; 5; 4; 4; 4].
- (* FILL IN HERE *) Admitted.
+ (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
 (** Списки -- не единственный индуктивный тип, для которого можно осмысленно
@@ -2071,25 +2063,24 @@ Definition option_map {X Y : Type} (f : X -> Y) (xo : option X)
   | Some x => Some (f x)
   end.
 
-(** **** Exercise: 2 stars, standard, optional (implicit_args)
+(** **** Упражнение: 2 звезды, стандартное, необязательное (implicit_args)
 
-    The definitions and uses of [filter] and [map] use implicit
-    arguments in many places.  Replace the curly braces around the
-    implicit arguments with parentheses, and then fill in explicit
-    type parameters where necessary and use Coq to check that you've
-    done so correctly.  (This exercise is not to be turned in; it is
-    probably easiest to do it on a _copy_ of this file that you can
-    throw away afterwards.)
+    Определения и использования [filter] и [map] используют неявные аргументы
+    в множестве мест.  Замените фигурные скобки вокруг неявных аргументов
+    обычными (круглыми) скобками, а замтем дозаполните явные типовые параметры
+    везде, где это нужно, и используйте Coq для самопроверки.  (Это упражнение
+    НЕ НУЖНО сдавать; пожалуй, проще всего сделать это в _копии_ этого файла,
+    которую потом можно будет с облегчением удалить.)
 *)
 (** [] *)
 
 (* ================================================================= *)
 (** ** Свёртка *)
 
-(** An even more powerful higher-order function is called
-    [fold].  This function is the inspiration for the "[reduce]"
-    operation that lies at the heart of Google's map/reduce
-    distributed programming framework. *)
+(** Ещё более мощную функцию высшего порядка называют [fold].
+    Эта операция послужила вдохновением и основой для операции "[reduce]",
+    лежащей в самом сердце map/reduce, фреймворка для распределённого
+    программирования от Google. *)
 
 Fixpoint fold {X Y: Type} (f : X->Y->Y) (l : list X) (b : Y)
                          : Y :=
@@ -2098,20 +2089,20 @@ Fixpoint fold {X Y: Type} (f : X->Y->Y) (l : list X) (b : Y)
   | h :: t => f h (fold f t b)
   end.
 
-(** Intuitively, the behavior of the [fold] operation is to
-    insert a given binary operator [f] between every pair of elements
-    in a given list.  For example, [ fold plus [1;2;3;4] ] intuitively
-    means [1+2+3+4].  To make this precise, we also need a "starting
-    element" that serves as the initial second input to [f].  So, for
-    example,
+(** На уровне интуиции, [fold] "вставляет" полученную бинарную операцию
+    [f] между каждой парой элементов в переданном списке.  Например,
+    [ fold plus [1;2;3;4] ] по сути значит то же, что [1+2+3+4].  Чтобы сделать
+    эту интуицию точной, нужно также не забыть про "начальный элемент" который
+    служит первоначальным аргументом для [f] (на лекции Ваш покорный слуга
+    называл его "зерном"/"начальным состоянием").  Так, например,
 
        fold plus [1;2;3;4] 0
 
-    yields
+    упрощается до
 
        1 + (2 + (3 + (4 + 0))).
 
-    Some more examples: *)
+    Ещё немного разных примеров: *)
 
 Check (fold andb) : list bool -> bool -> bool.
 
@@ -2132,27 +2123,26 @@ Example foldexample4 :
 Proof. reflexivity. Qed.
 
 
-(** **** Exercise: 1 star, standard, optional (fold_types_different)
+(** **** Упражнение: 1 звезда, стандартное, необязательное (fold_types_different)
 
-    Observe that the type of [fold] is parameterized by _two_ type
-    variables, [X] and [Y], and the parameter [f] is a binary operator
-    that takes an [X] and a [Y] and returns a [Y].  Can you think of a
-    situation where it would be useful for [X] and [Y] to be
-    different? *)
+    Заметьте, что тип [fold] параметризован _двумя_ типовыми переменными,
+    [X] and [Y], а [f] -- это бинарный оператор, по [X] и [Y] возвращающий [Y].
+    Можете ли вы представить себе такую ситуацию, в которой было бы полезно, что
+    [X] и [Y] -- разные типы? *)
 
-(* FILL IN HERE
+(* ЗАПОЛНИТЕ ЗДЕСЬ
 
     [] *)
 
 (* ================================================================= *)
 (** ** Функции, конструирующие функции *)
 
-(** Most of the higher-order functions we have talked about so
-    far take functions as arguments.  Let's look at some examples that
-    involve _returning_ functions as the results of other functions.
-    To begin, here is a function that takes a value [x] (drawn from
-    some type [X]) and returns a function from [nat] to [X] that
-    yields [x] whenever it is called, ignoring its [nat] argument. *)
+(** Большинство функций высшего порядка, которые мы обсудили на данный
+    момент, получали функции в качестве аргументов. Теперь же давайте посмотрим
+    на парочку примеров, в которых функции являются _результатом_ других функций
+    и возвращаются из них в качестве значения. Для начала, вот функция, которая
+    по значению [x] некоторого типа [X] возвращает функцию из [nat] в [X],
+    всегда возвращающую [x], полностью игнорируя свой аргумент типа [nat]. *)
 
 Definition constfun {X: Type} (x: X) : nat -> X :=
   fun (k:nat) => x.
@@ -2165,21 +2155,21 @@ Proof. reflexivity. Qed.
 Example constfun_example2 : (constfun 5) 99 = 5.
 Proof. reflexivity. Qed.
 
-(** In fact, the multiple-argument functions we have already
-    seen are also examples of passing functions as data.  To see why,
-    recall the type of [plus]. *)
+(** По сути, функции от нескольких аргументов, виденные нами ранее
+    (ещё на первой лекции), тоже являются примерами ситуаций, в которых функции
+    передаются как данные. Чтобы увидеть, почему, напомню Вам тип функции
+    [plus]. *)
 
 Check plus : nat -> nat -> nat.
 
-(** Each [->] in this expression is actually a _binary_ operator
-    on types.  This operator is _right-associative_, so the type of
-    [plus] is really a shorthand for [nat -> (nat -> nat)] -- i.e., it
-    can be read as saying that "[plus] is a one-argument function that
-    takes a [nat] and returns a one-argument function that takes
-    another [nat] and returns a [nat]."  In the examples above, we
-    have always applied [plus] to both of its arguments at once, but
-    if we like we can supply just the first.  This is called _partial
-    application_. *)
+(** На самом деле, каждая [->] в этом выражении -- это _бинарный_ оператор
+    на типах.  Этот оператор _правоассоциативен_, так что выведенный Coq-ом тип
+    [plus] -- это, на самом деле, сокращение от [nat -> (nat -> nat)], т.е. его
+    можно прочитать как "[plus] это функция от одного аргумента, по [nat]
+    возвращающая другую функцию от одного аргумента, которая, в свою очередь, по
+    ещё одному [nat] возвращает, наконец, [nat]."  В примерах выше, мы всегда
+    применяли [plus] к обоим аргументам сразу, но, если мы захотим, мы можем
+    передать только один аргумент.  Это называется _частичным применением_. *)
 
 Definition plus3 := plus 3.
 Check plus3 : nat -> nat.
@@ -2192,14 +2182,14 @@ Example test_plus3'' :  doit3times (plus 3) 0 = 9.
 Proof. reflexivity. Qed.
 
 (* ################################################################# *)
-(** * Additional Exercises *)
+(** * Дополнительные упражнения *)
 
 Module Exercises.
 
-(** **** Exercise: 2 stars, standard (fold_length)
+(** **** Упражнение: 2 звезды, стандартное (fold_length)
 
-    Many common functions on lists can be implemented in terms of
-    [fold].  For example, here is an alternative definition of [length]: *)
+    Многие часто используемые функции на списках можно определить в терминах
+    [fold].  Например, ниже дано альтернативное определение [length]: *)
 
 Definition fold_length {X : Type} (l : list X) : nat :=
   fold (fun _ n => S n) l 0.
@@ -2207,80 +2197,81 @@ Definition fold_length {X : Type} (l : list X) : nat :=
 Example test_fold_length1 : fold_length [4;7;0] = 3.
 Proof. reflexivity. Qed.
 
-(** Prove the correctness of [fold_length].  (Hint: It may help to
-    know that [reflexivity] simplifies expressions a bit more
-    aggressively than [simpl] does -- i.e., you may find yourself in a
-    situation where [simpl] does nothing but [reflexivity] solves the
-    goal.) *)
+(** Докажите корректность [fold_length].  (Подсказка: возможно, вам поможет
+    знание о том, что [reflexivity] упрощает выражения слегка более аггрессивно,
+    чем [simpl] -- т.е., достаточно легко оказаться в ситуации, в которой
+    [simpl] ничего не делает, а [reflexivity] решает текущую цель.) *)
 
 Theorem fold_length_correct : forall X (l : list X),
   fold_length l = length l.
 Proof.
-(* FILL IN HERE *) Admitted.
+(* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** **** Exercise: 3 stars, standard (fold_map)
+(** **** Упражнение: 3 звезды, стандартное (fold_map)
 
-    We can also define [map] in terms of [fold].  Finish [fold_map]
-    below. *)
+    Также легко определить [map] в терминах [fold].  Завершите определение
+    [fold_map], объявленной ниже. *)
 
 Definition fold_map {X Y: Type} (f: X -> Y) (l: list X) : list Y
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
-(** Write down a theorem [fold_map_correct] stating that [fold_map] is
-    correct, and prove it in Coq.  (Hint: again, remember that
-    [reflexivity] simplifies expressions a bit more aggressively than
+(** Сформулируйте теорему [fold_map_correct], утверждающую, что [fold_map]
+    корректна, и докажите её с помощью Coq.  (Подсказка: опять же, имейте в
+    виду, что [reflexivity] упрощает выражения слегка аггрессивнее, чем
     [simpl].) *)
 
-(* FILL IN HERE *)
+(* ЗАПОЛНИТЕ ЗДЕСЬ *)
 
 (* Do not modify the following line: *)
 Definition manual_grade_for_fold_map : option (nat*string) := None.
 (** [] *)
 
-(** **** Exercise: 2 stars, advanced (currying)
+(** **** Упражнение: 2 звезды, продвинутое (currying)
 
-    The type [X -> Y -> Z] can be read as describing functions that
-    take two arguments, one of type [X] and another of type [Y], and
-    return an output of type [Z]. Strictly speaking, this type is
-    written [X -> (Y -> Z)] when fully parenthesized.  That is, if we
-    have [f : X -> Y -> Z], and we give [f] an input of type [X], it
-    will give us as output a function of type [Y -> Z].  If we then
-    give that function an input of type [Y], it will return an output
-    of type [Z]. That is, every function in Coq takes only one input,
-    but some functions return a function as output. This is precisely
-    what enables partial application, as we saw above with [plus3].
+    Тип [X -> Y -> Z] можно прочитать как тип, описывающий функции, принимающие
+    два аргумента (один типа [X] и другой типа [Y]) и возвращающие результат
+    типа [Z]. Строго говоря, если расставить все скобки, этот тип на самом деле
+    выглядит как [X -> (Y -> Z)].  То есть, если у нас есть [f : X -> Y -> Z],
+    и мы передаём [f] вход типа [X], она вернёт нам функцию типа [Y -> Z].
+    Если мы затем уже этой функции передадим на вход что-либо, имеющее тип [Y],
+    она вернёт нам результат типа [Z].  Таким образом, все функции в Coq
+    принимают на вход только один аргумент, просто некоторые из возвращают
+    функцию в качестве результата.  В точности благодаря этому механизму в Coq
+    есть частичное применение, с которым мы познакомились выше, в [plus3].
 
-    By contrast, functions of type [X * Y -> Z] -- which when fully
-    parenthesized is written [(X * Y) -> Z] -- require their single
-    input to be a pair.  Both arguments must be given at once; there
-    is no possibility of partial application.
+    В свою очередь, функции типа [X * Y -> Z] (с полной расстановкой скобок этот
+    тип пишется как [(X * Y) -> Z]) требуют своим единственным входом пару
+    (типа [X * Y]).  Оба аргумента должны быть переданы одновременно; для
+    функции с таким типом возможностей для частичного применения нет.
 
-    It is possible to convert a function between these two types.
-    Converting from [X * Y -> Z] to [X -> Y -> Z] is called
-    _currying_, in honor of the logician Haskell Curry.  Converting
-    from [X -> Y -> Z] to [X * Y -> Z] is called _uncurrying_.  *)
+    Однако заметим, что функции этих двух типов можно конвертировать между
+    собой. Так, конвертация из [X * Y -> Z] в [X -> Y -> Z] называется
+    _каррирование_, в честь логика Хаскелла Карри.  Конвертация в обратную
+    сторону, из [X -> Y -> Z] в [X * Y -> Z], называется _раскаррирование_
+    (uncurrying).  *)
 
-(** We can define currying as follows: *)
+(** Мы можем определить каррирование следующим образом: *)
 
 Definition prod_curry {X Y Z : Type}
   (f : X * Y -> Z) (x : X) (y : Y) : Z := f (x, y).
 
-(** As an exercise, define its inverse, [prod_uncurry].  Then prove
-    the theorems below to show that the two are inverses. *)
+(** В качестве упражнения, постройте обратную функцию, [prod_uncurry].
+    Затем докажите две теоремы ниже, что, действительно,
+    [prod_curry] и [prod_uncurry] обратны друг другу. *)
 
 Definition prod_uncurry {X Y Z : Type}
   (f : X -> Y -> Z) (p : X * Y) : Z
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
-(** As a (trivial) example of the usefulness of currying, we can use it
-    to shorten one of the examples that we saw above: *)
+(** В качестве (тривиального) примера полезности каррирования, мы можем
+    использовать его, чтобы сократить один из примеров выше: *)
 
 Example test_map1': map (plus 3) [2;0;2] = [5;3;5].
 Proof. reflexivity. Qed.
 
-(** Thought exercise: before running the following commands, can you
-    calculate the types of [prod_curry] and [prod_uncurry]? *)
+(** Мысленный эксперимент: перед запуском следующих команд, можете ли вы
+    вычислить в уме типы [prod_curry] и [prod_uncurry]? *)
 
 Check @prod_curry.
 Check @prod_uncurry.
@@ -2290,18 +2281,18 @@ Theorem uncurry_curry : forall (X Y Z : Type)
                         x y,
   prod_curry (prod_uncurry f) x y = f x y.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Theorem curry_uncurry : forall (X Y Z : Type)
                         (f : (X * Y) -> Z) (p : X * Y),
   prod_uncurry (prod_curry f) p = f p.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 (** [] *)
 
-(** **** Exercise: 2 stars, advanced (nth_error_informal)
+(** **** Упражнение: 2 звезды, продвинутое (nth_error_informal)
 
-    Recall the definition of the [nth_error] function:
+    Вспомним определение функции [nth_error]:
 
    Fixpoint nth_error {X : Type} (l : list X) (n : nat) : option X :=
      match l with
@@ -2309,13 +2300,13 @@ Proof.
      | a :: l' => if n =? O then Some a else nth_error l' (pred n)
      end.
 
-   Write a careful informal proof of the following theorem:
+   Выпишите аккуратное неформальное доказательство следующей теоремы:
 
    forall X l n, length l = n -> @nth_error X l n = None
 
-   Make sure to state the induction hypothesis _explicitly_.
+   Убедитесь, что предположение гипотезы Вами сформулировано _явно_.
 *)
-(* FILL IN HERE *)
+(* ЗАПОЛНИТЕ ЗДЕСЬ *)
 
 (* Do not modify the following line: *)
 Definition manual_grade_for_informal_proof : option (nat*string) := None.
@@ -2324,48 +2315,49 @@ Definition manual_grade_for_informal_proof : option (nat*string) := None.
 (* ================================================================= *)
 (** ** Church Numerals (Advanced) *)
 
-(** The following exercises explore an alternative way of defining
-    natural numbers using the _Church numerals_, which are named after
-    their inventor, the mathematician Alonzo Church.  We can represent
-    a natural number [n] as a function that takes a function [f] as a
-    parameter and returns [f] iterated [n] times. *)
+(** Следующие упражнения исследуют альтернативный способ построения натуральных
+    чисел с использованием _нумералов Чёрча_, названных в честь их создателя,
+    математика Алонзо Чёрча.  Основная идея заключается в том, что мы можем
+    представить натуральное число [n] в виде функции высшего порядка,
+    принимающей некоторую функцию [f] в качестве параметра и возвращающей [f],
+    итерированную [n] раз. *)
 
 Module Church.
 Definition cnat := forall X : Type, (X -> X) -> X -> X.
 
-(** Let's see how to write some numbers with this notation. Iterating
-    a function once should be the same as just applying it.  Thus: *)
+(** Посмотрим, как же писать числа в такой нотации.
+    Итерировать функцию единожды -- то же самое, что просто её применить.
+    Так что: *)
 
 Definition one : cnat :=
   fun (X : Type) (f : X -> X) (x : X) => f x.
 
-(** Similarly, [two] should apply [f] twice to its argument: *)
+(** Похожим образом, [два] должно применять [f] дважды: *)
 
 Definition two : cnat :=
   fun (X : Type) (f : X -> X) (x : X) => f (f x).
 
-(** Defining [zero] is somewhat trickier: how can we "apply a function
-    zero times"?  The answer is actually simple: just return the
-    argument untouched. *)
+(** Определить [zero] в каком-то смысле сложнее: как можно "применить функцию
+    0 раз"?  Ответ на самом деле простой:
+    просто возвращаем аргумент как есть. *)
 
 Definition zero : cnat :=
   fun (X : Type) (f : X -> X) (x : X) => x.
 
-(** More generally, a number [n] can be written as [fun X f x => f (f
-    ... (f x) ...)], with [n] occurrences of [f].  Let's informally
-    notate that as [fun X f x => f^n x], with the convention that [f^0 x]
-    is just [x]. Note how the [doit3times] function we've defined
-    previously is actually just the Church representation of [3]. *)
+(** Обобщая, число [n] можно записать как [fun X f x => f (f
+    ... (f x) ...)], с [n] вхождениями [f] в выражение.  Давайте (неформально)
+    обобзначать это как [fun X f x => f^n x], и договоримся, что [f^0 x]
+    это просто [x]. Обратите внимание, что функция [doit3times] с лекции
+    оказывается нумералом Чёрча для числа [3]. *)
 
 Definition three : cnat := @doit3times.
 
-(** So [n X f x] represents "do it [n] times", where [n] is a Church
-    numerals and "it" means applying [f] starting with [x].
+(** Так, [n X f x] представляет "сделать ЭТО [n] раз", где [n] это нумерал
+    Чёрча, а "ЭТО" значит применить [f], начиная с [x].
 
-    Another way to think about the Church representation is that
-    function [f] represents the successor operation on [X], and value
-    [x] represents the zero element of [X].  We could even rewrite
-    with those names to make it clearer: *)
+    Другой способ думать об этом следующий: внутри нумерала Чёрча, функция [f]
+    это как будто бы "операция взятия следующего" в множестве [X], а значение
+    [x] -- это "ноль". Переименуем аргументы, чтобы это стало более явным: *)
 
 Definition zero' : cnat :=
   fun (X : Type) (succ : X -> X) (zero : X) => zero.
@@ -2374,8 +2366,8 @@ Definition one' : cnat :=
 Definition two' : cnat :=
   fun (X : Type) (succ : X -> X) (zero : X) => succ (succ zero).
 
-(** If we passed in [S] as [succ] and [O] as [zero], we'd even get the Peano
-    naturals as a result: *)
+(** Если мы передадим [S] в качестве [succ], а [O] в качестве [zero], в
+    результате мы получим в точности соответствующие натуральные числа: *)
 
 Example zero_church_peano : zero nat S O = 0.
 Proof. reflexivity. Qed.
@@ -2386,119 +2378,121 @@ Proof. reflexivity. Qed.
 Example two_church_peano : two nat S O = 2.
 Proof. reflexivity. Qed.
 
-(** But the intellectually exciting implication of the Church numerals
-    is that we don't strictly need the natural numbers to be built-in
-    to a functional programming language, or even to be definable with
-    an inductive data type. It's possible to represent them purely (if
-    not efficiently) with functions.
+(** Самое интересное следствие из этого построения -- то, что в функциональном
+    языке программирования нам не то что бы нужны натуральные числа в качестве
+    примитива; более того, их не обязательно определять через индуктивные типы.
+    Вполне возможно реализовать их чисто через функции (хотя, конечно, не очень
+    эффективно).
 
-    Of course, it's not enough to represent numerals; we need to be
-    able to do arithmetic with them. Show that we can by completing
-    the definitions of the following functions. Make sure that the
-    corresponding unit tests pass by proving them with
-    [reflexivity]. *)
+    Конечно, нам недостаточно создать _представление_ нумералов (то, как они
+    определяются и выглядят в Coq); нам также необходимо выполнять с ними
+    арифметические операции. Покажите, что это возможно, завершив определения
+    следующих функций.
 
-(** **** Exercise: 2 stars, advanced (church_scc) *)
+    Убедитесь, что соответствующие юнит-тесты выполняются (доказываются) с
+    помощью [reflexivity]. *)
 
-(** Define a function that computes the successor of a Church numeral.
-    Given a Church numeral [n], its successor [scc n] should iterate
-    its function argument once more than [n]. That is, given [fun X f x
-    => f^n x] as input, [scc] should produce [fun X f x => f^(n+1) x] as
-    output. In other words, do it [n] times, then do it once more. *)
+(** **** Упражнение: 2 звезды, продвинутое (church_scc) *)
+
+(** Определите функцию, вычисляющую последователя нумерала Чёрча.
+    Используя нумерал Чёрча [n], его последователь [scc n] должен итерировать
+    свой аргумент-функцию на один раз больше, чем [n]. Так, получив
+    [fun X f x => f^n x] на вход, [scc] должен возвращать
+    [fun X f x => f^(n+1) x] в качестве результата. Другими словами,
+    "сделай ЭТО [n] раз, затем ещё раз". *)
 
 Definition scc (n : cnat) : cnat
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example scc_1 : scc zero = one.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example scc_2 : scc one = two.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example scc_3 : scc two = three.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
-(** **** Exercise: 3 stars, advanced (church_plus) *)
+(** **** Упражнение: 3 звезды, продвинутое (church_plus) *)
 
-(** Define a function that computes the addition of two Church
-    numerals.  Given [fun X f x => f^n x] and [fun X f x => f^m x] as
-    input, [plus] should produce [fun X f x => f^(n + m) x] as output.
-    In other words, do it [n] times, then do it [m] more times.
+(** Определите функцию, вычисляющую сумму двух нумералов Чёрча. Получив
+    [fun X f x => f^n x] и [fun X f x => f^m x] в качестве входа, [plus]
+    должен вернуть [fun X f x => f^(n + m) x].
+    Другими словами, "сделать ЭТО [n] раз, затем ещё [m] раз".
 
-    Hint: the "zero" argument to a Church numeral need not be just
-    [x]. *)
+    Подсказка: "нулевой" аргумент в нумерале Чёрча не обязан быть одним и тем же
+    [x] во всех нумералах Чёрча, они могут начинать с разных значений. *)
 
 Definition plus (n m : cnat) : cnat
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example plus_1 : plus zero one = one.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example plus_2 : plus two three = plus three two.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example plus_3 :
   plus (plus two two) three = plus one (plus three three).
-Proof. (* FILL IN HERE *) Admitted.
+Proof. (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
-(** **** Exercise: 3 stars, advanced (church_mult) *)
+(** **** Упражнение: 3 звезды, продвинутое (church_mult) *)
 
-(** Define a function that computes the multiplication of two Church
-    numerals.
+(** Определите функцию, вычисляющую произведение двух нумералов Чёрча.
 
-    Hint: the "successor" argument to a Church numeral need not be
-    just [f].
+    Подсказка: аргумент-функция в нумерале Чёрча не обязан всегда быть одним
+    и тем же [f].
 
-    Warning: Coq will not let you pass [cnat] itself as the type [X]
-    argument to a Church numeral; you will get a "Universe
-    inconsistency" error. That is Coq's way of preventing a paradox in
-    which a type contains itself. So leave the type argument
-    unchanged. *)
+    Предупреждение: Coq не позволит вам передать сам [cnat] в качестве типового
+    аргумента [X] в нумерале Чёрча; вы получите ошибку про так называемую
+    "Universe inconsistency".  Таким образом Coq предотвращает парадоксы,
+    вызванные типами, которые содержат сами себя. Так что используйте везде один
+    и тот же [X]. *)
 
 Definition mult (n m : cnat) : cnat
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example mult_1 : mult one one = one.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example mult_2 : mult zero (plus three three) = zero.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example mult_3 : mult two three = plus three three.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
-(** **** Exercise: 3 stars, advanced (church_exp) *)
+(** **** Упражнение: 3 звезды, продвинутое (church_exp) *)
 
-(** Exponentiation: *)
+(** Экспонента: *)
 
-(** Define a function that computes the exponentiation of two Church
-    numerals.
+(** Определите функцию, возводящую один нумерал Чёрча в степень другого.
 
-    Hint: the type argument to a Church numeral need not just be [X].
-    But again, you cannot pass [cnat] itself as the type argument.
-    Finding the right type can be tricky. *)
+    Подсказка: типовой аргумент в нумерале Чёрча не обязан быть одним и тем же
+    в разных использованиях разных аргументов.  Но, опять же, мы не можем
+    передать сам [cnat] в качестве аргумента; подобрать правильный типовой
+    аргумент может быть сложно. *)
 
 Definition exp (n m : cnat) : cnat
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+  (* ЗАМЕНИТЕ ЭТУ СТРОЧКУ ":= _вашим_определением_ ." *). Admitted.
 
 Example exp_1 : exp two two = plus two two.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example exp_2 : exp three zero = one.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 Example exp_3 : exp three two = plus (mult two (mult two two)) one.
-Proof. (* FILL IN HERE *) Admitted.
+Proof. (* ЗАПОЛНИТЕ ЗДЕСЬ *) Admitted.
 
 (** [] *)
 
 End Church.
 End Exercises.
 
-(* 2025-03-19 13:21 *)
+(* 2025-03-22 23:44 *)
