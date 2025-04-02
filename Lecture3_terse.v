@@ -91,6 +91,8 @@ Example trans_eq_example' : forall (a b c d e f : nat),
      [a;b] = [e;f].
 Proof.
   intros a b c d e f eq1 eq2.
+  Check trans_eq.
+  Fail apply trans_eq.
 
   (** Просто [apply trans_eq] не сработает!  А вот... *)
   apply trans_eq with (y:=[c;d]).
@@ -130,6 +132,7 @@ Theorem S_injective : forall (n m : nat),
 Proof.
   intros n m H1.
   assert (H2: n = pred (S n)). { reflexivity. }
+  Print pred.
   rewrite H2. rewrite H1. simpl. reflexivity.
 Qed.
 
@@ -152,7 +155,11 @@ Theorem injection_ex1 : forall (n m o : nat),
   n = m.
 Proof.
   intros n m o H.
-  (* WORK IN CLASS *) Admitted.
+  injection H as Hno Hmo.
+  transitivity o.
+  - apply Hno.
+  - symmetry. apply Hmo.
+Qed.
 
 (** Про инъективность понятно.  Что насчёт отсутствия пересечений? *)
 
@@ -187,7 +194,7 @@ Theorem eqb_0_l : forall n,
 Proof.
   intros n.
 
-  destruct n as [| n'] eqn:E.
+  destruct n as [| n'].
   - (* n = 0 *)
     intros H. reflexivity.
 
@@ -197,6 +204,7 @@ Proof.
     intros H. discriminate H.
 Qed.
 
+Compute (fun x => 1 + x).
 
 (* QUIZ
 
@@ -393,7 +401,8 @@ Theorem double_injective_FAILED : forall n m,
   double n = double m ->
   n = m.
 Proof.
-  intros n m. induction n as [| n' IHn'].
+  intros n m.
+  induction n as [| n' IHn'].
   - (* n = O *) simpl. intros eq. destruct m as [| m'] eqn:E.
     + (* m = O *) reflexivity.
     + (* m = S m' *) discriminate eq.
@@ -443,7 +452,14 @@ Proof.
 Theorem eqb_true : forall n m,
   n =? m = true -> n = m.
 Proof.
-  (* WORK IN CLASS *) Admitted.
+  induction n.
+  - destruct m.
+    + reflexivity.
+    + intros. discriminate H.
+  - destruct m.
+    + intros. discriminate H.
+    + simpl. intros. f_equal. apply IHn, H.
+Qed.
 
 (** Стратегия делать меньше [intros] перед [induction] для получения более
     сильного предположения индукции работает не всегда; иногда переменные под
@@ -940,7 +956,14 @@ Check @conj : forall A B : Prop, A -> B -> A /\ B.
 Example plus_is_O :
   forall n m : nat, n + m = 0 -> n = 0 /\ m = 0.
 Proof.
-    (* WORK IN CLASS *) Admitted.
+  intros * H.
+  assert (HL : forall x y, x + y = 0 -> x = 0).
+  { intros. destruct x. reflexivity. discriminate H0. }
+  split.
+  - apply HL with (y := m), H.
+  - rewrite add_comm in H.
+    apply HL with (y := n), H.
+Qed.
 
 (** So much for proving conjunctive statements.  To go in the other
     direction -- i.e., to _use_ a conjunctive hypothesis to help prove
@@ -949,7 +972,8 @@ Proof.
 Lemma and_example2 :
   forall n m : nat, n = 0 /\ m = 0 -> n + m = 0.
 Proof.
-  (* WORK IN CLASS *) Admitted.
+  intros * [Hn Hm]. rewrite Hn, Hm. reflexivity.
+Qed.
 
 (** As usual, we can also destruct [H] right when we introduce it,
     instead of introducing and then destructing it: *)
@@ -982,7 +1006,10 @@ Qed.
 Lemma and_example3 :
   forall n m : nat, n + m = 0 -> n * m = 0.
 Proof.
-  (* WORK IN CLASS *) Admitted.
+  intros * H.
+  destruct (plus_is_O _ _ H) as [Hn _].
+  rewrite Hn. reflexivity.
+Qed.
 
 (** Finally, the infix notation [/\] is actually just syntactic sugar for
     [and A B].  That is, [and] is a Coq operator that takes two
@@ -1035,7 +1062,10 @@ Qed.
 Lemma zero_or_succ :
   forall n : nat, n = 0 \/ n = S (pred n).
 Proof.
-  (* WORK IN CLASS *) Admitted.
+  intros [|].
+  - (* n = 0 *) left. reflexivity.
+  - (* n = S n' *) right. reflexivity.
+Qed.
 
 (** **** Exercise: 2 stars, standard (mult_is_O) *)
 Lemma mult_is_O :
@@ -1087,8 +1117,7 @@ End NotPlayground.
 
 Theorem ex_falso_quodlibet : forall (P:Prop),
   False -> P.
-Proof.
-  (* WORK IN CLASS *) Admitted.
+Proof. intros. destruct H. Qed.
 
 (** Inequality is a very common form of negated statement, so there is a
     special notation for it:
@@ -1119,12 +1148,13 @@ Proof.
 Theorem contradiction_implies_anything : forall P Q : Prop,
   (P /\ ~P) -> Q.
 Proof.
-  (* WORK IN CLASS *) Admitted.
+  intros * [HP HNP]. unfold not in HNP.
+  apply HNP in HP. destruct HP.
+Qed.
 
 Theorem double_neg : forall P : Prop,
   P -> ~~P.
-Proof.
-  (* WORK IN CLASS *) Admitted.
+Proof. unfold not. intros. apply H0, H. Qed.
 
 (** Since inequality involves a negation, it also requires a
     little practice. Here is a useful trick: if you are trying to
@@ -1423,7 +1453,8 @@ Theorem exists_example_2 : forall n,
   (exists m, n = 4 + m) ->
   (exists o, n = 2 + o).
 Proof.
-  (* WORK IN CLASS *) Admitted.
+  intros * [m Hm]. exists (2 + m). apply Hm.
+Qed.
 
 (** ** Recap -- Logical connectives of Coq:
 
