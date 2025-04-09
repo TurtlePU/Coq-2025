@@ -1,6 +1,6 @@
 COQMFFLAGS := -Q . Lectures
 
-ALLVFILES := Lecture1.v Lecture1Test.v Lecture2.v Lecture2Test.v Lecture3.v Lecture3Test.v Lecture4.v Lecture4Test.v
+ALLVFILES := Lecture1.v Lecture1Test.v Lecture2.v Lecture2Test.v Lecture3.v Lecture3Test.v Lecture4.v Lecture4Test.v Lecture5.v Lecture5Test.v
 build: Makefile.coq
 	$(MAKE) -f Makefile.coq
 
